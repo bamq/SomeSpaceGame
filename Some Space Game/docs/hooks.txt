@@ -1,0 +1,354 @@
+
+Hooks are useful for addons to run code at specific game events.
+Some Hooks will allow you to return false in order to prevent that function from occurring.
+
+For example: Adding a Hook to event "PrePlayerFire" and returning false in any hooks associated with that event will prevent the player from firing.
+
+
+------------------------- HOOKS --------------------------
+
+How to use:
+
+Hooking a function:
+Hooks:Add( "event_name", "some_unique_identifier", function( parameters )
+	SomeCode()
+end )
+
+
+====================================================
+== Category: LOVE ==================================
+== Description: Hooks associated with LOVE events ==
+====================================================
+
+Hook: "PreLoveLoad"
+Description: Called before the game has loaded.
+
+Hook: "PostLoveLoad"
+Description: Called after the game has loaded.
+
+Hook: "PreLoveUpdate"
+Params: {
+	[number] delta time
+}
+Description: Called every frame before other update calls.
+
+Hook: "PostLoveUpdate"
+Params: {
+	[number] delta time
+}
+Description: Called every frame after update calls.
+
+Hook: "PreLoveDraw"
+Description: Called every frame before the screen is drawn
+
+Hook: "PostLoveDraw"
+Description: Called every frame after the screen has been drawn.
+
+Hook: "LoveKeyPressed"
+Params: {
+	[string] key that was pressed
+	[string] scancode
+	[boolean] isrepeat
+}
+Description: Called when a key is pressed.
+
+Hook: "LoveKeyReleased"
+Params: {
+	[string] key that was released
+	[string] scancode
+}
+Description: Called when a key is released.
+
+Hook: "LoveMouseMoved"
+Params: {
+	[number] x position
+	[number] y position
+	[number] amount moved along x-axis
+	[number] amount moved along y-axis
+	[boolean] originated from touchscreen
+}
+Description: Called when the mouse is moved.
+
+Hook: "LoveMousePressed"
+Params: {
+	[number] x position
+	[number] y position
+	[string] button that was pressed
+	[boolean] originated from touchscreen
+}
+Description: Called when a mouse button is pressed.
+
+Hook: "LoveMouseReleased"
+Params: {
+	[number] x position
+	[number] y position
+	[string] button that was released
+	[boolean] originated from touchscreen
+}
+Description: Called when a mouse button is released.
+
+Hook: "LoveWheelMoved"
+Params: {
+	[number] amount moved along x-axis
+	[number] amount moved along y-axis
+}
+Description: Called when the mouse wheel is moved.
+
+
+========================================================
+== Category: GameManager ===============================
+== Description: Hooks associated with the GameManager ==
+========================================================
+
+Hook: "PostGameInit"
+Params: {
+	[boolean] is the very first init of the game
+	[number] time in ms the init function took.
+}
+Description: Called after the game has been initialized.
+
+Hook: "PostCalculateBullets"
+Description: Called every frame after bullets have been calculated.
+
+Hook: "GameOver"
+Description: Called when the game over message has been broadcast.
+
+
+============================================================
+== Category: GraphicsManager ===============================
+== Description: Hooks associated with the GraphicsManager ==
+============================================================
+
+Hook: "PreDrawHUD"
+Description: Called every frame before the HUD is drawn.
+
+Hook: "PostDrawHUD"
+Description: Called every frame after the HUD has been drawn.
+
+Hook: "PostGraphicsManagerInit"
+Description: Called after the GraphicsManager has been initialized.
+
+Hook: "PostDrawBackground"
+Description: Called every frame after the background has been drawn.
+
+Hook: "PostDrawStars"
+Description: Called every frame after the stars have been drawn.
+
+Hook: "PostDrawPlayer"
+Description: Called every frame after the player has been drawn.
+
+Hook: "PostDrawEnemies"
+Description: Called every frame after all enemies have been drawn.
+
+Hook: "PostDrawBullets"
+Description: Called every frame after all bullets have been drawn.
+
+Hook: "PostDrawFloatTexts"
+Description: Called every frame after all float texts have been drawn.
+
+Hook: "PostDrawGUIElements"
+Description: Called every frame after all GUI elements have been drawn.
+
+Hook: "MainMenuShow"
+Description: Called after the main menu is shown.
+
+
+===================================================
+== Category: GUIManager ===========================
+== Description: Hooks associated with GUIManager ==
+===================================================
+
+Hook: "PostGUIManagerInit"
+Description: Called after the GUIManager has been initialized.
+
+Hook: "PostRegisterGUIObject"
+Params: {
+	[table] the GUI object that was registered.
+}
+Description: Called after a GUI object has been registered.
+
+Hook: "PostGUICreateRectangleButton"
+Params: {
+	[table] the RectangleButton that was created.
+}
+Description: Called after a RectangleButton GUI element has been created.
+
+
+==========================================================
+== Category: AddonsManager ===============================
+== Description: Hooks associated with the AddonsManager ==
+==========================================================
+
+Hook: "PostMountAddons"
+Description: Called after addons have been required to the game.
+
+
+=========================================================
+== Category: InputManager ===============================
+== Description: Hooks associated with the InputManager ==
+=========================================================
+
+Hook: "PostProcessInputs"
+Description: Called after inputs that require a key to be held down are processed.
+
+
+======================================================
+== Category: PlayerManager ===========================
+== Description: Hooks associated with PlayerManager ==
+======================================================
+
+Hook: "PostPlayerManagerInit"
+Description: Called after the PlayerManager has been initialized.
+
+Hook: "PrePlayerFire"
+Params: {
+	[table] bullet to be created
+}
+Description: Called before the bullet is created. Return false to block. You can use this hook to get and modify the bullet's values.
+
+Hook: "PostPlayerFire"
+Params: {
+	[table] bullet that was created
+}
+Description: Called after the bullet is created. You can use this hook to get and modify the bullet's values.
+
+Hook: "PreRemovePlayerBullet"
+Params: {
+	[table] the bullet to be removed
+}
+Description: Called before a player's bullet is removed. Return false to prevent the bullet from being removed. You can use this hook to get and modify the bullet's values.
+
+Hook: "PostRemovePlayerBullet"
+Params: {
+	[table] a copy of the bullet that was removed
+}
+Description: Called after a player's bullet was removed. You can use this hook to get the now-deleted bullet's values.
+
+Hook: "PlayerLostLife"
+Description: Called after the player has lost a life.
+
+Hook: "PlayerFrozen"
+Description: Called after the player has been frozen (can no longer move).
+
+Hook: "PlayerUnFrozen"
+Description: Called after the player has been unfrozen (can now move).
+
+Hook: "PlayerTeleported"
+Description: Called after the player has been moved to a certain position.
+
+Hook: "PlayerMoved"
+Params: {
+	[string] direction
+	[number] speed
+}
+Description: Called every frame after the player has moved.
+
+
+=========================================================
+== Category: EnemyManager ===============================
+== Description: Hooks associated with the EnemyManager ==
+=========================================================
+
+Hooks: "PostEnemyManagerInit"
+Description: Called after the EnemyManager has been initialized.
+
+Hook: "PreCreateEnemy"
+Params: {
+	[table] enemy to be created
+}
+Description: Called before an enemy is created. Return false to block. Can be used to get and modify the enemy's values.
+
+Hook: "PostCreateEnemy"
+Params: {
+	[table] enemy that was created
+}
+Description: Called after an enemy is created. Can be used to get and modify the enemy's values.
+
+Hook: "PreEnemyFire"
+Params: {
+	[table] the enemy about to fire
+	[table] the bullet to be created
+}
+Description: Called before an enemy is about to fire. Return false to block. Can be used to get and modify the bullet's values.
+
+Hook: "PostEnemyFire"
+Params: {
+	[table] the enemy that fired
+	[table] the bullet that was created
+}
+Description: Called after an enemy has fired. Can be used to get and modify the bullet's values.
+
+Hook: "PreRemoveEnemyBullet"
+Params: {
+	[table] the bullet to be removed
+}
+Description: Called before an enemy bullet is removed. Can be used to get and modify the bullet's values.
+
+Hook: "PostRemoveEnemyBullet"
+Params: {
+	[table] copy of the bullet that was removed
+}
+Descripton: Called after an enemy bullet is removed. Can be used to get the now-deleted bullet's values.
+
+Hook: "PreRemoveEnemy"
+Params: {
+	[table] the enemy to be removed
+}
+Description: Called before an enemy is about to be removed. Return false to block. Can be used to get and modify the enemy's values.
+
+Hook: "PostRemoveEnemy"
+Params: {
+	[table] a copy of the enemy that was removed
+}
+Description: Called after an enemy was removed. Can be used to get the now-deleted enemy's values.
+
+
+=============================================================
+== Category: FloatTextManager ===============================
+== Description: Hooks associated with the FloatTextManager ==
+=============================================================
+
+Hook: "PostFloatTextManagerInit"
+Description: Called after the FloatTextManager has been initialized.
+
+Hook: "PreFloatTextCreated"
+Params: {
+	[table] the float text to be created
+}
+Description: Called before a float text is created. Return false to block. Can be used to get and modify the float text's values.
+
+Hook: "PostFloatTextCreated"
+Params: {
+	[table] the float text that was created
+}
+Description: Called after a float text has been created. Can be used to get and modify the float text's values.
+
+Hook: "PreFloatTextRemoved"
+Params: {
+	[table] the float text to be removed
+}
+Description: Called before a float text is removed. Return false to block. Can be used to get and modify the float text's values.
+
+Hook: "PostFloatTextRemoved"
+Params: {
+	[table] a copy of the float text that was removed
+}
+Description: Called after a float text has been removed. Can be used to get the now-deleted float text's values.
+
+
+=========================================================
+== Category: StarsManager ===============================
+== Description: Hooks associated with the StarsManager ==
+=========================================================
+
+Hook: "PostStarsManagerInit"
+Description: Called after the StarsManager has been initialized.
+
+Hook: "PreGenerateStars"
+Description: Called before new stars are generated. Return false to block.
+
+Hook: "PostGenerateStars"
+Params: {
+	[table] table of stars
+}
+Description: Called after new stars have been generated. Can be used to get and modify all stars' values.
