@@ -64,6 +64,26 @@ function EnemyManager:CreateEnemy( x, y )
 				return self._x, self._y
 			end
 
+			function Bullet:GetX()
+				return self._x
+			end
+
+			function Bullet:GetY()
+				return self._y
+			end
+
+			function Bullet:GetWidth()
+				return self._width
+			end
+
+			function Bullet:GetHeight()
+				return self._height
+			end
+
+			function Bullet:GetColor()
+				return unpack( self._color )
+			end
+
 			local block = Hooks:Call( "PreEnemyFire", self, Bullet )
 			if block == false then return end
 
@@ -84,6 +104,30 @@ function EnemyManager:CreateEnemy( x, y )
 
 	function Enemy:GetPos()
 		return self._x, self._y
+	end
+
+	function Enemy:GetX()
+		return self._x
+	end
+
+	function Enemy:GetY()
+		return self._y
+	end
+
+	function Enemy:GetWidth()
+		return self._width
+	end
+
+	function Enemy:GetHeight()
+		return self._height
+	end
+
+	function Enemy:GetSprite()
+		return self._sprite
+	end
+
+	function Enemy:GetBullets()
+		return Util:CopyTable( self._bullets )
 	end
 
 	local block = Hooks:Call( "PreCreateEnemy", Enemy )

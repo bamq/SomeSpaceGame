@@ -1,38 +1,36 @@
 
-GUI.RectangleButton = {}
+GUI.TextPanel = {}
 
-function GUI.RectangleButton:New()
+function GUI.TextPanel:New()
 	local object = {
-		_OBJECT_TYPE = "button",
+		_OBJECT_TYPE = "textpanel",
 		_text = "",
 		_x = 0,
 		_y = 0,
-		_width = 10,
-		_height = 10,
+		_width = 0,
+		_height = 0,
 		_type = "fill",
-		_buttoncolor = { 0, 0, 0, 255 },
-		_textcolor = { 0, 0, 0 },
-		_is_hovered = false,
-		_is_clicked = false
+		_backgroundcolor = { 0, 0, 0, 255 },
+		_textcolor = { 0, 0, 0 }
 	}
 
 	function object._draw()
-		love.graphics.setColor( unpack( object._buttoncolor ) )
+		love.graphics.setColor( unpack( object._backgroundcolor ) )
 		love.graphics.rectangle( object._type, object._x, object._y, object._width, object._height )
 		love.graphics.setColor( unpack( object._textcolor ) )
 		love.graphics.print( object._text, object._x, object._y )
 	end
 
-	function object:SetButtonColor( r, g, b, a )
+	function object:SetBackgroundColor( r, g, b, a )
 		if r and g and b then
 			if not a then a = 255 end
 
-			self._buttoncolor = { r, g, b, a }
+			self._backgroundcolor = { r, g, b, a }
 		end
 	end
 
-	function object:GetButtonColor()
-		return unpack( self._buttoncolor )
+	function object:GetBackgroundColor()
+		return unpack( self._backgroundcolor )
 	end
 
 	function object:SetText( text )
@@ -96,18 +94,6 @@ function GUI.RectangleButton:New()
 		return self._type
 	end
 
-	function object:OnHover()
-	end
-
-	function object:OnUnHover()
-	end
-
-	function object:OnClick()
-	end
-
-	function object:OnUnClick()
-	end
-
 	function object:Destroy()
 		for k, v in pairs( GUIManager._elements ) do
 			if v == self then
@@ -118,7 +104,7 @@ function GUI.RectangleButton:New()
 
 	GUIManager:RegisterGUIObject( object )
 
-	Hooks:Call( "PostGUICreateRectangleButton", object )
+	Hooks:Call( "PostGUICreateTextPanel", object )
 
 	return object
 end

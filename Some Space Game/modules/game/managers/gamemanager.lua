@@ -14,19 +14,20 @@ function GameManager:Init()
 	if first_init then
 		Util:Log( pfx, "Initializing game. . ." )
 	else
-		Util:Log( pfx, "Restarting game. . ." )
+		Util:Log( pfx, "Starting new game. . ." )
 	end
 
 	Game:ResetScore()
 	GraphicsManager:Init()
 	PlayerManager:Init()
-	GUIManager:Init()
 	EnemyManager:Init()
 	StarsManager:Init()
 	FloatTextManager:Init()
 
 	if first_init then
+		GUIManager:Init()
 		AddonsManager:MountAddons()
+		Menus.MainMenu:Show()
 	end
 
 	Hooks:Call( "GameInit", first_init )

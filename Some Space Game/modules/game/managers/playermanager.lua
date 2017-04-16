@@ -81,6 +81,26 @@ function Player:Fire()
 			return self._x, self._y
 		end
 
+		function Bullet:GetX()
+			return self._x
+		end
+
+		function Bullet:GetY()
+			return self._y
+		end
+
+		function Bullet:GetWidth()
+			return self._width
+		end
+
+		function Bullet:GetHeight()
+			return self._height
+		end
+
+		function Bullet:GetColor()
+			return unpack( self._color )
+		end
+
 		local block = Hooks:Call( "PrePlayerFire", Bullet )
 		if block == false then return end
 

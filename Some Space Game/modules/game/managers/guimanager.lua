@@ -1,6 +1,9 @@
 
 require "modules.game.gui.gui"
 require "modules.game.gui.rectanglebutton"
+require "modules.game.gui.textpanel"
+require "modules.game.gui.menus.menus"
+require "modules.game.gui.menus.mainmenu"
 
 GUIManager = {}
 GUIManager._elements = {}
@@ -65,8 +68,8 @@ end
 
 function GUIManager:MouseReleased( x, y, button, istouch )
 	for k, v in pairs( self._elements ) do
-		if v._is_being_clicked then
-			v._is_being_clicked = false
+		if v._is_clicked then
+			v._is_clicked = false
 		end
 	end
 end

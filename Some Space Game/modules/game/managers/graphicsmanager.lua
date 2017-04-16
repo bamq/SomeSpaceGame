@@ -55,66 +55,12 @@ function GraphicsManager:DrawHUD()
 end
 
 function GraphicsManager:DrawGUIElements()
-	for _, element in pairs( GUIManager._elements ) do
+	for _, element in pairs( GUIManager:GetElements() ) do
 		element._draw()
 	end
 
 	Hooks:Call( "PostDrawGUIElements" )
 end
-
-function GraphicsManager:ShowMainMenu()
-	local startButton = GUI.RectangleButton:New()
-	startButton:SetText( "Start" )
-	startButton:SetTextColor( 255, 255, 255 )
-	startButton:SetButtonColor( 255, 255, 255 )
-	startButton:SetWidth( 450 / Game.Config.Graphics.DrawScale )
-	startButton:SetHeight( 100 / Game.Config.Graphics.DrawScale )
-	startButton:SetPos( 0, ScrH() / 2 - startButton:GetHeight() / 2 )
-	startButton:SetFillType( "line" )
-	function startButton:OnHover()
-		self:SetFillType( "fill" )
-		self:SetTextColor( 0, 0, 0 )
-	end
-	function startButton:OnUnHover()
-		self:SetFillType( "line" )
-		self:SetTextColor( 255, 255, 255 )
-	end
-	function startButton:OnClick()
-		print( "Click!" )
-		GameManager:NewGame()
-	end
-
-	Hooks:Call( "MainMenuShow" )
-end
-
---[[
-function GraphicsManager:DrawMainMenu()
-	startButton = {}
-	startButton.width = 450 / Game.Config.Graphics.DrawScale
-	startButton.height = 100 / Game.Config.Graphics.DrawScale
-	startButton.x = 0
-	startButton.y = ScrH() / 2 - startButton.height / 2
-	love.graphics.setColor( 255, 255, 255 )
-	local rectType = "line"
-	local x, y = love.mouse.getPosition()
-	x = x / Game.Config.Graphics.DrawScale
-	y = y / Game.Config.Graphics.DrawScale
-	if ( x >= startButton.x ) and ( x <= startButton.x + startButton.width ) and ( y >= startButton.y ) and ( y <= startButton.y + startButton.height ) then
-		rectType = "fill"
-		if love.mouse.getCursor() ~= love.mouse.getSystemCursor( "hand" ) then
-			love.mouse.setCursor( love.mouse.getSystemCursor( "hand" ) )
-		end
-	else
-		if love.mouse.getCursor() ~= love.mouse.getSystemCursor( "arrow" ) then
-			love.mouse.setCursor( love.mouse.getSystemCursor( "arrow" ) )
-		end
-	end
-	love.graphics.rectangle( rectType, startButton.x, startButton.y, startButton.width, startButton.height )
-	love.graphics.print( "Some Space Game", 0, 0 )
-	local color = rectType == "line" and { 255, 255, 255 } or { 0, 0, 0 }
-	love.graphics.setColor( unpack( color ) )
-	love.graphics.print( "Start", startButton.x, startButton.y )
-end]]
 
 function GraphicsManager:DrawBackground()
 	Hooks:Call( "PostDrawBackground" )
@@ -122,7 +68,7 @@ end
 
 function GraphicsManager:DrawStars()
 	love.graphics.setColor( StarsManager:GetColor() )
-	for _, star in pairs( StarsManager._stars ) do
+	for _, star in pairs( StarsManager:GetStars() ) do
 		love.graphics.circle( unpack( star ) )
 	end
 
@@ -145,7 +91,7 @@ end
 function GraphicsManager:DrawEnemies()
 	for _, enemy in pairs( EnemyManager:GetEnemies() ) do
 		love.graphics.setColor( 255, 255, 255, 255 )
-		love.graphics.draw( enemy._sprite, enemy._x, enemy._y, 0, enemy._width / 10, enemy._height / 10 )
+		love.graphics.draw( enemy:GetSprite(), enemy:GetX(), enemy:GetY(), 0, enemy:GetWidth() / 10, enemy:GetHeight() / 10 )
 	end
 
 	Hooks:Call( "PostDrawEnemies" )
@@ -153,13 +99,13 @@ end
 
 function GraphicsManager:DrawBullets()
 	for _, bullet in pairs( Player:GetBullets() ) do
-		love.graphics.setColor( unpack( bullet._color ) )
-		love.graphics.rectangle( "fill", bullet._x, bullet._y, bullet._width, bullet._height )
+		love.graphics.setColor( bullet:GetColor() )
+		love.graphics.rectangle( "fill", bullet:GetX(), bullet:GetY(), bullet:GetWidth(), bullet:GetHeight() )
 	end
 	for _, enemy in pairs( EnemyManager:GetEnemies() ) do
-		for __, bullet in pairs( enemy._bullets ) do
-			love.graphics.setColor( unpack( bullet._color ) )
-			love.graphics.rectangle( "fill", bullet._x, bullet._y, bullet._width, bullet._height )
+		for __, bullet in pairs( enemy:GetBullets() ) do
+			love.graphics.setColor( bullet:GetColor() )
+			love.graphics.rectangle( "fill", bullet:GetX(), bullet:GetY(), bullet:GetWidth(), bullet:GetHeight() )
 		end
 	end
 

@@ -100,6 +100,12 @@ Description: Called when the mouse wheel is moved.
 == Description: Hooks associated with the GameManager ==
 ========================================================
 
+Hook: "GameInit"
+Params: {
+	[boolean] is the very first init of the game
+}
+Description: Called during game initialization.
+
 Hook: "PostGameInit"
 Params: {
 	[boolean] is the very first init of the game
@@ -163,15 +169,21 @@ Description: Called after the GUIManager has been initialized.
 
 Hook: "PostRegisterGUIObject"
 Params: {
-	[table] the GUI object that was registered.
+	[table] the GUI object that was registered
 }
 Description: Called after a GUI object has been registered.
 
 Hook: "PostGUICreateRectangleButton"
 Params: {
-	[table] the RectangleButton that was created.
+	[table] the RectangleButton that was created
 }
 Description: Called after a RectangleButton GUI element has been created.
+
+Hook: "PostGUICreateTextPanel"
+Params: {
+	[table] the TextPanel that was created
+}
+Description: Called after a TextPanel GUI element has been created.
 
 
 ==========================================================

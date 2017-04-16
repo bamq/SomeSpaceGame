@@ -1,0 +1,3 @@
+Addons go here.
+
+An addon is a folder that contains a main.lua file, and will be ran then the game is launched.
