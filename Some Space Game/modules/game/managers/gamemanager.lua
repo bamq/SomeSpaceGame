@@ -7,7 +7,6 @@ local gameovertimer = 500
 function GameManager:Init()
 	local t = love.timer.getTime()
 
-	--Game:SetState( STATE_INACTIVE )
 	gameovertimer = 500
 	math.randomseed( os.time() )
 
@@ -32,7 +31,6 @@ function GameManager:Init()
 
 	Hooks:Call( "GameInit", first_init )
 
-	--Game:SetState( STATE_ACTIVE )
 	first_init = false
 	Util:Log( pfx, "Game fully initialized. Took " .. Util:Round( ( love.timer.getTime() - t ) * 1000, 2 ) .. " milliseconds." )
 
@@ -75,6 +73,7 @@ function GameManager:CalculateBullets()
 		for j, enemy in pairs( EnemyManager._enemies ) do
 			if Util:CheckCollision( bullet, enemy ) then
 				local _killtext = FloatTextManager:CreateText( "+" .. Game.Config.Scoring.PointsForKill, enemy._x, enemy._y, 255, 0, 0, 30 )
+
 				bullet:Remove()
 				enemy:Kill()
 				Game:AddScore( Game.Config.Scoring.PointsForKill )
@@ -92,9 +91,10 @@ function GameManager:CalculateBullets()
 			bullet._y = bullet._y + bullet._speed
 
 			if Util:CheckCollision( bullet, Player ) then
+				local _killtext = FloatTextManager:CreateText( "Life lost!", Player:GetX(), Player:GetY() - 10, 255, 255, 255, 30 )
+				
 				bullet:Remove()
 				Player:LoseLife()
-				local _killtext = FloatTextManager:CreateText( "Life lost!", Player:GetX(), Player:GetY() - 10, 255, 255, 255, 30 )
 			end
 		end
 	end

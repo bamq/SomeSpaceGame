@@ -36,7 +36,7 @@ Game.Config.Graphics.PlayerBulletColor	= { 255, 255, 0, 255 }
 Game.Config.Graphics.ShowFPS			= true
 Game.Config.Graphics.ShowScore			= true
 Game.Config.Graphics.StarsColor			= { 255, 255, 255, 255 }
-Game.Config.Graphics.StarsInterval		= 500
+Game.Config.Graphics.StarsInterval		= 350
 
 Game.Config.Player.AllowBoost			= true
 Game.Config.Player.BoostFactor			= 1.5

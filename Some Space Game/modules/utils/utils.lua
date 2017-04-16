@@ -36,15 +36,17 @@ function Util:PrintTable( tbl )
 end
 
 function Util:CheckCollision( ent1, ent2 )
-	first = {}
-	second = {}
-	first._x = ent1._x or ent1.x
-	first._y = ent1._y or ent1.y
-	first._width = ent1._width or ent1.width
-	first._height = ent1._height or ent1.height
-	second._x = ent2._x or ent2.x
-	second._y = ent2._y or ent2.y
-	second._width = ent2._width or ent2.width
-	second._height = ent2._height or ent2.height
+	local first = {
+		_x = ent1._x or ent1.x,
+		_y = ent1._y or ent1.y,
+		_width = ent1._width or ent1.width,
+		_height = ent1._height or ent1.height
+	}
+	local second = {
+		_x = ent2._x or ent2.x,
+		_y = ent2._y or ent2.y,
+		_width = ent2._width or ent2.width,
+		_height = ent2._height or ent2.height
+	}
 	return ( first._y + first._height ) >= second._y and first._y <= ( second._y + second._height ) and ( first._x + first._width ) >= second._x and first._x <= ( second._x + second._width )
 end

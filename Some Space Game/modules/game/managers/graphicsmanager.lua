@@ -15,6 +15,7 @@ end
 function GraphicsManager:CreateSprites()
 	PLAYER_SPRITE = love.graphics.newImage( Game.Config.Graphics.PlayerSprite )
 	ENEMY_SPRITES = {}
+
 	for i = 1, #Game.Config.Graphics.EnemySprites do
 		ENEMY_SPRITES[ i ] = love.graphics.newImage( Game.Config.Graphics.EnemySprites[ i ] )
 	end
@@ -30,8 +31,6 @@ function GraphicsManager:Draw()
 		self:DrawFloatTexts()
 	elseif GameState == STATE_OVER then
 		self:DrawGameOverScreen()
-	--elseif GameState == STATE_MENU then
-	--	self:DrawMainMenu()
 	end
 	if GameState ~= STATE_INACTIVE then
 		self:DrawGUIElements()
@@ -68,6 +67,7 @@ end
 
 function GraphicsManager:DrawStars()
 	love.graphics.setColor( StarsManager:GetColor() )
+
 	for _, star in pairs( StarsManager:GetStars() ) do
 		love.graphics.circle( unpack( star ) )
 	end
@@ -79,12 +79,13 @@ function GraphicsManager:DrawPlayer()
 	local r, g, b, a = Player:GetColor()
 
 	love.graphics.setColor( r, g, b, a )
-	love.graphics.draw( self:GetPlayerSprite(), Player:GetX(), Player:GetY(), 0, Player:GetWidth() / 10, Player:GetHeight() / 10 )
+	love.graphics.draw( Player:GetSprite(), Player:GetX(), Player:GetY(), 0, Player:GetWidth() / 10, Player:GetHeight() / 10 )
 
 	if Game.Config.Graphics.DrawScoreOnPlayer then
 		love.graphics.setColor( 255, 255, 255, 175)
 		love.graphics.print( Player:GetLives(), Player:GetX() - ( Player:GetWidth() / 2 ), Player:GetY() - Player:GetHeight() / 2 )
 	end
+
 	Hooks:Call( "PostDrawPlayer" )
 end
 
@@ -102,6 +103,7 @@ function GraphicsManager:DrawBullets()
 		love.graphics.setColor( bullet:GetColor() )
 		love.graphics.rectangle( "fill", bullet:GetX(), bullet:GetY(), bullet:GetWidth(), bullet:GetHeight() )
 	end
+
 	for _, enemy in pairs( EnemyManager:GetEnemies() ) do
 		for __, bullet in pairs( enemy:GetBullets() ) do
 			love.graphics.setColor( bullet:GetColor() )
@@ -134,8 +136,4 @@ function GraphicsManager:SetBackgroundColor( r, g, b )
 		self._backgroundcolor = { r, g, b }
 		love.graphics.setBackgroundColor( unpack( self._backgroundcolor ) )
 	end
-end
-
-function GraphicsManager:GetPlayerSprite()
-	return Player._sprite
 end

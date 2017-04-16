@@ -151,6 +151,8 @@ function EnemyManager:RemoveEnemy( target )
 			if block == false then return end
 
 			table.remove( self._enemies, k )
+			Util:Log( pfx, "Enemy removed." )
+
 			Hooks:Call( "PostRemoveEnemy", enemycopy )
 		end
 	end
@@ -168,6 +170,7 @@ function EnemyManager:ProcessEnemyLogic()
 		self._spawncooldown = Game.Config.Enemy.SpawnDelay
 		self:CreateEnemy( math.random( 1, ScrW() - Game.Config.Enemy.Width ), math.random( 10, ScrH() * 0.25 ) )
 	end
+
 	self._spawncooldown = self._spawncooldown - 1
 end
 

@@ -323,25 +323,25 @@ Description: Called after an enemy was removed. Can be used to get the now-delet
 Hook: "PostFloatTextManagerInit"
 Description: Called after the FloatTextManager has been initialized.
 
-Hook: "PreFloatTextCreated"
+Hook: "PreCreateFloatText"
 Params: {
 	[table] the float text to be created
 }
 Description: Called before a float text is created. Return false to block. Can be used to get and modify the float text's values.
 
-Hook: "PostFloatTextCreated"
+Hook: "PostCreateFloatText"
 Params: {
 	[table] the float text that was created
 }
 Description: Called after a float text has been created. Can be used to get and modify the float text's values.
 
-Hook: "PreFloatTextRemoved"
+Hook: "PreRemoveFloatText"
 Params: {
 	[table] the float text to be removed
 }
 Description: Called before a float text is removed. Return false to block. Can be used to get and modify the float text's values.
 
-Hook: "PostFloatTextRemoved"
+Hook: "PostRemoveFloatText"
 Params: {
 	[table] a copy of the float text that was removed
 }

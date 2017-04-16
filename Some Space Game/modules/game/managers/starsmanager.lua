@@ -11,6 +11,7 @@ function StarsManager:Init()
 	self._cooldown = 0
 
 	Util:Log( pfx, "Initialized." )
+
 	Hooks:Call( "PostStarsManagerInit" )
 end
 
@@ -26,7 +27,6 @@ function StarsManager:GenerateStars()
 		self._stars[ i ] = { "fill", math.random( 1, ScrW() ), math.random( 1, ScrH() ), ( 25 ) / ( 17 * math.sqrt( Game.Config.Graphics.DrawScale ) + 10 ) * 1 }
 	end
 
-	--Util:PrintTable()
 	Util:Log( pfx, "Stars generated." )
 
 	Hooks:Call( "PostGenerateStars", self._stars )
@@ -50,5 +50,9 @@ function StarsManager:GetColor()
 end
 
 function StarsManager:SetColor( r, g, b, a )
-	self._starscolor = { r, g, b, a }
+	if r and g and b then
+		if not a then a = 255 end
+
+		self._starscolor = { r, g, b, a }
+	end
 end

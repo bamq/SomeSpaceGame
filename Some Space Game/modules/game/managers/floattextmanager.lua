@@ -26,13 +26,13 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time )
 	function Text:Remove()
 		for k, v in pairs( FloatTextManager._texts ) do
 			if v == self then
-				local block = Hooks:Call( "PreFloatTextRemoved", self )
+				local block = Hooks:Call( "PreRemoveFloatText", self )
 				local selfcopy = Util:CopyTable( self )
 				if block == false then return end
 
 				table.remove( FloatTextManager._texts, k )
 				Util:Log( pfx, "Float text removed." )
-				Hooks:Call( "PostFloatTextRemoved", selfcopy )
+				Hooks:Call( "PostRemoveFloatText", selfcopy )
 			end
 		end
 	end
@@ -46,16 +46,8 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time )
 	end
 
 	function Text:SetColor( r, g, b )
-		if r then
-			self._color[ 1 ] = r
-		end
-
-		if g then
-			self._color[ 2 ] = g
-		end
-
-		if b then
-			self._color[ 3 ] = b
+		if r and g and b then
+			self._color = { r, g, b }
 		end
 	end
 
@@ -70,6 +62,14 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time )
 
 	function Text:GetPos()
 		return self._x, self._y
+	end
+
+	function Text:GetX()
+		return self._x
+	end
+
+	function Text:GetY()
+		return self._y
 	end
 
 	function Text:SetText( str )
@@ -88,14 +88,14 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time )
 		return self._time
 	end
 
-	local block = Hooks:Call( "PreFloatTextCreated", Text )
+	local block = Hooks:Call( "PreCreateFloatText", Text )
 	if block == false then return end
 
 	table.insert( self._texts, Text )
 	Text:SetVisible( true )
 	Util:Log( pfx, "Float text created at X: " .. Text._x, "Y: " .. Text._y, "Message: " .. Text._message )
 
-	Hooks:Call( "PostFloatTextCreated", Text )
+	Hooks:Call( "PostCreateFloatText", Text )
 
 	return Text
 end

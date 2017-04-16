@@ -14,7 +14,7 @@ function PlayerManager:Init()
 	p._height = Game.Config.Player.Height
 	p._x = 0
 	p._y = ScrH() - p._height
-	p._sprite = love.graphics.newImage( Game.Config.Graphics.PlayerSprite )
+	p._sprite = PLAYER_SPRITE
 	p._speed = Game.Config.Player.DefaultSpeed
 	p._firedelay = Game.Config.Player.FireDelay
 	p._firecooldown = 0
@@ -49,10 +49,10 @@ function Player:Fire()
 		local Bullet = {}
 		Bullet._width = Game.Config.Player.BulletWidth
 		Bullet._height = Game.Config.Player.BulletHeight
-		Bullet._speed = Game.Config.Player.BulletSpeed
-		Bullet._color = Game.Config.Graphics.PlayerBulletColor
 		Bullet._x = self._x + ( self._width / 2 ) - ( Bullet._width / 2 )
 		Bullet._y = self._y + ( self._height / 2 ) - Bullet._height
+		Bullet._speed = Game.Config.Player.BulletSpeed
+		Bullet._color = Game.Config.Graphics.PlayerBulletColor
 
 		function Bullet:Remove()
 			for k, v in pairs( Player._bullets ) do
@@ -112,12 +112,15 @@ end
 
 function Player:LoseLife()
 	self._lives = self._lives - 1
+
 	if self._lives <= 0 then
 		Util:Log( pfx, "Player lost all their lives." )
 		GameManager:GameOver()
 	else
 		Util:Log( pfx, "Player lost a life. " .. self._lives .. " left." )
 	end
+
+	self:SetAlpha( ( self:GetLives() / Game.Config.Player.Lives ) * 255)
 
 	Hooks:Call( "PlayerLostLife" )
 end
@@ -236,4 +239,8 @@ end
 
 function Player:DecrementCooldowns()
 	self._firecooldown = self._firecooldown - 1
+end
+
+function Player:GetSprite()
+	return self._sprite
 end

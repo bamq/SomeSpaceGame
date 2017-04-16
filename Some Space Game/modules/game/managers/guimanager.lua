@@ -29,12 +29,15 @@ end
 
 function GUIManager:Update()
 	local inelement = false
+
 	for k, v in pairs( self._elements ) do
 		if v._OBJECT_TYPE == "button" and self:CheckMouseInElement( v ) then
 			inelement = true
+
 			if v._is_clicked then
 				v:OnClick()
 			end
+
 			v._is_hovered = true
 			v:OnHover()
 		else
@@ -47,12 +50,10 @@ function GUIManager:Update()
 	if inelement then
 		if love.mouse.getCursor() ~= love.mouse.getSystemCursor( "hand" ) then
 			love.mouse.setCursor( love.mouse.getSystemCursor( "hand" ) )
-			print( "cursor change to hand" )
 		end
 	else
 		if love.mouse.getCursor() ~= love.mouse.getSystemCursor( "arrow" ) then
 			love.mouse.setCursor( love.mouse.getSystemCursor( "arrow" ) )
-			print( "cursor change to arrow" )
 		end
 	end
 end
