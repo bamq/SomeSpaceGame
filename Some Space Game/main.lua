@@ -19,7 +19,6 @@ function love.load()
 	Hooks:Call( "PreLoveLoad" )
 
 	GameManager:Init()
-	GraphicsManager:ShowMainMenu()
 
 	Hooks:Call( "PostLoveLoad" )
 
