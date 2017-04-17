@@ -14,7 +14,7 @@ function GUI.TextPanel:New()
 		_textcolor = { 0, 0, 0 }
 	}
 
-	function object._draw()
+	object._draw = function()
 		love.graphics.setColor( unpack( object._backgroundcolor ) )
 		love.graphics.rectangle( object._type, object._x, object._y, object._width, object._height )
 		love.graphics.setColor( unpack( object._textcolor ) )

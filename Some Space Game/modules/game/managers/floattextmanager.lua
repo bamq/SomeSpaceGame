@@ -10,7 +10,7 @@ function FloatTextManager:Init()
 	Hooks:Call( "PostFloatTextManagerInit" )
 end
 
-function FloatTextManager:Update()
+function FloatTextManager:Update( dt )
 	self:DecrementCooldowns()
 end
 

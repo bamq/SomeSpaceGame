@@ -22,7 +22,7 @@ function GraphicsManager:CreateSprites()
 end
 
 function GraphicsManager:Draw()
-	if GameState == STATE_ACTIVE then
+	if GameState == STATE_ACTIVE or GameState == STATE_PAUSE then
 		self:DrawBackground()
 		self:DrawStars()
 		self:DrawPlayer()

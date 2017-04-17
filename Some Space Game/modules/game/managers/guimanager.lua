@@ -4,6 +4,7 @@ require "modules.game.gui.rectanglebutton"
 require "modules.game.gui.textpanel"
 require "modules.game.gui.menus.menus"
 require "modules.game.gui.menus.mainmenu"
+require "modules.game.gui.menus.pausemenu"
 
 GUIManager = {}
 GUIManager._elements = {}
@@ -27,7 +28,7 @@ function GUIManager:RegisterGUIObject( object )
 	Hooks:Call( "PostRegisterGUIObject", object )
 end
 
-function GUIManager:Update()
+function GUIManager:Update( dt )
 	local inelement = false
 
 	for k, v in pairs( self._elements ) do

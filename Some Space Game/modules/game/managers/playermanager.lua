@@ -24,7 +24,7 @@ function PlayerManager:Init()
 	Hooks:Call( "PostPlayerManagerInit" )
 end
 
-function PlayerManager:Update()
+function PlayerManager:Update( dt )
 	self:ForceInBounds()
 	Player:DecrementCooldowns()
 end

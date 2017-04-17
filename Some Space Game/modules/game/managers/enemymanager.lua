@@ -12,7 +12,7 @@ function EnemyManager:Init()
 	Hooks:Call( "PostEnemyManagerInit" )
 end
 
-function EnemyManager:Update()
+function EnemyManager:Update( dt )
 	self:ProcessEnemyLogic()
 end
 

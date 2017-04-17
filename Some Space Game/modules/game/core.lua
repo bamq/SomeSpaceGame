@@ -57,6 +57,7 @@ STATE_INACTIVE		= 0
 STATE_ACTIVE		= 1
 STATE_OVER			= 2
 STATE_MENU			= 3
+STATE_PAUSE			= 4
 GameState = STATE_MENU
 
 function Game:SetState( state )

@@ -16,7 +16,7 @@ function GUI.RectangleButton:New()
 		_is_clicked = false
 	}
 
-	function object._draw()
+	object._draw = function()
 		love.graphics.setColor( unpack( object._buttoncolor ) )
 		love.graphics.rectangle( object._type, object._x, object._y, object._width, object._height )
 		love.graphics.setColor( unpack( object._textcolor ) )

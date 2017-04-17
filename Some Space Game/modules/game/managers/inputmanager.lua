@@ -2,7 +2,7 @@
 InputManager = {}
 local pfx = LOG_PFX.inputmanager
 
-function InputManager:Update()
+function InputManager:Update( dt )
 	self:ProcessInputs()
 end
 
@@ -34,7 +34,13 @@ end
 
 function love.keypressed( key, scancode, isrepeat )
 	if key == "escape" then
-		love.event.quit()
+		if GameState == STATE_ACTIVE then
+			GameState = STATE_PAUSE
+			Menus.PauseMenu:Show()
+		elseif GameState == STATE_PAUSE then
+			GameState = STATE_ACTIVE
+			Menus.PauseMenu:Hide()
+		end
 	end
 
 	if key == "tab" then

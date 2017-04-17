@@ -45,15 +45,15 @@ end
 
 function GameManager:Update( dt )
 	if GameState ~= STATE_INACTIVE then
-		GUIManager:Update()
+		GUIManager:Update( dt )
 	end
 	if GameState == STATE_ACTIVE then
 		self:CalculateBullets()
-		InputManager:Update()
-		EnemyManager:Update()
-		PlayerManager:Update()
-		FloatTextManager:Update()
-		StarsManager:Update()
+		InputManager:Update( dt )
+		EnemyManager:Update( dt )
+		PlayerManager:Update( dt )
+		FloatTextManager:Update( dt )
+		StarsManager:Update( dt )
 	elseif GameState == STATE_OVER then
 		self:DoGameOverCountdown()
 		if gameovertimer <= 0 then
@@ -92,7 +92,7 @@ function GameManager:CalculateBullets()
 
 			if Util:CheckCollision( bullet, Player ) then
 				local _killtext = FloatTextManager:CreateText( "Life lost!", Player:GetX(), Player:GetY() - 10, 255, 255, 255, 30 )
-				
+
 				bullet:Remove()
 				Player:LoseLife()
 			end

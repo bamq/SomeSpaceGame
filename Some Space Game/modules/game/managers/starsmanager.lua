@@ -15,7 +15,7 @@ function StarsManager:Init()
 	Hooks:Call( "PostStarsManagerInit" )
 end
 
-function StarsManager:Update()
+function StarsManager:Update( dt )
 	self:DecrementCooldowns()
 end
 
