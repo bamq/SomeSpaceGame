@@ -94,6 +94,13 @@ Params: {
 }
 Description: Called when the mouse wheel is moved.
 
+Hook: "LoveResize"
+Params: {
+	[number] new width of the window
+	[number] new height of the window
+}
+Description: Called when the window is resized.
+
 
 ========================================================
 == Category: GameManager ===============================
@@ -167,23 +174,35 @@ Description: Called after the main menu is shown.
 Hook: "PostGUIManagerInit"
 Description: Called after the GUIManager has been initialized.
 
-Hook: "PostRegisterGUIObject"
+Hook: "PostRegisterGUIElement"
 Params: {
 	[table] the GUI object that was registered
 }
-Description: Called after a GUI object has been registered.
+Description: Called after a GUI element has been registered.
+
+Hook: "PostRemoveGUIElement"
+Params: {
+	[table] copy of the element that was removed
+}
+Description: Called after a GUI element was deleted. Can be used to get the now-deleted element's values.
 
 Hook: "PostGUICreateRectangleButton"
 Params: {
 	[table] the RectangleButton that was created
 }
-Description: Called after a RectangleButton GUI element has been created.
+Description: Called after a RectangleButton GUI element has been created. Can be used to get and modify the element's values.
 
 Hook: "PostGUICreateTextPanel"
 Params: {
 	[table] the TextPanel that was created
 }
-Description: Called after a TextPanel GUI element has been created.
+Description: Called after a TextPanel GUI element has been created. Can be used to get and modify the element's values.
+
+Hook: "PostGUICreateColorPanel"
+Params: {
+	[table] the ColorPanel that was created
+}
+Description: Called after a ColorPanel GUI element has been created. Can be used to get and modify the element's values.
 
 
 ==========================================================
