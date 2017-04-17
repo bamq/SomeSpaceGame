@@ -34,11 +34,11 @@ end
 
 function love.keypressed( key, scancode, isrepeat )
 	if key == "escape" then
-		if GameState == STATE_ACTIVE then
-			GameState = STATE_PAUSE
+		if Game:GetState() == STATE_ACTIVE then
+			GameManager:Pause()
 			Menus.PauseMenu:Show()
-		elseif GameState == STATE_PAUSE then
-			GameState = STATE_ACTIVE
+		elseif Game:GetState() == STATE_PAUSE then
+			GameManager:UnPause()
 			Menus.PauseMenu:Hide()
 		end
 	end

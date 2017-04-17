@@ -1,5 +1,6 @@
 
 require "modules.game.gui.gui"
+require "modules.game.gui.colorpanel"
 require "modules.game.gui.rectanglebutton"
 require "modules.game.gui.textpanel"
 require "modules.game.gui.menus.menus"
@@ -8,6 +9,7 @@ require "modules.game.gui.menus.pausemenu"
 
 GUIManager = {}
 GUIManager._elements = {}
+GUIManager._menus = {}
 local pfx = LOG_PFX.guimanager
 
 function GUIManager:Init()
@@ -18,14 +20,30 @@ function GUIManager:Init()
 	Hooks:Call( "PostGUIManagerInit" )
 end
 
-function GUIManager:RegisterGUIObject( object )
+function GUIManager:RegisterGUIElement( object )
 	if not object._OBJECT_TYPE then return end
 	if not object._draw then return end
 
 	table.insert( self._elements, object )
-	Util:Log( pfx, "GUI object created of type " .. object._OBJECT_TYPE )
+	Util:Log( pfx, "GUI element created of type " .. object._OBJECT_TYPE )
 
-	Hooks:Call( "PostRegisterGUIObject", object )
+	Hooks:Call( "PostRegisterGUIElement", object )
+end
+
+function GUIManager:RemoveElement( object )
+	local objectcopy = Util:CopyTable( object )
+
+	for k, v in pairs( self._elements ) do
+		if v == object then
+			table.remove( self._elements, k )
+		end
+	end
+
+	Hooks:Call( "PostRemoveGUIElement", objectcopy )
+end
+
+function GUIManager:RegisterMenu( menu )
+	table.insert( self._menus, menu )
 end
 
 function GUIManager:Update( dt )

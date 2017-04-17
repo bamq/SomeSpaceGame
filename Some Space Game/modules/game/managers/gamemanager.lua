@@ -39,22 +39,27 @@ end
 
 function GameManager:NewGame()
 	Game:SetState( STATE_INACTIVE )
+	Util:PrintTable( Menus )
+	for k, v in pairs( GUIManager._menus ) do
+		v._destroy()
+	end
 	self:Init()
 	Game:SetState( STATE_ACTIVE )
 end
 
 function GameManager:Update( dt )
-	if GameState ~= STATE_INACTIVE then
+	local state = Game:GetState()
+	if state ~= STATE_INACTIVE then
 		GUIManager:Update( dt )
 	end
-	if GameState == STATE_ACTIVE then
+	if state == STATE_ACTIVE then
 		self:CalculateBullets()
 		InputManager:Update( dt )
 		EnemyManager:Update( dt )
 		PlayerManager:Update( dt )
 		FloatTextManager:Update( dt )
 		StarsManager:Update( dt )
-	elseif GameState == STATE_OVER then
+	elseif state == STATE_OVER then
 		self:DoGameOverCountdown()
 		if gameovertimer <= 0 then
 			self:NewGame()
@@ -106,6 +111,16 @@ function GameManager:GameOver()
 	Game:SetState( STATE_OVER )
 
 	Hooks:Call( "GameOver" )
+end
+
+local prestate
+function GameManager:Pause()
+	prestate = Game:GetState()
+	Game:SetState( STATE_PAUSE )
+end
+
+function GameManager:UnPause()
+	Game:SetState( prestate )
 end
 
 function GameManager:DoGameOverCountdown()

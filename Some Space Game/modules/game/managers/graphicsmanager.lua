@@ -22,23 +22,24 @@ function GraphicsManager:CreateSprites()
 end
 
 function GraphicsManager:Draw()
-	if GameState == STATE_ACTIVE or GameState == STATE_PAUSE then
+	local state = Game:GetState()
+	if state == STATE_ACTIVE or state == STATE_PAUSE then
 		self:DrawBackground()
 		self:DrawStars()
 		self:DrawPlayer()
 		self:DrawEnemies()
 		self:DrawBullets()
 		self:DrawFloatTexts()
-	elseif GameState == STATE_OVER then
+	elseif state == STATE_OVER then
 		self:DrawGameOverScreen()
 	end
-	if GameState ~= STATE_INACTIVE then
+	if state ~= STATE_INACTIVE then
 		self:DrawGUIElements()
 	end
 end
 
 function GraphicsManager:DrawHUD()
-	if GameState == STATE_ACTIVE then
+	if Game:GetState() == STATE_ACTIVE then
 		love.graphics.setColor( 0, 255, 125 )
 
 		if Game:GetShowScore() then
@@ -82,7 +83,7 @@ function GraphicsManager:DrawPlayer()
 	love.graphics.draw( Player:GetSprite(), Player:GetX(), Player:GetY(), 0, Player:GetWidth() / 10, Player:GetHeight() / 10 )
 
 	if Game.Config.Graphics.DrawScoreOnPlayer then
-		love.graphics.setColor( 255, 255, 255, 175)
+		love.graphics.setColor( Player:GetColor() )
 		love.graphics.print( Player:GetLives(), Player:GetX() - ( Player:GetWidth() / 2 ), Player:GetY() - Player:GetHeight() / 2 )
 	end
 
@@ -136,4 +137,12 @@ function GraphicsManager:SetBackgroundColor( r, g, b )
 		self._backgroundcolor = { r, g, b }
 		love.graphics.setBackgroundColor( unpack( self._backgroundcolor ) )
 	end
+end
+
+function love.resize( w, h )
+	for k, v in pairs( GUIManager._menus ) do
+		v._resize()
+	end
+
+	StarsManager:GenerateStars()
 end

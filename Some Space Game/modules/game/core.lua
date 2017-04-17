@@ -64,6 +64,10 @@ function Game:SetState( state )
 	GameState = state
 end
 
+function Game:GetState()
+	return GameState
+end
+
 LOG_PFX = {
 	addonsmanager = "[AddonsManager]: ",
 	enemymanager = "[EnemyManager]: ",

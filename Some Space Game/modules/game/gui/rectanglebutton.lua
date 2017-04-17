@@ -109,14 +109,10 @@ function GUI.RectangleButton:New()
 	end
 
 	function object:Destroy()
-		for k, v in pairs( GUIManager._elements ) do
-			if v == self then
-				table.remove( GUIManager._elements, k )
-			end
-		end
+		GUIManager:RemoveElement( self )
 	end
 
-	GUIManager:RegisterGUIObject( object )
+	GUIManager:RegisterGUIElement( object )
 
 	Hooks:Call( "PostGUICreateRectangleButton", object )
 
