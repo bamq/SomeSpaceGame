@@ -1,4 +1,6 @@
 
+local EnemyClass = require "modules.game.classes.entities.enemy"
+
 EnemyManager = {}
 EnemyManager._enemies = {}
 EnemyManager._spawncooldown = 0
@@ -17,117 +19,9 @@ function EnemyManager:Update( dt )
 end
 
 function EnemyManager:CreateEnemy( x, y )
-	local Enemy = {}
-	Enemy._sprite = ENEMY_SPRITES[ math.random( 1, #ENEMY_SPRITES ) ]
-	Enemy._x = x
-	Enemy._y = y
-	Enemy._width = Game.Config.Enemy.Width
-	Enemy._height = Game.Config.Enemy.Height
-	Enemy._bullets = {}
-	Enemy._cooldown = 0
-
-	function Enemy:Fire()
-		if self._cooldown <= 0 then
-			self._cooldown = Game.Config.Enemy.FireDelay
-			local Bullet = {}
-			Bullet._x = self._x + ( self._width / 2 )
-			Bullet._y = self._y + ( self._height / 2 )
-			Bullet._color = Game.Config.Enemy.BulletColor
-			Bullet._width = Game.Config.Enemy.BulletWidth
-			Bullet._height = Game.Config.Enemy.BulletHeight
-			Bullet._speed = Game.Config.Enemy.BulletSpeed
-
-			function Bullet:Remove()
-				for _, bullet in pairs( Enemy._bullets ) do
-					if bullet == self then
-						local block = Hooks:Call( "PreRemoveEnemyBullet", bullet )
-						local bulletcopy = Util:CopyTable( bullet )
-						if block == false then return end
-
-						table.remove( Enemy._bullets, k )
-						Util:Log( pfx, "Enemy bullet removed." )
-
-						Hooks:Call( "PostRemoveEnemyBullet", bulletcopy )
-					end
-				end
-			end
-
-			function Bullet:SetSpeed( speed )
-				self._speed = speed
-			end
-
-			function Bullet:GetSpeed()
-				return self._speed
-			end
-
-			function Bullet:GetPos()
-				return self._x, self._y
-			end
-
-			function Bullet:GetX()
-				return self._x
-			end
-
-			function Bullet:GetY()
-				return self._y
-			end
-
-			function Bullet:GetWidth()
-				return self._width
-			end
-
-			function Bullet:GetHeight()
-				return self._height
-			end
-
-			function Bullet:GetColor()
-				return unpack( self._color )
-			end
-
-			local block = Hooks:Call( "PreEnemyFire", self, Bullet )
-			if block == false then return end
-
-			table.insert( self._bullets, Bullet )
-
-			Hooks:Call( "PostEnemyFire", self, Bullet )
-		end
-	end
-
-	function Enemy:Kill()
-		EnemyManager:RemoveEnemy( self )
-	end
-
-	function Enemy:SetPos( x, y )
-		self._x = x
-		self._y = y
-	end
-
-	function Enemy:GetPos()
-		return self._x, self._y
-	end
-
-	function Enemy:GetX()
-		return self._x
-	end
-
-	function Enemy:GetY()
-		return self._y
-	end
-
-	function Enemy:GetWidth()
-		return self._width
-	end
-
-	function Enemy:GetHeight()
-		return self._height
-	end
-
-	function Enemy:GetSprite()
-		return self._sprite
-	end
-
-	function Enemy:GetBullets()
-		return Util:CopyTable( self._bullets )
+	local Enemy = EnemyClass:new( x, y )
+	function Enemy.Kill()
+		self:RemoveEnemy( Enemy )
 	end
 
 	local block = Hooks:Call( "PreCreateEnemy", Enemy )

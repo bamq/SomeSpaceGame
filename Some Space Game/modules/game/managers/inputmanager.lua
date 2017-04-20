@@ -32,14 +32,14 @@ function InputManager:ProcessInputs()
 	Hooks:Call( "PostProcessInputs" )
 end
 
-function love.keypressed( key, scancode, isrepeat )
+function InputManager:KeyPressed( key, scancode, isrepeat )
 	if key == "escape" then
 		if Game:GetState() == STATE_ACTIVE then
 			GameManager:Pause()
-			Menus.PauseMenu:Show()
+			ScreenManager.switch( "pausemenu" )
 		elseif Game:GetState() == STATE_PAUSE then
 			GameManager:UnPause()
-			Menus.PauseMenu:Hide()
+			ScreenManager.switch( "hud" )
 		end
 	end
 
@@ -58,34 +58,18 @@ function love.keypressed( key, scancode, isrepeat )
 	if key == "lshift" then
 		Player:SetBoosting( true )
 	end
-
-	Hooks:Call( "LoveKeyPressed", key, scancode, isrepeat )
 end
 
-function love.keyreleased( key, scancode )
+function InputManager:KeyReleased( key, scancode )
 	if key == "lshift" then
 		Player:SetBoosting( false )
 	end
-
-	Hooks:Call( "LoveKeyReleased", key, scancode )
 end
 
-function love.mousemoved( x, y, dx, dy, istouch )
-	Hooks:Call( "LoveMouseMoved", x, y, dx, dy, istouch )
+function InputManager:MousePressed( x, y, button, istouch )
+	ScreenManager.mousepressed( x, y, button, istouch )
 end
 
-function love.mousepressed( x, y, button, istouch )
-	GUIManager:MousePressed( x, y, button, istouch )
-
-	Hooks:Call( "LoveMousePressed", x, y, button, istouch )
-end
-
-function love.mousereleased( x, y, button, istouch )
-	GUIManager:MouseReleased( x, y, button, istouch )
-
-	Hooks:Call( "LoveMouseReleased", x, y, button, istouch )
-end
-
-function love.wheelmoved( x, y )
-	Hooks:Call( "LoveWheelMoved", x, y )
+function InputManager:MouseReleased( x, y, button, istouch )
+	ScreenManager.mousereleased( x, y, button, istouch )
 end

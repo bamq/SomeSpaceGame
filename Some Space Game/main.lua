@@ -29,8 +29,6 @@ end
 
 function love.draw()
 
-	love.graphics.push()
-	love.graphics.scale( Game.Config.Graphics.DrawScale )
 	SetDefaultColor()
 
 	Hooks:Call( "PreLoveDraw" )
@@ -45,8 +43,6 @@ function love.draw()
 
 	SetDefaultColor()
 
-	love.graphics.pop()
-
 	GraphicsManager:DrawHUD()
 
 	SetDefaultColor()
@@ -59,4 +55,40 @@ function love.draw()
 
 	SetDefaultColor()
 
+end
+
+function love.resize( w, h )
+	GraphicsManager:Resize( w, h )
+end
+
+function love.keypressed( key, scancode, isrepeat )
+	InputManager:KeyPressed( key, scancode, isrepeat )
+
+	Hooks:Call( "LoveKeyPressed", key, scancode, isrepeat )
+end
+
+function love.keyreleased( key, scancode )
+	InputManager:KeyReleased( key, scancode )
+
+	Hooks:Call( "LoveKeyReleased", key, scancode )
+end
+
+function love.mousemoved( x, y, dx, dy, istouch )
+	Hooks:Call( "LoveMouseMoved", x, y, dx, dy, istouch )
+end
+
+function love.mousepressed( x, y, button, istouch )
+	InputManager:MousePressed( x, y, button, istouch )
+
+	Hooks:Call( "LoveMousePressed", x, y, button, istouch )
+end
+
+function love.mousereleased( x, y, button, istouch )
+	InputManager:MouseReleased( x, y, button, istouch )
+
+	Hooks:Call( "LoveMouseReleased", x, y, button, istouch )
+end
+
+function love.wheelmoved( x, y )
+	Hooks:Call( "LoveWheelMoved", x, y )
 end

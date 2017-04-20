@@ -26,8 +26,16 @@ function GameManager:Init()
 	if first_init then
 		GUIManager:Init()
 		AddonsManager:MountAddons()
-		Menus.MainMenu:Show()
+		local GAME_SCREENS = {
+			mainmenu = require "modules.game.gui.menus.mainmenu",
+			pausemenu = require "modules.game.gui.menus.pausemenu",
+			hud = require "modules.game.gui.menus.hud"
+		}
+
+		ScreenManager.init( GAME_SCREENS, "mainmenu" )
 	end
+
+
 
 	Hooks:Call( "GameInit", first_init )
 
@@ -39,11 +47,8 @@ end
 
 function GameManager:NewGame()
 	Game:SetState( STATE_INACTIVE )
-	Util:PrintTable( Menus )
-	for k, v in pairs( GUIManager._menus ) do
-		v._destroy()
-	end
 	self:Init()
+	ScreenManager.switch( "hud" )
 	Game:SetState( STATE_ACTIVE )
 end
 
@@ -51,6 +56,7 @@ function GameManager:Update( dt )
 	local state = Game:GetState()
 	if state ~= STATE_INACTIVE then
 		GUIManager:Update( dt )
+		ScreenManager.update( dt )
 	end
 	if state == STATE_ACTIVE then
 		self:CalculateBullets()

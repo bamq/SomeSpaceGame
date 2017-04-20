@@ -1,0 +1,96 @@
+
+local Class = require "modules.lib.middleclass"
+local BulletClass = require "modules.game.classes.entities.bullet"
+local pfx = "[EnemyClass]: "
+
+local Enemy = Class( "Enemy" )
+
+function Enemy:initialize( x, y )
+    self._sprite = ENEMY_SPRITES[ math.random( 1, #ENEMY_SPRITES ) ]
+    self._x = x
+    self._y = y
+    self._width = Game.Config.Enemy.Width
+    self._height = Game.Config.Enemy.Height
+    self._bullets = {}
+    self._cooldown = 0
+end
+
+function Enemy:Kill()
+    -- Gets defined in EnemyManager
+end
+
+function Enemy:Fire()
+    if self._cooldown <= 0 then
+        self._cooldown = Game.Config.Enemy.FireDelay
+        local Bullet = BulletClass:new( self._x + ( self._width / 2 ), self._y + ( self._height / 2 ) )
+        Bullet:SetColor( unpack( Game.Config.Enemy.BulletColor ) )
+        Bullet:SetSize( Game.Config.Enemy.BulletWidth, Game.Config.Enemy.BulletHeight )
+        Bullet:SetSpeed( Game.Config.Enemy.BulletSpeed )
+        local e = Enemy
+        function Bullet.Remove()
+            for k, bullet in pairs( self._bullets ) do
+                if bullet == Bullet then
+                    local block = Hooks:Call( "PreRemoveEnemyBullet", self, bullet )
+                    local bulletcopy = Util:CopyTable( bullet )
+                    if block == false then return end
+
+                    table.remove( self._bullets, k )
+                    Util:Log( pfx, "Enemy bullet removed" )
+
+                    Hooks:Call( "PostRemoveEnemyBullet", self, bulletcopy )
+                end
+            end
+        end
+
+        local block = Hooks:Call( "PreEnemyFire", self, Bullet )
+        if block == false then return end
+
+        table.insert( self._bullets, Bullet )
+
+        Hooks:Call( "PostEnemyFire", self, Bullet )
+    end
+end
+
+function Enemy:SetPos( x, y )
+    self._x = x
+    self._y = y
+end
+
+function Enemy:GetPos()
+    return self._x, self._y
+end
+
+function Enemy:GetX()
+    return self._x
+end
+
+function Enemy:GetY()
+    return self._y
+end
+
+function Enemy:SetSize( w, h )
+    self._width = w
+    self._height = h
+end
+
+function Enemy:GetSize()
+    return self._width, self._height
+end
+
+function Enemy:GetWidth()
+    return self._width
+end
+
+function Enemy:GetHeight()
+    return self._height
+end
+
+function Enemy:GetSprite()
+    return self._sprite
+end
+
+function Enemy:GetBullets()
+    return Util:CopyTable( self._bullets )
+end
+
+return Enemy

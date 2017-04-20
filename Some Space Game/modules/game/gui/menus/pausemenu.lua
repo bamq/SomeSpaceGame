@@ -1,77 +1,91 @@
 
-Menus.PauseMenu = {}
+local Screen = require "modules.lib.screenmanager.Screen"
 
-Menus.PauseMenu._build = function()
-	local self = Menus.PauseMenu
+local PauseMenu = {}
+
+function PauseMenu.new()
+	local self = Screen.new()
+
 	self._elements = {}
-	self._elements._title = GUI.TextPanel:New()
-	self._elements._title:SetText( "Some Space Game - Paused" )
-	self._elements._title:SetPos( 0, 0 )
-	self._elements._title:SetHeight( 20 )
-	self._elements._title:SetWidth( ScrW() )
-	self._elements._title:SetBackgroundColor( 0, 0, 0, 125 )
-	self._elements._title:SetTextColor( 255, 255, 255 )
+	self._elements._title = GUI.TextLabel:new()
+	self._elements._quit = GUI.RectangleButton:new()
+	self._elements._resume = GUI.RectangleButton:new()
 
-	self._elements._quit = GUI.RectangleButton:New()
-	self._elements._quit:SetText( "Quit" )
-	self._elements._quit:SetTextColor( 255, 255, 255 )
-	self._elements._quit:SetButtonColor( 0, 0, 0, 175 )
-	self._elements._quit:SetWidth( 50 )
-	self._elements._quit:SetHeight( 15 )
-	self._elements._quit:SetPos( 0, ScrH() / 2 - self._elements._quit:GetHeight() / 2 )
-	function self._elements._quit:OnHover()
+	local title = self._elements._title
+	title:SetText( "Some Space Game - Paused" )
+	title:SetTextScale( 2 )
+	title:SetPos( 0, 0 )
+	title:SetTextColor( 255, 255, 255 )
+
+	local quit = self._elements._quit
+	quit:SetText( "Quit" )
+	quit:SetTextScale( 5 )
+	quit:SetTextColor( 255, 255, 255 )
+	quit:SetButtonColor( 0, 0, 0, 175 )
+	quit:SetWidth( 50 )
+	quit:SetHeight( 15 )
+	quit:SetPos( 0, ScrH() / 2 - quit:GetHeight() / 2 )
+	function quit:OnHover()
 		self:SetButtonColor( 255, 255, 255, 255 )
 		self:SetTextColor( 0, 0, 0 )
 	end
-	function self._elements._quit:OnUnHover()
+	function quit:OnUnHover()
 		self:SetButtonColor( 0, 0, 0, 175 )
 		self:SetTextColor( 255, 255, 255 )
 	end
-	function self._elements._quit:OnClick()
+	function quit:OnClick()
 		love.event.quit()
 	end
 
-	self._elements._resume = GUI.RectangleButton:New()
-	self._elements._resume:SetText( "Resume" )
-	self._elements._resume:SetTextColor( 255, 255, 255 )
-	self._elements._resume:SetButtonColor( 0, 0, 0, 175 )
-	self._elements._resume:SetWidth( 50 )
-	self._elements._resume:SetHeight( 15 )
-	self._elements._resume:SetPos( ScrW() - self._elements._resume:GetWidth(), ScrH() / 2 - self._elements._resume:GetHeight() / 2 )
-	function self._elements._resume:OnHover()
+	local resume = self._elements._resume
+	resume:SetText( "Resume" )
+	resume:SetTextScale( 5 )
+	resume:SetTextColor( 255, 255, 255 )
+	resume:SetButtonColor( 0, 0, 0, 175 )
+	resume:SetWidth( 50 )
+	resume:SetHeight( 15 )
+	resume:SetPos( ScrW() - resume:GetWidth(), ScrH() / 2 - resume:GetHeight() / 2 )
+	function resume:OnHover()
 		self:SetButtonColor( 255, 255, 255, 255 )
 		self:SetTextColor( 0, 0, 0 )
 	end
-	function self._elements._resume:OnUnHover()
+	function resume:OnUnHover()
 		self:SetButtonColor( 0, 0, 0, 175 )
 		self:SetTextColor( 255, 255, 255 )
 	end
-	function self._elements._resume:OnClick()
-		Menus.PauseMenu:Hide()
+	function resume:OnClick()
+		ScreenManager.switch( "hud" )
 		GameManager:UnPause()
 	end
 
-	GUIManager:RegisterMenu( self )
-end
-
-Menus.PauseMenu._resize = function()
-	local self = Menus.PauseMenu
-	self._elements._title:SetWidth( ScrW() )
-	self._elements._quit:SetPos( 0, ScrH() / 2 - self._elements._quit:GetHeight() / 2 )
-	self._elements._resume:SetPos( ScrW() - self._elements._resume:GetWidth(), ScrH() / 2 - self._elements._resume:GetHeight() / 2 )
-end
-
-Menus.PauseMenu._destroy = function()
-	local self = Menus.PauseMenu
-	for _, v in pairs( self._elements ) do
-		v:Destroy()
+	function self:update( dt )
+		quit:_update( dt )
+		resume:_update( dt )
 	end
+
+	function self:draw()
+		title:_draw()
+		quit:_draw()
+		resume:_draw()
+	end
+
+	function self:mousepressed( x, y, button, istouch )
+		quit:_mousepressed( x, y, button, istouch )
+		resume:_mousepressed( x, y, button, istouch )
+	end
+
+	function self:mousereleased( x, y, button, istouch )
+		quit:_mousereleased( x, y, button, istouch )
+		resume:_mousereleased( x, y, button, istouch )
+	end
+
+	function self:resize( w, h )
+		title:SetWidth( ScrW() )
+		quit:SetPos( 0, ScrH() / 2 - quit:GetHeight() / 2 )
+		resume:SetPos( ScrW() - resume:GetWidth(), ScrH() / 2 - resume:GetHeight() / 2 )
+	end
+
+	return self
 end
 
-function Menus.PauseMenu:Show()
-	self._build()
-end
-
-function Menus.PauseMenu:Hide()
-	self._destroy()
-end
+return PauseMenu

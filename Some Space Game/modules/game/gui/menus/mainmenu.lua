@@ -1,68 +1,75 @@
 
-Menus.MainMenu = {}
+local Screen = require "modules.lib.screenmanager.Screen"
 
-Menus.MainMenu._build = function()
-	local self = Menus.MainMenu
+local MainMenu = {}
+
+function MainMenu.new()
+	local self = Screen.new()
 
 	self._elements = {}
+	self._elements._background = GUI.ColoredBox:new()
+	self._elements._title = GUI.TextLabel:new()
+	self._elements._start = GUI.RectangleButton:new()
 
-	self._elements._background = GUI.ColorPanel:New()
-	self._elements._background:SetColor( 45, 0, 0 )
-	self._elements._background:SetPos( 0, 0 )
-	self._elements._background:SetWidth( ScrW() )
-	self._elements._background:SetHeight( ScrH() )
+	local background = self._elements._background
+	background:SetColor( 45, 0, 0 )
+	background:SetPos( 0, 0 )
+	background:SetWidth( ScrW() )
+	background:SetHeight( ScrH() )
 
-	self._elements._title = GUI.TextPanel:New()
-	self._elements._title:SetText( "Some Space Game!" )
-	self._elements._title:SetTextColor( 255, 150, 150 )
-	self._elements._title:SetBackgroundColor( 0, 0, 0, 0 )
-	self._elements._title:SetWidth( 50 )
-	self._elements._title:SetHeight( 50 )
-	self._elements._title:SetPos( 0, 0 )
+	local title = self._elements._title
+	title:SetText( "Some Space Game!" )
+	title:SetTextColor( 255, 150, 150 )
+	title:SetPos( 0, 0 )
+	title:SetTextScale( 2 )
 
-	self._elements._start = GUI.RectangleButton:New()
-	self._elements._start:SetText( "Start!" )
-	self._elements._start:SetTextColor( 255, 255, 255 )
-	self._elements._start:SetButtonColor( 255, 255, 255 )
-	self._elements._start:SetWidth( ScrW() / 2 )
-	self._elements._start:SetHeight( 30 )
-	self._elements._start:SetPos( 0, ScrH() / 2 - self._elements._start:GetHeight() / 2 )
-	self._elements._start:SetFillType( "line" )
-	function self._elements._start:OnHover()
+	local start = self._elements._start
+	start:SetText( "Start!" )
+	start:SetTextColor( 255, 255, 255 )
+	start:SetButtonColor( 255, 255, 255 )
+	start:SetWidth( ScrW() / 2 )
+	start:SetHeight( 30 )
+	start:SetPos( 0, ScrH() / 2 - self._elements._start:GetHeight() / 2 )
+	start:SetFillType( "line" )
+	start:SetTextScale( 5 )
+	function start:OnHover()
 		self:SetFillType( "fill" )
 		self:SetTextColor( 0, 0, 0 )
 	end
-	function self._elements._start:OnUnHover()
+	function start:OnUnHover()
 		self:SetFillType( "line" )
 		self:SetTextColor( 255, 255, 255 )
 	end
-	function self._elements._start:OnClick()
+	function start:OnClick()
 		GameManager:NewGame()
-		Menus.MainMenu._destroy()
 	end
 
-	GUIManager:RegisterMenu( self )
-end
-
-Menus.MainMenu._destroy = function()
-	local self = Menus.MainMenu
-	for _, v in pairs( self._elements ) do
-		v:Destroy()
+	function self:update( dt )
+		self._elements._start:_update( dt )
 	end
+
+	function self:mousepressed( x, y, button, istouch )
+		self._elements._start:_mousepressed( x, y, button, istouch )
+	end
+
+	function self:mousereleased( x, y, button, istouch )
+		self._elements._start:_mousereleased( x, y, button, istouch )
+	end
+
+	function self:draw()
+		self._elements._background:_draw()
+		self._elements._title:_draw()
+		self._elements._start:_draw()
+	end
+
+	function self:resize( w, h )
+		self._elements._background:SetWidth( ScrW() )
+		self._elements._background:SetHeight( ScrH() )
+		self._elements._start:SetPos( 0, ScrH() / 2 - self._elements._start:GetHeight() / 2 )
+		self._elements._start:SetWidth( ScrW() / 2 )
+	end
+
+	return self
 end
 
-Menus.MainMenu._resize = function()
-	local self = Menus.MainMenu
-	self._elements._background:SetWidth( ScrW() )
-	self._elements._background:SetHeight( ScrH() )
-	self._elements._start:SetPos( 0, ScrH() / 2 - self._elements._start:GetHeight() / 2 )
-	self._elements._start:SetWidth( ScrW() / 2 )
-end
-
-function Menus.MainMenu:Show()
-	self._build()
-end
-
-function Menus.MainMenu:Hide()
-	self._destroy()
-end
+return MainMenu

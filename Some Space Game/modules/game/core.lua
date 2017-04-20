@@ -40,6 +40,7 @@ Game.Config.Graphics.StarsInterval		= 350
 
 Game.Config.Player.AllowBoost			= true
 Game.Config.Player.BoostFactor			= 1.5
+Game.Config.Player.BulletColor			= { 255, 255, 0 }
 Game.Config.Player.BulletHeight			= 5
 Game.Config.Player.BulletSpeed			= 5
 Game.Config.Player.BulletWidth			= 2

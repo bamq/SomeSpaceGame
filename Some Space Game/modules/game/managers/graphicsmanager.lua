@@ -22,6 +22,8 @@ function GraphicsManager:CreateSprites()
 end
 
 function GraphicsManager:Draw()
+	love.graphics.push()
+	love.graphics.scale( Game.Config.Graphics.DrawScale )
 	local state = Game:GetState()
 	if state == STATE_ACTIVE or state == STATE_PAUSE then
 		self:DrawBackground()
@@ -34,8 +36,14 @@ function GraphicsManager:Draw()
 		self:DrawGameOverScreen()
 	end
 	if state ~= STATE_INACTIVE then
-		self:DrawGUIElements()
+		ScreenManager.draw()
 	end
+	love.graphics.pop()
+end
+
+function GraphicsManager:Resize( w, h )
+	ScreenManager.resize( w, h )
+	StarsManager:GenerateStars()
 end
 
 function GraphicsManager:DrawHUD()
@@ -56,7 +64,8 @@ end
 
 function GraphicsManager:DrawGUIElements()
 	for _, element in pairs( GUIManager:GetElements() ) do
-		element._draw()
+		print( "Draw element" )
+		element:_draw()
 	end
 
 	Hooks:Call( "PostDrawGUIElements" )
@@ -137,12 +146,4 @@ function GraphicsManager:SetBackgroundColor( r, g, b )
 		self._backgroundcolor = { r, g, b }
 		love.graphics.setBackgroundColor( unpack( self._backgroundcolor ) )
 	end
-end
-
-function love.resize( w, h )
-	for k, v in pairs( GUIManager._menus ) do
-		v._resize()
-	end
-
-	StarsManager:GenerateStars()
 end
