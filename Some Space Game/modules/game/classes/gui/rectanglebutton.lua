@@ -16,9 +16,11 @@ function RectangleButton:initialize()
 	self._is_hovered = false
 	self._is_clicked = false
 	self._mouse_in_element = false
+
+	Hooks:Call( "PostGUICreateRectangleButton" )
 end
 
-function RectangleButton:_update( dt )
+function RectangleButton:Update( dt )
 	if GUIManager:CheckMouseInElement( self ) then
 		self._mouse_in_element = true
 
@@ -41,18 +43,18 @@ function RectangleButton:_update( dt )
 	end
 end
 
-function RectangleButton:_mousepressed( x, y, button, istouch )
+function RectangleButton:MousePressed( x, y, button, istouch )
 	self._is_clicked = true
 	self._is_hovered = false
 end
 
-function RectangleButton:_mousereleased( x, y, button, istouch )
+function RectangleButton:MouseReleased( x, y, button, istouch )
 	if self._is_clicked then
 		self._is_clicked = false
 	end
 end
 
-function RectangleButton:_draw()
+function RectangleButton:Draw()
 	love.graphics.setColor( unpack( self._buttoncolor ) )
 	love.graphics.rectangle( self._type, self._x, self._y, self._width, self._height )
 	love.graphics.setColor( unpack( self._textcolor ) )

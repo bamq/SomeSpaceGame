@@ -15,10 +15,10 @@ Hooks:Add( "event_name", "some_unique_identifier", function( parameters )
 end )
 
 
-====================================================
-== Category: LOVE ==================================
-== Description: Hooks associated with LOVE events ==
-====================================================
+=========================================================
+== Category: LOVE =======================================
+== Description: Hooks associated with core LOVE events ==
+=========================================================
 
 Hook: "PreLoveLoad"
 Description: Called before the game has loaded.
@@ -120,11 +120,20 @@ Params: {
 }
 Description: Called after the game has been initialized.
 
+Hook: "PostScreenManagerInit"
+Description: Called after the ScreenManager has been initialized.
+
 Hook: "PostCalculateBullets"
 Description: Called every frame after bullets have been calculated.
 
 Hook: "GameOver"
 Description: Called when the game over message has been broadcast.
+
+Hook: "GamePaused"
+Description: Called when the game has been paused.
+
+Hook: "GameUnPaused"
+Description: Called when the game has been unpaused.
 
 
 ============================================================
@@ -132,14 +141,26 @@ Description: Called when the game over message has been broadcast.
 == Description: Hooks associated with the GraphicsManager ==
 ============================================================
 
+Hook: "PostGraphicsManagerInit"
+Description: Called after the GraphicsManager has been initialized.
+
 Hook: "PreDrawHUD"
 Description: Called every frame before the HUD is drawn.
 
 Hook: "PostDrawHUD"
 Description: Called every frame after the HUD has been drawn.
 
-Hook: "PostGraphicsManagerInit"
-Description: Called after the GraphicsManager has been initialized.
+Hook: "PreSwitchScreen"
+Params: {
+	[string] the screen to switch to
+}
+Description: Called before ScreenManager.switch() is called through GraphicsManager (will not call if ScreenManager.switch() is called directly). Return false to block.
+
+Hook: "PostSwitchScreen"
+Params: {
+	[string] screen that was switched to
+}
+Description: Called after ScreenManager.switch() is called through GraphicsManager (will not call if ScreenManager.switch() is called directly).
 
 Hook: "PostDrawBackground"
 Description: Called every frame after the background has been drawn.
@@ -162,9 +183,6 @@ Description: Called every frame after all float texts have been drawn.
 Hook: "PostDrawGUIElements"
 Description: Called every frame after all GUI elements have been drawn.
 
-Hook: "MainMenuShow"
-Description: Called after the main menu is shown.
-
 
 ===================================================
 == Category: GUIManager ===========================
@@ -174,35 +192,97 @@ Description: Called after the main menu is shown.
 Hook: "PostGUIManagerInit"
 Description: Called after the GUIManager has been initialized.
 
-Hook: "PostRegisterGUIElement"
-Params: {
-	[table] the GUI object that was registered
-}
-Description: Called after a GUI element has been registered.
 
-Hook: "PostRemoveGUIElement"
-Params: {
-	[table] copy of the element that was removed
-}
-Description: Called after a GUI element was deleted. Can be used to get the now-deleted element's values.
+======================================================
+== Category: GUI =====================================
+== Description: Hooks associated with GUI elements. ==
+======================================================
 
 Hook: "PostGUICreateRectangleButton"
 Params: {
 	[table] the RectangleButton that was created
 }
-Description: Called after a RectangleButton GUI element has been created. Can be used to get and modify the element's values.
+Description: Called after a RectangleButton GUI element has been created.
 
-Hook: "PostGUICreateTextPanel"
+Hook: "PostGUICreateTextLabel"
 Params: {
-	[table] the TextPanel that was created
+	[table] the TextLabel that was created
 }
-Description: Called after a TextPanel GUI element has been created. Can be used to get and modify the element's values.
+Description: Called after a TextLabel GUI element has been created.
 
-Hook: "PostGUICreateColorPanel"
+Hook: "PostGUICreateFormattedTextLabel"
 Params: {
-	[table] the ColorPanel that was created
+	[table] the FormattedTextLabel that was created
 }
-Description: Called after a ColorPanel GUI element has been created. Can be used to get and modify the element's values.
+Description: Called after a FormattedTextLabel GUI element has been created
+
+Hook: "PostGUICreateColoredBox"
+Params: {
+	[table] the ColoredBox that was created
+}
+Description: Called after a ColoredBox GUI element has been created.
+
+=================================================
+== Category: Screens ============================
+== Description: Hooks associated with screens. ==
+=================================================
+
+Hook: "PostCreateHUDScreen"
+Params: {
+	[table] the HUD screen
+}
+Description: Called when the ScreenManager pushes the HUD screen to the stack.
+
+Hook: "PostHUDScreenUpdate"
+Params: {
+	[table] the HUD screen
+	[number] delta time
+}
+Description: Called every frame after the HUD screen updates.
+
+Hook: "PostHUDScreenDraw"
+Params: {
+	[table] the HUD screen
+}
+Description: Called every frame after the HUD screen is drawn.
+
+Hook: "PostCreateMainMenuScreen"
+Params: {
+	[table] the MainMenu screen
+}
+Description: Called when the ScreenManager pushes the MainMenu screen to the stack.
+
+Hook: "PostMainMenuScreenUpdate"
+Params: {
+	[table] the MainMenu screen
+	[number] delta time
+}
+Description: Called every frame after the MainMenu screen updates.
+
+Hook: "PostMainMenuScreenDraw"
+Params: {
+	[table] the MainMenu screen
+}
+Description: Called every frame after the MainMenu screen is drawn.
+
+Hook: "PostCreatePauseMenuScreen"
+Params: {
+	[table] the PauseMenu screen
+}
+Description: Called when the ScreenManager pushes the PauseMenu screen to the stack.
+
+Hook: "PostPauseMenuScreenUpdate"
+Params: {
+	[table] the PauseMenu screen
+	[number] delta time
+}
+Description: Called every frame after the PauseMenu screen updates.
+
+Hook: "PostPauseMenuScreenDraw"
+Params: {
+	[table] the PauseMenu screen
+}
+Description: Called every frame after the PauseMenu screen is drawn.
 
 
 ==========================================================
@@ -230,6 +310,12 @@ Description: Called after inputs that require a key to be held down are processe
 
 Hook: "PostPlayerManagerInit"
 Description: Called after the PlayerManager has been initialized.
+
+
+=========================================================
+== Category: Player Class ===============================
+== Description: Hooks associated with the Player class ==
+=========================================================
 
 Hook: "PrePlayerFire"
 Params: {
@@ -295,6 +381,24 @@ Params: {
 }
 Description: Called after an enemy is created. Can be used to get and modify the enemy's values.
 
+Hook: "PreRemoveEnemy"
+Params: {
+	[table] the enemy to be removed
+}
+Description: Called before an enemy is about to be removed. Return false to block. Can be used to get and modify the enemy's values.
+
+Hook: "PostRemoveEnemy"
+Params: {
+	[table] a copy of the enemy that was removed
+}
+Description: Called after an enemy was removed. Can be used to get the now-deleted enemy's values.
+
+
+========================================================
+== Category: Enemy Class ===============================
+== Description: Hooks associated with the Enemy class ==
+========================================================
+
 Hook: "PreEnemyFire"
 Params: {
 	[table] the enemy about to fire
@@ -311,27 +415,17 @@ Description: Called after an enemy has fired. Can be used to get and modify the 
 
 Hook: "PreRemoveEnemyBullet"
 Params: {
+	[table] the enemy
 	[table] the bullet to be removed
 }
 Description: Called before an enemy bullet is removed. Can be used to get and modify the bullet's values.
 
 Hook: "PostRemoveEnemyBullet"
 Params: {
+	[table] the enemy
 	[table] copy of the bullet that was removed
 }
 Descripton: Called after an enemy bullet is removed. Can be used to get the now-deleted bullet's values.
-
-Hook: "PreRemoveEnemy"
-Params: {
-	[table] the enemy to be removed
-}
-Description: Called before an enemy is about to be removed. Return false to block. Can be used to get and modify the enemy's values.
-
-Hook: "PostRemoveEnemy"
-Params: {
-	[table] a copy of the enemy that was removed
-}
-Description: Called after an enemy was removed. Can be used to get the now-deleted enemy's values.
 
 
 =============================================================

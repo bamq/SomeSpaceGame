@@ -12,6 +12,15 @@ function GraphicsManager:Init()
 	Hooks:Call( "PostGraphicsManagerInit" )
 end
 
+function GraphicsManager:SwitchScreen( screen )
+	local block = Hooks:Call( "PreSwitchScreen", screen )
+	if block == false then return end
+
+	ScreenManager.switch( screen )
+
+	Hooks:Call( "PostSwitchScreen", screen )
+end
+
 function GraphicsManager:CreateSprites()
 	PLAYER_SPRITE = love.graphics.newImage( Game.Config.Graphics.PlayerSprite )
 	ENEMY_SPRITES = {}
@@ -101,8 +110,7 @@ end
 
 function GraphicsManager:DrawEnemies()
 	for _, enemy in pairs( EnemyManager:GetEnemies() ) do
-		love.graphics.setColor( 255, 255, 255, 255 )
-		love.graphics.draw( enemy:GetSprite(), enemy:GetX(), enemy:GetY(), 0, enemy:GetWidth() / 10, enemy:GetHeight() / 10 )
+		enemy:Draw()
 	end
 
 	Hooks:Call( "PostDrawEnemies" )
@@ -126,10 +134,7 @@ end
 
 function GraphicsManager:DrawFloatTexts()
 	for _, text in pairs( FloatTextManager:GetTexts() ) do
-		if text:IsVisible() then
-			love.graphics.setColor( text:GetColor() )
-			love.graphics.print( text:GetText(), text:GetPos() )
-		end
+		text:Draw()
 	end
 
 	Hooks:Call( "PostDrawFloatTexts" )

@@ -59,6 +59,8 @@ end
 
 function love.resize( w, h )
 	GraphicsManager:Resize( w, h )
+
+	Hooks:Call( "LoveResize", w, h )
 end
 
 function love.keypressed( key, scancode, isrepeat )

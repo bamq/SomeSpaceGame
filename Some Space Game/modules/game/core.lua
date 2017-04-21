@@ -71,6 +71,7 @@ end
 
 LOG_PFX = {
 	addonsmanager = "[AddonsManager]: ",
+	enemy = "[Enemy]: ",
 	enemymanager = "[EnemyManager]: ",
 	floattextmanager = "[FloatTextManager]: ",
 	gamemanager = "[GameManager]: ",
@@ -79,6 +80,7 @@ LOG_PFX = {
 	hooks = "[Hooks]: ",
 	inputmanager = "[InputManager]: ",
 	main = "[Main]: ",
+	player = "[Player]: ",
 	playermanager = "[PlayerManager]: ",
 	starsmanager = "[StarsManager]: ",
 	utils = "[Utils]: "

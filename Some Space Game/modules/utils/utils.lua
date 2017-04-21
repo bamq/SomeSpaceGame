@@ -12,6 +12,7 @@ end
 
 function Util:Log( pre, ... )
 	if not Game:DebugMode() then return end
+	if not pre then pre = "" end
 
 	print( "LOG " .. os.date( "%H:%M:%S", os.time() ) .. ":", pre .. ... )
 end

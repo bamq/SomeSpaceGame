@@ -14,7 +14,7 @@ function FloatTextManager:Update( dt )
 	self:DecrementCooldowns()
 end
 
-function FloatTextManager:CreateText( message, x, y, r, g, b, time )
+function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 	local Text = {}
 	Text._time = time or 0
 	Text._message = message or ""
@@ -34,6 +34,13 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time )
 				Util:Log( pfx, "Float text removed." )
 				Hooks:Call( "PostRemoveFloatText", selfcopy )
 			end
+		end
+	end
+
+	function Text:Draw()
+		if self._is_visible then
+			love.graphics.setColor( self._color )
+			love.graphics.print( self._message, self._x, self._y )
 		end
 	end
 

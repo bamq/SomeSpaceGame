@@ -2,7 +2,7 @@
 local Class = require "modules.lib.middleclass"
 local BulletClass = require "modules.game.classes.entities.bullet"
 
-local pfx = "[PlayerClass]: "
+local pfx = LOG_PFX.player
 
 local Player = Class( "Player" )
 

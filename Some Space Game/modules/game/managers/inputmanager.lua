@@ -36,10 +36,10 @@ function InputManager:KeyPressed( key, scancode, isrepeat )
 	if key == "escape" then
 		if Game:GetState() == STATE_ACTIVE then
 			GameManager:Pause()
-			ScreenManager.switch( "pausemenu" )
+			GraphicsManager:SwitchScreen( "pausemenu" )
 		elseif Game:GetState() == STATE_PAUSE then
 			GameManager:UnPause()
-			ScreenManager.switch( "hud" )
+			GraphicsManager:SwitchScreen( "hud" )
 		end
 	end
 

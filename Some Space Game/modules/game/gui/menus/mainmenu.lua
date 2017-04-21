@@ -8,7 +8,7 @@ function MainMenu.new()
 
 	self._elements = {}
 	self._elements._background = GUI.ColoredBox:new()
-	self._elements._title = GUI.TextLabel:new()
+	self._elements._title = GUI.FormattedTextLabel:new()
 	self._elements._start = GUI.RectangleButton:new()
 
 	local background = self._elements._background
@@ -22,6 +22,7 @@ function MainMenu.new()
 	title:SetTextColor( 255, 150, 150 )
 	title:SetPos( 0, 0 )
 	title:SetTextScale( 2 )
+	title:SetTextAlignment( "right" )
 
 	local start = self._elements._start
 	start:SetText( "Start!" )
@@ -45,21 +46,25 @@ function MainMenu.new()
 	end
 
 	function self:update( dt )
-		self._elements._start:_update( dt )
+		self._elements._start:Update( dt )
+
+		Hooks:Call( "PostMainMenuScreenUpdate", self, dt )
 	end
 
 	function self:mousepressed( x, y, button, istouch )
-		self._elements._start:_mousepressed( x, y, button, istouch )
+		self._elements._start:MousePressed( x, y, button, istouch )
 	end
 
 	function self:mousereleased( x, y, button, istouch )
-		self._elements._start:_mousereleased( x, y, button, istouch )
+		self._elements._start:MouseReleased( x, y, button, istouch )
 	end
 
 	function self:draw()
-		self._elements._background:_draw()
-		self._elements._title:_draw()
-		self._elements._start:_draw()
+		self._elements._background:Draw()
+		self._elements._title:Draw()
+		self._elements._start:Draw()
+
+		Hooks:Call( "PostMainMenuScreenDraw", self )
 	end
 
 	function self:resize( w, h )
@@ -69,6 +74,7 @@ function MainMenu.new()
 		self._elements._start:SetWidth( ScrW() / 2 )
 	end
 
+	Hooks:Call( "PostCreateMainMenuScreen" )
 	return self
 end
 

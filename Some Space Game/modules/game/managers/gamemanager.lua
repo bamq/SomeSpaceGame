@@ -31,8 +31,11 @@ function GameManager:Init()
 			pausemenu = require "modules.game.gui.menus.pausemenu",
 			hud = require "modules.game.gui.menus.hud"
 		}
+		local startscreen = "mainmenu"
 
 		ScreenManager.init( GAME_SCREENS, "mainmenu" )
+
+		Hooks:Call( "PostScreenManagerInit", GAME_SCREENS, startscreen )
 	end
 
 
@@ -48,7 +51,7 @@ end
 function GameManager:NewGame()
 	Game:SetState( STATE_INACTIVE )
 	self:Init()
-	ScreenManager.switch( "hud" )
+	GraphicsManager:SwitchScreen( "hud" )
 	Game:SetState( STATE_ACTIVE )
 end
 
@@ -123,10 +126,14 @@ local prestate
 function GameManager:Pause()
 	prestate = Game:GetState()
 	Game:SetState( STATE_PAUSE )
+
+	Hooks:Call( "GamePaused" )
 end
 
 function GameManager:UnPause()
 	Game:SetState( prestate )
+
+	Hooks:Call( "GameUnPaused" )
 end
 
 function GameManager:DoGameOverCountdown()

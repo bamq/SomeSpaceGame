@@ -9,11 +9,16 @@ function ColoredBox:initialize()
 	self._width = 0
 	self._height = 0
 	self._color = { 0, 0, 0, 255 }
+
+	Hooks:Call( "PostGUICreateColoredBox", self )
 end
 
-function ColoredBox:_draw()
+function ColoredBox:Draw()
 	love.graphics.setColor( self._color )
 	love.graphics.rectangle( "fill", self._x, self._y, self._width, self._height )
+end
+
+function ColoredBox:Update( dt )
 end
 
 function ColoredBox:SetColor( r, g, b, a )

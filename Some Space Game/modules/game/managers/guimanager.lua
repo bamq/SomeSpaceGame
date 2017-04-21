@@ -3,6 +3,7 @@ GUI = {}
 GUI.ColoredBox = require "modules.game.classes.gui.coloredbox"
 GUI.RectangleButton = require "modules.game.classes.gui.rectanglebutton"
 GUI.TextLabel = require "modules.game.classes.gui.textlabel"
+GUI.FormattedTextLabel = require "modules.game.classes.gui.formattedtextlabel"
 
 GUIManager = {}
 local pfx = LOG_PFX.guimanager

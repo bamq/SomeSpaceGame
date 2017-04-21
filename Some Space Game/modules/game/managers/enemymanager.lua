@@ -20,6 +20,7 @@ end
 
 function EnemyManager:CreateEnemy( x, y )
 	local Enemy = EnemyClass:new( x, y )
+	
 	function Enemy.Kill()
 		self:RemoveEnemy( Enemy )
 	end

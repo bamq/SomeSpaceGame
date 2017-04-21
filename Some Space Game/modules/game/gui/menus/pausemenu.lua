@@ -59,24 +59,28 @@ function PauseMenu.new()
 	end
 
 	function self:update( dt )
-		quit:_update( dt )
-		resume:_update( dt )
+		quit:Update( dt )
+		resume:Update( dt )
+
+		Hooks:Call( "PostPauseMenuScreenUpdate", self, dt )
 	end
 
 	function self:draw()
-		title:_draw()
-		quit:_draw()
-		resume:_draw()
+		title:Draw()
+		quit:Draw()
+		resume:Draw()
+
+		Hooks:Call( "PostPauseMenuScreenDraw", self )
 	end
 
 	function self:mousepressed( x, y, button, istouch )
-		quit:_mousepressed( x, y, button, istouch )
-		resume:_mousepressed( x, y, button, istouch )
+		quit:MousePressed( x, y, button, istouch )
+		resume:MousePressed( x, y, button, istouch )
 	end
 
-	function self:mousereleased( x, y, button, istouch )
-		quit:_mousereleased( x, y, button, istouch )
-		resume:_mousereleased( x, y, button, istouch )
+	function self:mouserelease( x, y, button, istouch )
+		quit:MouseReleased( x, y, button, istouch )
+		resume:MouseReleased( x, y, button, istouch )
 	end
 
 	function self:resize( w, h )
@@ -85,6 +89,7 @@ function PauseMenu.new()
 		resume:SetPos( ScrW() - resume:GetWidth(), ScrH() / 2 - resume:GetHeight() / 2 )
 	end
 
+	Hooks:Call( "PostCreatePauseMenuScreen" )
 	return self
 end
 

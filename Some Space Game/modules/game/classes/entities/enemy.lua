@@ -1,7 +1,7 @@
 
 local Class = require "modules.lib.middleclass"
 local BulletClass = require "modules.game.classes.entities.bullet"
-local pfx = "[EnemyClass]: "
+local pfx = LOG_PFX.enemy
 
 local Enemy = Class( "Enemy" )
 
@@ -26,7 +26,7 @@ function Enemy:Fire()
         Bullet:SetColor( unpack( Game.Config.Enemy.BulletColor ) )
         Bullet:SetSize( Game.Config.Enemy.BulletWidth, Game.Config.Enemy.BulletHeight )
         Bullet:SetSpeed( Game.Config.Enemy.BulletSpeed )
-        local e = Enemy
+
         function Bullet.Remove()
             for k, bullet in pairs( self._bullets ) do
                 if bullet == Bullet then
@@ -49,6 +49,11 @@ function Enemy:Fire()
 
         Hooks:Call( "PostEnemyFire", self, Bullet )
     end
+end
+
+function Enemy:Draw()
+    love.graphics.setColor( 255, 255, 255, 255 )
+    love.graphics.draw( self._sprite, self._x, self._y, 0, self._width / 10, self._height / 10 )
 end
 
 function Enemy:SetPos( x, y )

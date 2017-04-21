@@ -9,9 +9,14 @@ function TextLabel:initialize()
 	self._y = 0
 	self._textcolor = { 0, 0, 0, 255 }
 	self._textscale = 1
+
+	Hooks:Call( "PostGUICreateTextLabel" )
 end
 
-function TextLabel:_draw()
+function TextLabel:Update( dt )
+end
+
+function TextLabel:Draw()
 	love.graphics.setColor( unpack( self._textcolor ) )
 	love.graphics.print( self._text, self._x, self._y, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
 end
