@@ -78,13 +78,12 @@ function PauseMenu.new()
 		resume:MousePressed( x, y, button, istouch )
 	end
 
-	function self:mouserelease( x, y, button, istouch )
+	function self:mousereleased( x, y, button, istouch )
 		quit:MouseReleased( x, y, button, istouch )
 		resume:MouseReleased( x, y, button, istouch )
 	end
 
 	function self:resize( w, h )
-		title:SetWidth( ScrW() )
 		quit:SetPos( 0, ScrH() / 2 - quit:GetHeight() / 2 )
 		resume:SetPos( ScrW() - resume:GetWidth(), ScrH() / 2 - resume:GetHeight() / 2 )
 	end
