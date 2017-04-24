@@ -1,7 +1,7 @@
 
 --[[-----------------------------------------------------------------------//
 *
-* player
+* player.lua
 *
 * The Player class. Creates the player.
 *

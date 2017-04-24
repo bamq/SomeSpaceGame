@@ -186,9 +186,6 @@ Description: Called every frame after all bullets have been drawn.
 Hook: "PostDrawFloatTexts"
 Description: Called every frame after all float texts have been drawn.
 
-Hook: "PostDrawGUIElements"
-Description: Called every frame after all GUI elements have been drawn.
-
 
 ===================================================
 == Category: GUIManager ===========================

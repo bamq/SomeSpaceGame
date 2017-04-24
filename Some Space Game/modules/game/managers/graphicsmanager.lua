@@ -99,14 +99,6 @@ function GraphicsManager:DrawHUD()
 	end
 end
 
-function GraphicsManager:DrawGUIElements()
-	for _, element in pairs( GUIManager:GetElements() ) do
-		element:_draw()
-	end
-
-	Hooks:Call( "PostDrawGUIElements" )
-end
-
 function GraphicsManager:DrawBackground()
 	Hooks:Call( "PostDrawBackground" )
 end
