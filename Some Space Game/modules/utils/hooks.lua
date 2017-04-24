@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* hooks.lua
+*
+* Game hooks for events that occur in the game.
+*
+//-----------------------------------------------------------------------]]--
+
 Hooks = {}
 local pfx = LOG_PFX.hooks
 local hookTable = {}
@@ -39,6 +47,7 @@ function Hooks:Call( event_name, ... )
 			a, b, c, d, e, f, g, h, i, j = v( ... )
 
 			if a ~= nil then
+				-- Hook returns some stuff.
 				return a, b, c, d, e, f, g, h, i, j
 			end
 		end

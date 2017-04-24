@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* player
+*
+* The Player class. Creates the player.
+*
+//-----------------------------------------------------------------------]]--
+
 local Class = require "modules.lib.middleclass"
 local BulletClass = require "modules.game.classes.entities.bullet"
 
@@ -27,7 +35,9 @@ function Player:Fire()
 	if self._firecooldown <= 0 then
 		self._firecooldown = self._firedelay
 		local Bullet = BulletClass:new()
+
 		Bullet:SetSize( Game.Config.Player.BulletWidth, Game.Config.Player.BulletHeight )
+        -- Make the bullet come out of the middle of the player.
 		Bullet:SetPos( self._x + ( self._width / 2 ) - Bullet:GetWidth() / 2, self._y + ( self._height / 2 ) - Bullet:GetHeight() )
 		Bullet:SetColor( unpack( Game.Config.Player.BulletColor ) )
 		Bullet:SetSpeed( Game.Config.Player.BulletSpeed )
@@ -35,6 +45,7 @@ function Player:Fire()
 		function Bullet.Remove()
 			for k, bullet in pairs( self._bullets ) do
 				if bullet == Bullet then
+                    -- Let hooks prevent this.
 					local block = Hooks:Call( "PreRemovePlayerBullet", bullet )
 					local bulletcopy = Util:CopyTable( bullet )
 					if block == false then return end
@@ -47,6 +58,7 @@ function Player:Fire()
 			end
 		end
 
+        -- Let hooks prevent this.
 		local block = Hooks:Call( "PrePlayerFire", Bullet )
 		if block == false then return end
 
@@ -66,6 +78,7 @@ function Player:LoseLife()
 		Util:Log( pfx, "Player lost a life. " .. self._lives .. " left." )
 	end
 
+    -- Makes the player more transparent the more lives they lose.
 	self:SetAlpha( ( self:GetLives() / Game.Config.Player.Lives ) * 255)
 
 	Hooks:Call( "PlayerLostLife" )

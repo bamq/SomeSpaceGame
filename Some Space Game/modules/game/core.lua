@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* core.lua
+*
+* Sets up the game's internal configuration options and functions.
+*
+//-----------------------------------------------------------------------]]--
+
 Game = {}
 Game.Config = {}
 Game.Config.Enemy = {}

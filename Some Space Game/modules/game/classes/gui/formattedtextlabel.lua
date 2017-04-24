@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* formattedtextlabel.lua
+*
+* GUI FormattedTextLabel class. Creates a FormattedTextLabel GUI element.
+*
+//-----------------------------------------------------------------------]]--
+
 local Class = require "modules.lib.middleclass"
 
 local FormattedTextLabel = Class( "GUIFormattedTextLabel" )
@@ -8,6 +16,7 @@ function FormattedTextLabel:initialize()
 	self._x = 0
 	self._y = 0
 	self._textcolor = { 0, 0, 0, 255 }
+	-- Allow a nice scaling option.
 	self._textscale = 1
     self._align = "left"
     self._wraplimit = 9999
@@ -23,6 +32,7 @@ function FormattedTextLabel:Draw()
 	love.graphics.printf( self._text, self._x, self._y, self._wraplimit, self._alignt, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
 end
 
+-- Horribly named, but I don't know what else to call it.
 function FormattedTextLabel:SetWrapLimitPixels( pixels )
     self._wraplimit = pixels
 end
@@ -32,6 +42,7 @@ function FormattedTextLabel:GetWrapLimitPixels()
 end
 
 function FormattedTextLabel:SetTextAlignment( alignment )
+	-- These are the only valid text alignments.
     if not ( alignment == "left" or alignment == "center" or alignment == "right" ) then return end
 
     self._align = alignment

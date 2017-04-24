@@ -1,27 +1,44 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* graphicsmanager.lua
+*
+* The GraphicsManager. Handles drawing things to the screen.
+*
+//-----------------------------------------------------------------------]]--
+
 GraphicsManager = {}
 local pfx = LOG_PFX.graphicsmanager
 GraphicsManager._backgroundcolor = {}
 
-function GraphicsManager:Init()
+function GraphicsManager:Init( first_init )
+	-- Game looks hideous without this.
 	love.graphics.setDefaultFilter( "nearest", "nearest" )
 	self:SetBackgroundColor( 45, 45, 45 )
-	self:CreateSprites()
+
+	if first_init then
+		self:InitializeSprites()
+	end
+
 	Util:Log( pfx, "Initialized." )
 
 	Hooks:Call( "PostGraphicsManagerInit" )
 end
 
+-- Switching screens through here makes sure that the hooks are called.
 function GraphicsManager:SwitchScreen( screen )
+	-- Let hooks block if they want.
 	local block = Hooks:Call( "PreSwitchScreen", screen )
 	if block == false then return end
 
 	ScreenManager.switch( screen )
+	GUIManager:SetMouseCursor( "arrow" )
 
 	Hooks:Call( "PostSwitchScreen", screen )
 end
 
-function GraphicsManager:CreateSprites()
+function GraphicsManager:InitializeSprites()
+	-- Create global values for the sprites.
 	PLAYER_SPRITE = love.graphics.newImage( Game.Config.Graphics.PlayerSprite )
 	ENEMY_SPRITES = {}
 
@@ -31,10 +48,14 @@ function GraphicsManager:CreateSprites()
 end
 
 function GraphicsManager:Draw()
+	-- Push the graphics state.
 	love.graphics.push()
+	-- Set the scale.
 	love.graphics.scale( Game.Config.Graphics.DrawScale )
 	local state = Game:GetState()
+
 	if state == STATE_ACTIVE or state == STATE_PAUSE then
+		-- Draw when the game is running or is paused.
 		self:DrawBackground()
 		self:DrawStars()
 		self:DrawPlayer()
@@ -42,19 +63,26 @@ function GraphicsManager:Draw()
 		self:DrawBullets()
 		self:DrawFloatTexts()
 	elseif state == STATE_OVER then
+		-- Display the game over screen.
 		self:DrawGameOverScreen()
 	end
+
 	if state ~= STATE_INACTIVE then
+		-- Screens should always be drawn unless the game is
+		-- set to be inactive.
 		ScreenManager.draw()
 	end
+
 	love.graphics.pop()
 end
 
+-- Gotta make sure everything looks fine after the window is resized.
 function GraphicsManager:Resize( w, h )
 	ScreenManager.resize( w, h )
 	StarsManager:GenerateStars()
 end
 
+-- Will eventually be moved into the HUD screen instead.
 function GraphicsManager:DrawHUD()
 	if Game:GetState() == STATE_ACTIVE then
 		love.graphics.setColor( 0, 255, 125 )
@@ -73,7 +101,6 @@ end
 
 function GraphicsManager:DrawGUIElements()
 	for _, element in pairs( GUIManager:GetElements() ) do
-		print( "Draw element" )
 		element:_draw()
 	end
 
@@ -118,14 +145,12 @@ end
 
 function GraphicsManager:DrawBullets()
 	for _, bullet in pairs( Player:GetBullets() ) do
-		love.graphics.setColor( bullet:GetColor() )
-		love.graphics.rectangle( "fill", bullet:GetX(), bullet:GetY(), bullet:GetWidth(), bullet:GetHeight() )
+		bullet:Draw()
 	end
 
 	for _, enemy in pairs( EnemyManager:GetEnemies() ) do
 		for __, bullet in pairs( enemy:GetBullets() ) do
-			love.graphics.setColor( bullet:GetColor() )
-			love.graphics.rectangle( "fill", bullet:GetX(), bullet:GetY(), bullet:GetWidth(), bullet:GetHeight() )
+			bullet:Draw()
 		end
 	end
 

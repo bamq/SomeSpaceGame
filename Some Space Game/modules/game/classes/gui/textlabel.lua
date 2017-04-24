@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* textlabel.lua
+*
+* GUI TextLabel class. Creates a TextLabel GUI element.
+*
+//-----------------------------------------------------------------------]]--
+
 local Class = require "modules.lib.middleclass"
 
 local TextLabel = Class( "GUITextLabel" )
@@ -8,6 +16,7 @@ function TextLabel:initialize()
 	self._x = 0
 	self._y = 0
 	self._textcolor = { 0, 0, 0, 255 }
+	-- Allow a nice scaling option.
 	self._textscale = 1
 
 	Hooks:Call( "PostGUICreateTextLabel" )

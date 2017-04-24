@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* gamemanager.lua
+*
+* The GameManager. Makes sure the game is running smoothly.
+*
+//-----------------------------------------------------------------------]]--
+
 GameManager = {}
 local pfx = LOG_PFX.gamemanager
 local first_init = true
@@ -10,26 +18,23 @@ function GameManager:Init()
 	gameovertimer = 500
 	math.randomseed( os.time() )
 
-	if first_init then
-		Util:Log( pfx, "Initializing game. . ." )
-	else
-		Util:Log( pfx, "Starting new game. . ." )
-	end
+	Util:Log( pfx, first_init and "Initializing game. . ." or "Starting new game. . ." )
 
 	Game:ResetScore()
-	GraphicsManager:Init()
-	PlayerManager:Init()
-	EnemyManager:Init()
-	StarsManager:Init()
-	FloatTextManager:Init()
+	GraphicsManager:Init( first_init )
+	PlayerManager:Init( first_init )
+	EnemyManager:Init( first_init )
+	StarsManager:Init( first_init )
+	FloatTextManager:Init( first_init )
 
 	if first_init then
+		-- We really only need to do this stuff on the very first init.
 		GUIManager:Init()
 		AddonsManager:MountAddons()
 		local GAME_SCREENS = {
-			mainmenu = require "modules.game.gui.menus.mainmenu",
-			pausemenu = require "modules.game.gui.menus.pausemenu",
-			hud = require "modules.game.gui.menus.hud"
+			mainmenu = require "modules.game.gui.screens.mainmenu",
+			pausemenu = require "modules.game.gui.screens.pausemenu",
+			hud = require "modules.game.gui.screens.hud"
 		}
 		local startscreen = "mainmenu"
 
@@ -38,11 +43,9 @@ function GameManager:Init()
 		Hooks:Call( "PostScreenManagerInit", GAME_SCREENS, startscreen )
 	end
 
-
-
 	Hooks:Call( "GameInit", first_init )
 
-	first_init = false
+	if first_init then first_init = false end
 	Util:Log( pfx, "Game fully initialized. Took " .. Util:Round( ( love.timer.getTime() - t ) * 1000, 2 ) .. " milliseconds." )
 
 	Hooks:Call( "PostGameInit", first_init, time )
@@ -57,11 +60,16 @@ end
 
 function GameManager:Update( dt )
 	local state = Game:GetState()
+
 	if state ~= STATE_INACTIVE then
+		-- These things should be updated at all times except for
+		-- when the game is purposely set to inactive state.
 		GUIManager:Update( dt )
 		ScreenManager.update( dt )
 	end
+
 	if state == STATE_ACTIVE then
+		-- The game is running, so do these things.
 		self:CalculateBullets()
 		InputManager:Update( dt )
 		EnemyManager:Update( dt )
@@ -69,7 +77,9 @@ function GameManager:Update( dt )
 		FloatTextManager:Update( dt )
 		StarsManager:Update( dt )
 	elseif state == STATE_OVER then
+		-- The game must have ended, so do game over stuff.
 		self:DoGameOverCountdown()
+
 		if gameovertimer <= 0 then
 			self:NewGame()
 		end
@@ -77,6 +87,7 @@ function GameManager:Update( dt )
 end
 
 function GameManager:CalculateBullets()
+	-- Make sure bullets behave how they are supposed to.
 	for k, bullet in pairs( Player._bullets ) do
 		if bullet._y < -10 then
 			bullet:Remove()
@@ -122,6 +133,7 @@ function GameManager:GameOver()
 	Hooks:Call( "GameOver" )
 end
 
+-- Store the old state to go back to after the game is unpaused.
 local prestate
 function GameManager:Pause()
 	prestate = Game:GetState()

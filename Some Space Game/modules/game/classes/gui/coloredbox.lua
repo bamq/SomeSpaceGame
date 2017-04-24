@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* coloredbox.lua
+*
+* GUI ColoredBox class. Creates a ColoredBox GUI element.
+*
+//-----------------------------------------------------------------------]]--
+
 local Class = require "modules.lib.middleclass"
 
 local ColoredBox = Class( "GUIColoredBox" )
@@ -19,6 +27,9 @@ function ColoredBox:Draw()
 end
 
 function ColoredBox:Update( dt )
+	-- Maybe something will want to use this.
+	-- But screens will have an update anyway... so I don't know.
+	-- Sake of completeness I guess?
 end
 
 function ColoredBox:SetColor( r, g, b, a )

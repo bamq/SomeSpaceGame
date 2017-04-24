@@ -1,11 +1,19 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* starsmanager.lua
+*
+* The StarsManager. Responsible for making the stars in the background.
+*
+//-----------------------------------------------------------------------]]--
+
 StarsManager = {}
 StarsManager._stars = {}
 StarsManager._starscolor = {}
 StarsManager._cooldown = 0
 local pfx = LOG_PFX.starsmanager
 
-function StarsManager:Init()
+function StarsManager:Init( first_init )
 	self._stars = {}
 	self._starscolor = Game.Config.Graphics.StarsColor
 	self._cooldown = 0
@@ -20,6 +28,7 @@ function StarsManager:Update( dt )
 end
 
 function StarsManager:GenerateStars()
+	-- Let hooks block this if for some reason they want to.
 	local block = Hooks:Call( "PreGenerateStars" )
 	if block == false then return end
 

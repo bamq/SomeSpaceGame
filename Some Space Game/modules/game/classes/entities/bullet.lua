@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* bullet.lua
+*
+* The Bullet class. Creates a bullet.
+*
+//-----------------------------------------------------------------------]]--
+
 local Class = require "modules.lib.middleclass"
 
 local Bullet = Class( "Bullet" )
@@ -12,8 +20,13 @@ function Bullet:initialize( x, y )
     self._speed = 1
 end
 
+function Bullet:Draw()
+    love.graphics.setColor( self._color )
+    love.graphics.rectangle( "fill", self._x, self._y, self._width, self._height )
+end
+
 function Bullet:Remove()
-    -- should be implemented by whatever creates this thing.
+    -- Let whatever creates this thing handle this.
 end
 
 function Bullet:SetSpeed( speed )

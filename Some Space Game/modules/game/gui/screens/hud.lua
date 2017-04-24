@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* hud.lua
+*
+* The HUD screen. Doesn't do much currently.
+*
+//-----------------------------------------------------------------------]]--
+
 local Screen = require "modules.lib.screenmanager.Screen"
 
 local HUD = {}

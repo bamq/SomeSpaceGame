@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* main.lua
+*
+* Gets things rolling and sets up hooks for the love engine functions.
+*
+//-----------------------------------------------------------------------]]--
+
 require "modules.game.setup"
 
 local pfx = LOG_PFX.main
@@ -73,6 +81,10 @@ function love.keyreleased( key, scancode )
 	InputManager:KeyReleased( key, scancode )
 
 	Hooks:Call( "LoveKeyReleased", key, scancode )
+end
+
+function love.mousefocus( focus )
+	Hooks:Call( "LoveMouseFocus", focus )
 end
 
 function love.mousemoved( x, y, dx, dy, istouch )

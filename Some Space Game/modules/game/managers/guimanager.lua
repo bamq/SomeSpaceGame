@@ -1,5 +1,15 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* guimanager.lua
+*
+* The GUIManager. Handles GUI elements. Likely to be phased out in the
+* future because these things can be done elsewhere.
+*
+//-----------------------------------------------------------------------]]--
+
 GUI = {}
+-- Global stuff for making new elements.
 GUI.ColoredBox = require "modules.game.classes.gui.coloredbox"
 GUI.RectangleButton = require "modules.game.classes.gui.rectanglebutton"
 GUI.TextLabel = require "modules.game.classes.gui.textlabel"
@@ -9,7 +19,6 @@ GUIManager = {}
 local pfx = LOG_PFX.guimanager
 
 function GUIManager:Init()
-	self._elements = {}
 	self:SetMouseCursor( "arrow" )
 	Util:Log( pfx, "Initialized." )
 
@@ -22,7 +31,6 @@ end
 function GUIManager:SetMouseCursor( cursor )
 	if love.mouse.getCursor() ~= love.mouse.getSystemCursor( cursor ) then
 		love.mouse.setCursor( love.mouse.getSystemCursor( cursor ) )
-		print( "mouse set to " .. cursor )
 	end
 end
 

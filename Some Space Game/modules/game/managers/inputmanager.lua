@@ -1,4 +1,13 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* inputmanager.lua
+*
+* The InputManager. Deals with all the user inputs and consequences of those
+* inputs.
+*
+//-----------------------------------------------------------------------]]--
+
 InputManager = {}
 local pfx = LOG_PFX.inputmanager
 

@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* enemy.lua
+*
+* The Enemy class. Creates an enemy.
+*
+//-----------------------------------------------------------------------]]--
+
 local Class = require "modules.lib.middleclass"
 local BulletClass = require "modules.game.classes.entities.bullet"
 local pfx = LOG_PFX.enemy
@@ -16,13 +24,14 @@ function Enemy:initialize( x, y )
 end
 
 function Enemy:Kill()
-    -- Gets defined in EnemyManager
+    -- Should be properly defined when spawned, otherwise this thing will never go away.
 end
 
 function Enemy:Fire()
     if self._cooldown <= 0 then
         self._cooldown = Game.Config.Enemy.FireDelay
         local Bullet = BulletClass:new( self._x + ( self._width / 2 ), self._y + ( self._height / 2 ) )
+
         Bullet:SetColor( unpack( Game.Config.Enemy.BulletColor ) )
         Bullet:SetSize( Game.Config.Enemy.BulletWidth, Game.Config.Enemy.BulletHeight )
         Bullet:SetSpeed( Game.Config.Enemy.BulletSpeed )
@@ -30,6 +39,7 @@ function Enemy:Fire()
         function Bullet.Remove()
             for k, bullet in pairs( self._bullets ) do
                 if bullet == Bullet then
+                    -- Let hooks prevent this.
                     local block = Hooks:Call( "PreRemoveEnemyBullet", self, bullet )
                     local bulletcopy = Util:CopyTable( bullet )
                     if block == false then return end
@@ -42,6 +52,7 @@ function Enemy:Fire()
             end
         end
 
+        -- Let hooks prevent this.
         local block = Hooks:Call( "PreEnemyFire", self, Bullet )
         if block == false then return end
 

@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* rectanglebutton.lua
+*
+* GUI RectangleButton class. Creates a RectangleButton GUI element.
+*
+//-----------------------------------------------------------------------]]--
+
 local Class = require "modules.lib.middleclass"
 
 local RectangleButton = Class( "GUIRectangleButton" )
@@ -21,26 +29,6 @@ function RectangleButton:initialize()
 end
 
 function RectangleButton:Update( dt )
-	if GUIManager:CheckMouseInElement( self ) then
-		self._mouse_in_element = true
-
-		if self._is_clicked then
-			self:OnClick()
-			self._is_clicked = false
-		end
-
-		self._is_hovered = true
-		self:OnHover()
-
-		GUIManager:SetMouseCursor( "hand" )
-	else
-		if self._is_hovered then
-			self._is_hovered = false
-			self:OnUnHover()
-		end
-
-		GUIManager:SetMouseCursor( "arrow" )
-	end
 end
 
 function RectangleButton:MousePressed( x, y, button, istouch )

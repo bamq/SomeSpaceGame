@@ -1,9 +1,18 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* floattextmanager.lua
+*
+* The FloatTextManager. Manages the floating texts on the screen.
+* Likely to be rewritten in the future.
+*
+//-----------------------------------------------------------------------]]--
+
 FloatTextManager = {}
 FloatTextManager._texts = {}
 local pfx = LOG_PFX.floattextmanager
 
-function FloatTextManager:Init()
+function FloatTextManager:Init( first_init )
 	self._texts = {}
 	Util:Log( pfx, "Initialized." )
 
@@ -17,6 +26,7 @@ end
 function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 	local Text = {}
 	Text._time = time or 0
+	Text._scale = scale or 1
 	Text._message = message or ""
 	Text._x = x or 0
 	Text._y = y or 0
@@ -27,11 +37,13 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 		for k, v in pairs( FloatTextManager._texts ) do
 			if v == self then
 				local block = Hooks:Call( "PreRemoveFloatText", self )
+				-- Let hooks block the removal of the float text.
 				local selfcopy = Util:CopyTable( self )
 				if block == false then return end
 
 				table.remove( FloatTextManager._texts, k )
 				Util:Log( pfx, "Float text removed." )
+
 				Hooks:Call( "PostRemoveFloatText", selfcopy )
 			end
 		end
@@ -40,7 +52,7 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 	function Text:Draw()
 		if self._is_visible then
 			love.graphics.setColor( self._color )
-			love.graphics.print( self._message, self._x, self._y )
+			love.graphics.print( self._message, self._x, self._y, 0, self._scale / Game.Config.Graphics.DrawScale, self._scale / Game.Config.Graphics.DrawScale )
 		end
 	end
 
@@ -95,6 +107,7 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 		return self._time
 	end
 
+	-- Let hooks block the creation of the float text.
 	local block = Hooks:Call( "PreCreateFloatText", Text )
 	if block == false then return end
 
@@ -104,6 +117,7 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 
 	Hooks:Call( "PostCreateFloatText", Text )
 
+	-- Return the text so it can be stored in a variable for convenience.
 	return Text
 end
 

@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* addonsmanager.lua
+*
+* The AddonsManager. Gets addons and requires them into the game.
+*
+//-----------------------------------------------------------------------]]--
+
 AddonsManager = {}
 AddonsManager._addons = {}
 local pfx = LOG_PFX.addonsmanager
@@ -11,6 +19,8 @@ local function RequireAddons( dir )
 	local files = love.filesystem.getDirectoryItems( dir )
 
 	if dir == "addons" then
+		-- We are in the addons folder. We want to require every addon
+		-- inside here.
 		for k, v in pairs( files ) do
 			if love.filesystem.isDirectory( dir .. "/" .. v ) then
 				RequireAddons( dir .. "/" .. v )
@@ -21,9 +31,11 @@ local function RequireAddons( dir )
 
 		for k, v in pairs( files ) do
 			if love.filesystem.isFile( dir .. "/" .. v ) and v == "main.lua" then
+				-- We've found main.lua
 				local f = string.gsub( v, ".lua", "" )
 				foundFile = true
 
+				-- Get its code into the game.
 				require( dir .. "/" .. f )
 			end
 		end

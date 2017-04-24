@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* mainmenu.lua
+*
+* The MainMenu screen. Shown when the game is first loaded.
+*
+//-----------------------------------------------------------------------]]--
+
 local Screen = require "modules.lib.screenmanager.Screen"
 
 local MainMenu = {}
@@ -46,7 +54,28 @@ function MainMenu.new()
 	end
 
 	function self:update( dt )
-		self._elements._start:Update( dt )
+		if GUIManager:CheckMouseInElement( start ) then
+			start._mouse_in_element = true
+
+			if start._is_clicked then
+				start:OnClick()
+				start._is_clicked = false
+			end
+
+			if not start._is_hovered then
+				start._is_hovered = true
+				start:OnHover()
+			end
+
+			GUIManager:SetMouseCursor( "hand" )
+		else
+			if start._is_hovered then
+				start._is_hovered = false
+				start:OnUnHover()
+			end
+
+			GUIManager:SetMouseCursor( "arrow" )
+		end
 
 		Hooks:Call( "PostMainMenuScreenUpdate", self, dt )
 	end

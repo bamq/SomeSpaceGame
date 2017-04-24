@@ -59,6 +59,12 @@ Params: {
 }
 Description: Called when a key is released.
 
+Hook: "LoveMouseFocus"
+Params: {
+	[boolean] is the window focused
+}
+Description: Called when the mouse focus of the game changes.
+
 Hook: "LoveMouseMoved"
 Params: {
 	[number] x position

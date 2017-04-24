@@ -1,4 +1,12 @@
 
+--[[-----------------------------------------------------------------------//
+*
+* enemymanager.lua
+*
+* The EnemyManager. Spawns and takes care of enemies.
+*
+//-----------------------------------------------------------------------]]--
+
 local EnemyClass = require "modules.game.classes.entities.enemy"
 
 EnemyManager = {}
@@ -6,7 +14,7 @@ EnemyManager._enemies = {}
 EnemyManager._spawncooldown = 0
 local pfx = LOG_PFX.enemymanager
 
-function EnemyManager:Init()
+function EnemyManager:Init( first_init )
 	self._enemies = {}
 	self._spawncooldown = 0
 	Util:Log( pfx, "Initialized." )
@@ -19,12 +27,14 @@ function EnemyManager:Update( dt )
 end
 
 function EnemyManager:CreateEnemy( x, y )
+	-- Create a new enemy object.
 	local Enemy = EnemyClass:new( x, y )
-	
+
 	function Enemy.Kill()
 		self:RemoveEnemy( Enemy )
 	end
 
+	-- Let hooks block the creation of the enemy for whatever reason.
 	local block = Hooks:Call( "PreCreateEnemy", Enemy )
 	if block == false then return end
 
@@ -40,8 +50,11 @@ end
 
 function EnemyManager:RemoveEnemy( target )
 	for k, enemy in pairs( self._enemies ) do
+		-- Search our enemies for a match.
 		if enemy == target then
+			-- Let hooks block the deletion of the enemy.
 			local block = Hooks:Call( "PreRemoveEnemy", enemy )
+			-- Make a copy of it for the post hook.
 			local enemycopy = Util:CopyTable( enemy )
 			if block == false then return end
 
