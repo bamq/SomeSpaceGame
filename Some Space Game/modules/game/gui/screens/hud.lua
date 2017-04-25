@@ -13,6 +13,7 @@ local HUD = {}
 
 function HUD.new()
     self = Screen.new()
+    self._elements = {}
 
     function self:update( dt )
         Hooks:Call( "PostHUDScreenUpdate", self, dt )

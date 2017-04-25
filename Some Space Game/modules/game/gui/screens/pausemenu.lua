@@ -67,57 +67,7 @@ function PauseMenu.new()
 	end
 
 	function self:update( dt )
-		if GUIManager:CheckMouseInElement( resume ) then
-			resume._mouse_in_element = true
-
-			if resume._is_clicked then
-				resume:OnClick()
-				resume._is_clicked = false
-			end
-
-			if not resume._is_hovered then
-				resume._is_hovered = true
-				resume:OnHover()
-			end
-
-			GUIManager:SetMouseCursor( "hand" )
-		else
-			if resume._is_hovered then
-				resume._is_hovered = false
-				resume:OnUnHover()
-			end
-
-			if not GUIManager:CheckMouseInElement( quit ) then
-				GUIManager:SetMouseCursor( "arrow" )
-			end
-		end
-
-		if GUIManager:CheckMouseInElement( quit ) then
-			quit._mouse_in_element = true
-
-			if quit._is_clicked then
-				quit:OnClick()
-				quit._is_clicked = false
-			end
-
-			if not quit._is_hovered then
-				quit._is_hovered = true
-				quit:OnHover()
-			end
-
-			GUIManager:SetMouseCursor( "hand" )
-		else
-			if quit._is_hovered then
-				quit._is_hovered = false
-				quit:OnUnHover()
-			end
-
-			if not GUIManager:CheckMouseInElement( resume ) then
-				GUIManager:SetMouseCursor( "arrow" )
-			end
-		end
-
-		Hooks:Call( "PostPauseMenuScreenUpdate", self, dt )
+		Hooks:Call( "PostMainMenuScreenUpdate", self, dt )
 	end
 
 	function self:draw()
@@ -144,6 +94,7 @@ function PauseMenu.new()
 	end
 
 	Hooks:Call( "PostCreatePauseMenuScreen" )
+	
 	return self
 end
 

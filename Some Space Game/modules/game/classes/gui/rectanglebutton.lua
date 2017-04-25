@@ -49,6 +49,10 @@ function RectangleButton:Draw()
 	love.graphics.print( self._text, self._x, self._y, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
 end
 
+function RectangleButton:IsMouseFocused()
+	return GUIManager:CheckMouseInElement( self )
+end
+
 function RectangleButton:SetButtonColor( r, g, b, a )
 	if r and g and b then
 		if not a then a = 255 end
