@@ -150,12 +150,6 @@ Description: Called when the game has been unpaused.
 Hook: "PostGraphicsManagerInit"
 Description: Called after the GraphicsManager has been initialized.
 
-Hook: "PreDrawHUD"
-Description: Called every frame before the HUD is drawn.
-
-Hook: "PostDrawHUD"
-Description: Called every frame after the HUD has been drawn.
-
 Hook: "PreSwitchScreen"
 Params: {
 	[string] the screen to switch to

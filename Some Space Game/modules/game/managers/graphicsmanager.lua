@@ -62,9 +62,6 @@ function GraphicsManager:Draw()
 		self:DrawEnemies()
 		self:DrawBullets()
 		self:DrawFloatTexts()
-	elseif state == STATE_OVER then
-		-- Display the game over screen.
-		self:DrawGameOverScreen()
 	end
 
 	if state ~= STATE_INACTIVE then
@@ -80,23 +77,6 @@ end
 function GraphicsManager:Resize( w, h )
 	ScreenManager.resize( w, h )
 	StarsManager:GenerateStars()
-end
-
--- Will eventually be moved into the HUD screen instead.
-function GraphicsManager:DrawHUD()
-	if Game:GetState() == STATE_ACTIVE then
-		love.graphics.setColor( 0, 255, 125 )
-
-		if Game:GetShowScore() then
-			love.graphics.print( "Score: " .. Game:GetScore() .. " Lives: " .. Player:GetLives(), 0, 0 )
-		end
-
-		if Game:GetShowFPS() then
-			love.graphics.print( "FPS: " .. love.timer.getFPS(), 0, ScrH() * Game.Config.Graphics.DrawScale - 25 )
-		end
-
-		love.graphics.print( Game.Config.Graphics.HelpText, 2, Game.Config.Graphics.ShowScore and 25 or 2 )
-	end
 end
 
 function GraphicsManager:DrawBackground()
@@ -155,12 +135,6 @@ function GraphicsManager:DrawFloatTexts()
 	end
 
 	Hooks:Call( "PostDrawFloatTexts" )
-end
-
-function GraphicsManager:DrawGameOverScreen()
-	love.graphics.setColor( 0, 255, 150 )
-	love.graphics.print( "GAME OVER!", 0, 0 )
-	love.graphics.print( "Score: " .. Game:GetScore(), 0, ScrH()/2 )
 end
 
 function GraphicsManager:SetBackgroundColor( r, g, b )

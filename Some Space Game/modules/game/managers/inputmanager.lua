@@ -52,6 +52,10 @@ function InputManager:KeyPressed( key, scancode, isrepeat )
 		end
 	end
 
+	if key == "p" then
+		GameManager:GameOver()
+	end
+
 	if key == "tab" then
 		GameManager:NewGame()
 	end
@@ -81,4 +85,9 @@ end
 
 function InputManager:MouseReleased( x, y, button, istouch )
 	ScreenManager.mousereleased( x, y, button, istouch )
+end
+
+function InputManager:MouseMoved( x, y, dx, dy, istouch )
+    ScreenManager.mousemoved( x, y, dx, dy, istouch )
+    GUIManager:MouseMoved( x, y, dx, dy, istouch )
 end

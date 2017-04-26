@@ -27,9 +27,18 @@ function ColoredBox:Draw()
 end
 
 function ColoredBox:Update( dt )
-	-- Maybe something will want to use this.
-	-- But screens will have an update anyway... so I don't know.
-	-- Sake of completeness I guess?
+end
+
+function ColoredBox:MousePressed( x, y, button, istouch )
+end
+
+function ColoredBox:MouseReleased( x, y, button, istouch )
+end
+
+function ColoredBox:MouseMoved( x, y, dx, dy, istouch )
+end
+
+function ColoredBox:Resize( w, h )
 end
 
 function ColoredBox:SetColor( r, g, b, a )

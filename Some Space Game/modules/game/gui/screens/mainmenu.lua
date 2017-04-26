@@ -24,13 +24,21 @@ function MainMenu.new()
 	background:SetPos( 0, 0 )
 	background:SetWidth( ScrW() )
 	background:SetHeight( ScrH() )
+	function background:Resize( w, h )
+		self:SetWidth( ScrW() )
+		self:SetHeight( ScrH() )
+		self:SetPos( 0, 0 )
+	end
 
 	local title = self._elements._title
 	title:SetText( "Some Space Game!" )
 	title:SetTextColor( 255, 150, 150 )
 	title:SetPos( 0, 0 )
 	title:SetTextScale( 2 )
-	title:SetTextAlignment( "right" )
+	title:SetTextAlignment( "left" )
+	function title:Resize( w, h )
+		title:SetPos( 0, 0 )
+	end
 
 	local start = self._elements._start
 	start:SetText( "Start!" )
@@ -49,12 +57,26 @@ function MainMenu.new()
 		self:SetFillType( "line" )
 		self:SetTextColor( 255, 255, 255 )
 	end
-	function start:OnClick()
-		GameManager:NewGame()
+	function start:OnUnClick()
+		if start:IsMouseFocused() then
+			GameManager:NewGame()
+		end
+	end
+	function start:Resize( w, h )
+		self:SetPos( 0, ScrH() / 2 - self:GetHeight() / 2 )
+		self:SetWidth( ScrW() / 2 )
 	end
 
 	function self:update( dt )
+		for _, v in pairs( self._elements ) do
+			v:Update( dt )
+		end
+
 		Hooks:Call( "PostMainMenuScreenUpdate", self, dt )
+	end
+
+	function self:mousemoved( x, y, dx, dy, istouch )
+		self._elements._start:MouseMoved( x, y, dx, dy, istouch )
 	end
 
 	function self:mousepressed( x, y, button, istouch )
@@ -74,10 +96,9 @@ function MainMenu.new()
 	end
 
 	function self:resize( w, h )
-		self._elements._background:SetWidth( ScrW() )
-		self._elements._background:SetHeight( ScrH() )
-		self._elements._start:SetPos( 0, ScrH() / 2 - self._elements._start:GetHeight() / 2 )
-		self._elements._start:SetWidth( ScrW() / 2 )
+		for _, v in pairs( self._elements ) do
+			v:Resize( w, h )
+		end
 	end
 
 	Hooks:Call( "PostCreateMainMenuScreen" )

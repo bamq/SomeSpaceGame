@@ -25,6 +25,18 @@ end
 function TextLabel:Update( dt )
 end
 
+function TextLabel:MousePressed( x, y, button, istouch )
+end
+
+function TextLabel:MouseReleased( x, y, button, istouch )
+end
+
+function TextLabel:MouseMoved( x, y, dx, dy, istouch )
+end
+
+function TextLabel:Resize( w, h )
+end
+
 function TextLabel:Draw()
 	love.graphics.setColor( unpack( self._textcolor ) )
 	love.graphics.print( self._text, self._x, self._y, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )

@@ -41,8 +41,13 @@ function PauseMenu.new()
 		self:SetButtonColor( 0, 0, 0, 175 )
 		self:SetTextColor( 255, 255, 255 )
 	end
-	function quit:OnClick()
-		love.event.quit()
+	function quit:OnUnClick()
+		if quit:IsMouseFocused() then
+			love.event.quit()
+		end
+	end
+	function quit:Resize( w, h )
+		self:SetPos( 0, ScrH() / 2 - self:GetHeight() / 2 )
 	end
 
 	local resume = self._elements._resume
@@ -61,12 +66,21 @@ function PauseMenu.new()
 		self:SetButtonColor( 0, 0, 0, 175 )
 		self:SetTextColor( 255, 255, 255 )
 	end
-	function resume:OnClick()
-		ScreenManager.switch( "hud" )
-		GameManager:UnPause()
+	function resume:OnUnClick()
+		if self:IsMouseFocused() then
+			ScreenManager.switch( "hud" )
+			GameManager:UnPause()
+		end
+	end
+	function resume:Resize( w, h )
+		self:SetPos( ScrW() - self:GetWidth(), ScrH() / 2 - self:GetHeight() / 2 )
 	end
 
 	function self:update( dt )
+		for _, v in pairs( self._elements ) do
+			v:Update( dt )
+		end
+
 		Hooks:Call( "PostMainMenuScreenUpdate", self, dt )
 	end
 
@@ -78,14 +92,28 @@ function PauseMenu.new()
 		Hooks:Call( "PostPauseMenuScreenDraw", self )
 	end
 
+	function self:mousemoved( x, y, dx, dy, istouch )
+		for _, v in pairs( self._elements ) do
+			if v:isInstanceOf( GUI.RectangleButton ) then
+				v:MouseMoved( x, y, dx, dy, istouch )
+			end
+		end
+	end
+
 	function self:mousepressed( x, y, button, istouch )
-		quit:MousePressed( x, y, button, istouch )
-		resume:MousePressed( x, y, button, istouch )
+		for _, v in pairs( self._elements ) do
+			if v:isInstanceOf( GUI.RectangleButton ) then
+				v:MousePressed( x, y, button, istouch )
+			end
+		end
 	end
 
 	function self:mousereleased( x, y, button, istouch )
-		quit:MouseReleased( x, y, button, istouch )
-		resume:MouseReleased( x, y, button, istouch )
+		for _, v in pairs( self._elements ) do
+			if v:isInstanceOf( GUI.RectangleButton ) then
+				v:MouseReleased( x, y, button, istouch )
+			end
+		end
 	end
 
 	function self:resize( w, h )
@@ -94,7 +122,7 @@ function PauseMenu.new()
 	end
 
 	Hooks:Call( "PostCreatePauseMenuScreen" )
-	
+
 	return self
 end
 

@@ -29,17 +29,39 @@ function RectangleButton:initialize()
 end
 
 function RectangleButton:Update( dt )
+
+end
+
+function RectangleButton:MouseMoved( x, y, dx, dy, istouch )
+	if ( self:IsMouseFocused() or self._is_clicked ) and not self._is_hovered then
+		self._is_hovered = true
+		self:OnHover()
+	elseif not ( self:IsMouseFocused() or self._is_clicked ) and self._is_hovered then
+		self._is_hovered = false
+		self:OnUnHover()
+	end
 end
 
 function RectangleButton:MousePressed( x, y, button, istouch )
-	self._is_clicked = true
-	self._is_hovered = false
+	if self:IsMouseFocused() then
+		self._is_clicked = true
+		self:OnClick()
+	end
 end
 
 function RectangleButton:MouseReleased( x, y, button, istouch )
 	if self._is_clicked then
 		self._is_clicked = false
+		self:OnUnClick()
 	end
+
+	if self._is_hovered and not self:IsMouseFocused() then
+		self._is_hovered = false
+		self:OnUnHover()
+	end
+end
+
+function RectangleButton:Resize( w, h )
 end
 
 function RectangleButton:Draw()

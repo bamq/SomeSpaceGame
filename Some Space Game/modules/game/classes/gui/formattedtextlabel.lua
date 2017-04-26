@@ -27,9 +27,21 @@ end
 function FormattedTextLabel:Update( dt )
 end
 
+function FormattedTextLabel:MousePressed( x, y, button, istouch )
+end
+
+function FormattedTextLabel:MouseReleased( x, y, button, istouch )
+end
+
+function FormattedTextLabel:MouseMoved( x, y, dx, dy, istouch )
+end
+
+function FormattedTextLabel:Resize( w, h )
+end
+
 function FormattedTextLabel:Draw()
 	love.graphics.setColor( unpack( self._textcolor ) )
-	love.graphics.printf( self._text, self._x, self._y, self._wraplimit, self._alignt, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
+	love.graphics.printf( self._text, self._x, self._y, self._wraplimit, self._align, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
 end
 
 -- Horribly named, but I don't know what else to call it.

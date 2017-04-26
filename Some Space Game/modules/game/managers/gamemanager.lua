@@ -34,7 +34,8 @@ function GameManager:Init()
 		local GAME_SCREENS = {
 			mainmenu = require "modules.game.gui.screens.mainmenu",
 			pausemenu = require "modules.game.gui.screens.pausemenu",
-			hud = require "modules.game.gui.screens.hud"
+			hud = require "modules.game.gui.screens.hud",
+			gameover = require "modules.game.gui.screens.gameover"
 		}
 		local startscreen = "mainmenu"
 
@@ -129,6 +130,7 @@ end
 
 function GameManager:GameOver()
 	Game:SetState( STATE_OVER )
+	GraphicsManager:SwitchScreen( "gameover" )
 
 	Hooks:Call( "GameOver" )
 end

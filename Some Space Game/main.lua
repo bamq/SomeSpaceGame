@@ -47,18 +47,6 @@ function love.draw()
 
 	SetDefaultColor()
 
-	Hooks:Call( "PreDrawHUD" )
-
-	SetDefaultColor()
-
-	GraphicsManager:DrawHUD()
-
-	SetDefaultColor()
-
-	Hooks:Call( "PostDrawHUD" )
-
-	SetDefaultColor()
-
 	Hooks:Call( "PostLoveDraw" )
 
 	SetDefaultColor()
@@ -88,6 +76,8 @@ function love.mousefocus( focus )
 end
 
 function love.mousemoved( x, y, dx, dy, istouch )
+	InputManager:MouseMoved( x, y, dx, dy, istouch )
+
 	Hooks:Call( "LoveMouseMoved", x, y, dx, dy, istouch )
 end
 
