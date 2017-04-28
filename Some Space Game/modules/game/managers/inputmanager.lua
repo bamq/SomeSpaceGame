@@ -53,7 +53,7 @@ function InputManager:KeyPressed( key, scancode, isrepeat )
 	end
 
 	if key == "p" then
-		GameManager:GameOver()
+		PrintTable( _G )
 	end
 
 	if key == "tab" then

@@ -94,15 +94,7 @@ function GraphicsManager:DrawStars()
 end
 
 function GraphicsManager:DrawPlayer()
-	local r, g, b, a = Player:GetColor()
-
-	love.graphics.setColor( r, g, b, a )
-	love.graphics.draw( Player:GetSprite(), Player:GetX(), Player:GetY(), 0, Player:GetWidth() / 10, Player:GetHeight() / 10 )
-
-	if Game.Config.Graphics.DrawScoreOnPlayer then
-		love.graphics.setColor( Player:GetColor() )
-		love.graphics.print( Player:GetLives(), Player:GetX() - ( Player:GetWidth() / 2 ), Player:GetY() - Player:GetHeight() / 2 )
-	end
+	Player:Draw()
 
 	Hooks:Call( "PostDrawPlayer" )
 end

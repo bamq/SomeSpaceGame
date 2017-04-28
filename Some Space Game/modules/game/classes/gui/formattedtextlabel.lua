@@ -20,6 +20,7 @@ function FormattedTextLabel:initialize()
 	self._textscale = 1
     self._align = "left"
     self._wraplimit = 9999
+	self._is_visible = true
 
 	Hooks:Call( "PostGUICreateFormattedTextLabel" )
 end
@@ -40,8 +41,18 @@ function FormattedTextLabel:Resize( w, h )
 end
 
 function FormattedTextLabel:Draw()
-	love.graphics.setColor( unpack( self._textcolor ) )
-	love.graphics.printf( self._text, self._x, self._y, self._wraplimit, self._align, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
+	if self._is_visible then
+		love.graphics.setColor( unpack( self._textcolor ) )
+		love.graphics.printf( self._text, self._x, self._y, self._wraplimit, self._align, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
+	end
+end
+
+function FormattedTextLabel:SetVisible( bool )
+	self._is_visible = bool
+end
+
+function FormattedTextLabel:IsVisible()
+	return self._is_visible
 end
 
 -- Horribly named, but I don't know what else to call it.

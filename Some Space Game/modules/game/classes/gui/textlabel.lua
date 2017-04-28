@@ -18,6 +18,7 @@ function TextLabel:initialize()
 	self._textcolor = { 0, 0, 0, 255 }
 	-- Allow a nice scaling option.
 	self._textscale = 1
+	self._is_visible = true
 
 	Hooks:Call( "PostGUICreateTextLabel" )
 end
@@ -38,8 +39,10 @@ function TextLabel:Resize( w, h )
 end
 
 function TextLabel:Draw()
-	love.graphics.setColor( unpack( self._textcolor ) )
-	love.graphics.print( self._text, self._x, self._y, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
+	if self._is_visible then
+		love.graphics.setColor( unpack( self._textcolor ) )
+		love.graphics.print( self._text, self._x, self._y, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
+	end
 end
 
 function TextLabel:SetText( text )

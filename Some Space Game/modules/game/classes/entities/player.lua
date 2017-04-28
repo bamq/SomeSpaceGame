@@ -31,6 +31,16 @@ function Player:initialize()
     self._bullets = {}
 end
 
+function Player:Draw()
+    love.graphics.setColor( self._color )
+    love.graphics.draw( self._sprite, self._x, self._y, 0, self._width / 10, self._height / 10 )
+
+    if Game.Config.Graphics.DrawScoreOnPlayer then
+        love.graphics.setColor( 255, 255, 255, self._color[ 4 ] or 255 )
+        love.graphics.print( self._lives, self._x - self._width / 2, self._y - self._height / 2 )
+    end
+end
+
 function Player:Fire()
 	if self._firecooldown <= 0 then
 		self._firecooldown = self._firedelay

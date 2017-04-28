@@ -23,13 +23,22 @@ function RectangleButton:initialize()
 	self._textcolor = { 0, 0, 0, 255 }
 	self._is_hovered = false
 	self._is_clicked = false
-	self._mouse_in_element = false
+	self._is_visible = true
 
 	Hooks:Call( "PostGUICreateRectangleButton" )
 end
 
 function RectangleButton:Update( dt )
 
+end
+
+function RectangleButton:Draw()
+	if self._is_visible then
+		love.graphics.setColor( unpack( self._buttoncolor ) )
+		love.graphics.rectangle( self._type, self._x, self._y, self._width, self._height )
+		love.graphics.setColor( unpack( self._textcolor ) )
+		love.graphics.print( self._text, self._x, self._y, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
+	end
 end
 
 function RectangleButton:MouseMoved( x, y, dx, dy, istouch )
@@ -64,11 +73,12 @@ end
 function RectangleButton:Resize( w, h )
 end
 
-function RectangleButton:Draw()
-	love.graphics.setColor( unpack( self._buttoncolor ) )
-	love.graphics.rectangle( self._type, self._x, self._y, self._width, self._height )
-	love.graphics.setColor( unpack( self._textcolor ) )
-	love.graphics.print( self._text, self._x, self._y, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
+function RectangleButton:SetVisible( bool )
+	self._is_visible = bool
+end
+
+function RectangleButton:IsVisible()
+	return self._is_visible
 end
 
 function RectangleButton:IsMouseFocused()

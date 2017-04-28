@@ -1,6 +1,5 @@
 
 unpack = unpack or table.unpack
-PrintTable = table.PrintElements
 
 function table.Copy( tbl )
     if tbl == nil then return nil end
@@ -19,6 +18,7 @@ function table.PrintElements( tbl )
         print( k, "=" .. tostring( v ) )
     end
 end
+PrintTable = table.PrintElements
 
 function table.HasValue( tbl, val )
     for k, v in pairs( tbl ) do

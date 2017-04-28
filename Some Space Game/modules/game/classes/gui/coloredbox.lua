@@ -17,13 +17,16 @@ function ColoredBox:initialize()
 	self._width = 0
 	self._height = 0
 	self._color = { 0, 0, 0, 255 }
+	self._is_visible = true
 
 	Hooks:Call( "PostGUICreateColoredBox", self )
 end
 
 function ColoredBox:Draw()
-	love.graphics.setColor( self._color )
-	love.graphics.rectangle( "fill", self._x, self._y, self._width, self._height )
+	if self._is_visible then
+		love.graphics.setColor( self._color )
+		love.graphics.rectangle( "fill", self._x, self._y, self._width, self._height )
+	end
 end
 
 function ColoredBox:Update( dt )
@@ -39,6 +42,14 @@ function ColoredBox:MouseMoved( x, y, dx, dy, istouch )
 end
 
 function ColoredBox:Resize( w, h )
+end
+
+function ColoredBox:SetVisible( bool )
+	self._is_visible = bool
+end
+
+function ColoredBox:IsVisible()
+	return self._is_visible
 end
 
 function ColoredBox:SetColor( r, g, b, a )

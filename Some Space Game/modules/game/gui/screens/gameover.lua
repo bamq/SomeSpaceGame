@@ -12,7 +12,7 @@ local Screen = require "modules.lib.screenmanager.screen"
 local GameOver = {}
 
 function GameOver.new()
-    self = Screen.new()
+    local self = Screen.new()
     self._elements = {}
     self._elements._gameover = GUI.TextLabel:new()
     self._elements._score = GUI.TextLabel:new()
