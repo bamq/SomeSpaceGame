@@ -42,17 +42,21 @@ local function RequireAddons( dir )
 
 		if foundFile then
 			table.insert( AddonsManager._addons, addon )
-			Util:Log( pfx, "Addon \"" .. addon .. "\" - mounted successfully!" )
+			Log( pfx, "Addon \"" .. addon .. "\" - mounted successfully!" )
 		else
-			Util:Log( pfx, "WARNING: Addon \"" .. addon .. "\" - FAILED to mount. Make sure main.lua exists!" )
+			Log( pfx, "WARNING: Addon \"" .. addon .. "\" - FAILED to mount. Make sure main.lua exists!" )
 		end
 	end
 end
 
 function AddonsManager:MountAddons()
-	Util:Log( pfx, "Fetching addons..." )
+	Log( pfx, "Fetching addons..." )
 	RequireAddons()
-	Util:Log( pfx, "Done fetching addons." )
+	Log( pfx, "Done fetching addons." )
 
 	Hooks:Call( "PostMountAddons" )
+end
+
+function AddonsManager:GetMountedAddons()
+	return table.Copy( self._addons )
 end

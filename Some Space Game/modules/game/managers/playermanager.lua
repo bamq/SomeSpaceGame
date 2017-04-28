@@ -17,7 +17,7 @@ local pfx = LOG_PFX.playermanager
 function PlayerManager:Init( first_init )
 	Player = PlayerClass:new()
 
-	Util:Log( pfx, "Initialized." )
+	Log( pfx, "Initialized." )
 
 	Hooks:Call( "PostPlayerManagerInit" )
 end
@@ -35,7 +35,7 @@ function PlayerManager:ForceInBounds()
 	elseif p._x > ScrW() then
 		p._x = ScrW() - p._width
 	end
-	
+
 	if p._y < ( ( ScrH() * 0.6 ) - 5 ) then
 		p._y = ( ScrH() * 0.6 )
 	elseif ( p._y + p._height ) > ScrH() then

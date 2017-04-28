@@ -17,7 +17,7 @@ local pfx = LOG_PFX.enemymanager
 function EnemyManager:Init( first_init )
 	self._enemies = {}
 	self._spawncooldown = 0
-	Util:Log( pfx, "Initialized." )
+	Log( pfx, "Initialized." )
 
 	Hooks:Call( "PostEnemyManagerInit" )
 end
@@ -39,13 +39,15 @@ function EnemyManager:CreateEnemy( x, y )
 	if block == false then return end
 
 	table.insert( self._enemies, Enemy )
-	Util:Log( pfx, "Enemy spawned at X: " .. Enemy._x, "Y: " .. Enemy._y )
+	Log( pfx, "Enemy spawned at X: " .. Enemy._x, "Y: " .. Enemy._y )
 
 	Hooks:Call( "PostCreateEnemy", Enemy )
+
+	return Enemy
 end
 
 function EnemyManager:GetEnemies()
-	return Util:CopyTable( self._enemies )
+	return table.Copy( self._enemies )
 end
 
 function EnemyManager:RemoveEnemy( target )
@@ -55,11 +57,11 @@ function EnemyManager:RemoveEnemy( target )
 			-- Let hooks block the deletion of the enemy.
 			local block = Hooks:Call( "PreRemoveEnemy", enemy )
 			-- Make a copy of it for the post hook.
-			local enemycopy = Util:CopyTable( enemy )
+			local enemycopy = table.Copy( enemy )
 			if block == false then return end
 
 			table.remove( self._enemies, k )
-			Util:Log( pfx, "Enemy removed." )
+			Log( pfx, "Enemy removed." )
 
 			Hooks:Call( "PostRemoveEnemy", enemycopy )
 		end
@@ -86,7 +88,7 @@ function EnemyManager:KillOutOFBounds()
 	for _, enemy in pairs( self._enemies ) do
 		if enemy._x < 0 or enemy._x > ScrW() or enemy._y > ( ScrH() * 0.25 ) or enemy._y < 0 then
 			self:RemoveEnemy( enemy )
-			Util:Log( pfx, "Enemy removed from game for out of bounds." )
+			Log( pfx, "Enemy removed from game for out of bounds." )
 		end
 	end
 end

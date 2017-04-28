@@ -20,7 +20,7 @@ local pfx = LOG_PFX.guimanager
 
 function GUIManager:Init()
 	self:SetMouseCursor( "arrow" )
-	Util:Log( pfx, "Initialized." )
+	Log( pfx, "Initialized." )
 
 	Hooks:Call( "PostGUIManagerInit" )
 end

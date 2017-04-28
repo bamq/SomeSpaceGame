@@ -41,11 +41,11 @@ function Enemy:Fire()
                 if bullet == Bullet then
                     -- Let hooks prevent this.
                     local block = Hooks:Call( "PreRemoveEnemyBullet", self, bullet )
-                    local bulletcopy = Util:CopyTable( bullet )
+                    local bulletcopy = table.Copy( bullet )
                     if block == false then return end
 
                     table.remove( self._bullets, k )
-                    Util:Log( pfx, "Enemy bullet removed" )
+                    Log( pfx, "Enemy bullet removed" )
 
                     Hooks:Call( "PostRemoveEnemyBullet", self, bulletcopy )
                 end
@@ -106,7 +106,7 @@ function Enemy:GetSprite()
 end
 
 function Enemy:GetBullets()
-    return Util:CopyTable( self._bullets )
+    return table.Copy( self._bullets )
 end
 
 return Enemy

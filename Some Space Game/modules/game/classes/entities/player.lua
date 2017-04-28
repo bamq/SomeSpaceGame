@@ -47,11 +47,11 @@ function Player:Fire()
 				if bullet == Bullet then
                     -- Let hooks prevent this.
 					local block = Hooks:Call( "PreRemovePlayerBullet", bullet )
-					local bulletcopy = Util:CopyTable( bullet )
+					local bulletcopy = table.Copy( bullet )
 					if block == false then return end
 
 					table.remove( self._bullets, k )
-					Util:Log( pfx, "Player bullet removed." )
+					Log( pfx, "Player bullet removed." )
 
 					Hooks:Call( "PostRemovePlayerBullet", bulletcopy )
 				end
@@ -72,10 +72,10 @@ function Player:LoseLife()
 	self._lives = self._lives - 1
 
 	if self._lives <= 0 then
-		Util:Log( pfx, "Player lost all their lives." )
+		Log( pfx, "Player lost all their lives." )
 		GameManager:GameOver()
 	else
-		Util:Log( pfx, "Player lost a life. " .. self._lives .. " left." )
+		Log( pfx, "Player lost a life. " .. self._lives .. " left." )
 	end
 
     -- Makes the player more transparent the more lives they lose.
@@ -86,14 +86,14 @@ end
 
 function Player:Freeze()
 	self._canmove = false
-	Util:Log( pfx, "Player frozen" )
+	Log( pfx, "Player frozen" )
 
 	Hooks:Call( "PlayerFrozen" )
 end
 
 function Player:UnFreeze()
 	self._canmove = true
-	Util:Log( pfx "Player unfrozen." )
+	Log( pfx "Player unfrozen." )
 
 	Hooks:Call( "PlayerUnFrozen" )
 end
@@ -185,7 +185,7 @@ function Player:GetLives()
 end
 
 function Player:GetBullets()
-	return Util:CopyTable( self._bullets )
+	return table.Copy( self._bullets )
 end
 
 function Player:SetBoosting( bool )

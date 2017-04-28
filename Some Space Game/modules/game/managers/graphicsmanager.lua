@@ -20,7 +20,7 @@ function GraphicsManager:Init( first_init )
 		self:InitializeSprites()
 	end
 
-	Util:Log( pfx, "Initialized." )
+	Log( pfx, "Initialized." )
 
 	Hooks:Call( "PostGraphicsManagerInit" )
 end

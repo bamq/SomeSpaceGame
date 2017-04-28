@@ -18,7 +18,7 @@ function GameManager:Init()
 	gameovertimer = 500
 	math.randomseed( os.time() )
 
-	Util:Log( pfx, first_init and "Initializing game. . ." or "Starting new game. . ." )
+	Log( pfx, first_init and "Initializing game. . ." or "Starting new game. . ." )
 
 	Game:ResetScore()
 	GraphicsManager:Init( first_init )
@@ -47,7 +47,7 @@ function GameManager:Init()
 	Hooks:Call( "GameInit", first_init )
 
 	if first_init then first_init = false end
-	Util:Log( pfx, "Game fully initialized. Took " .. Util:Round( ( love.timer.getTime() - t ) * 1000, 2 ) .. " milliseconds." )
+	Log( pfx, "Game fully initialized. Took " .. math.Round( ( love.timer.getTime() - t ) * 1000, 2 ) .. " milliseconds." )
 
 	Hooks:Call( "PostGameInit", first_init, time )
 end
@@ -97,13 +97,13 @@ function GameManager:CalculateBullets()
 		bullet._y = bullet._y - bullet._speed
 
 		for j, enemy in pairs( EnemyManager._enemies ) do
-			if Util:CheckCollision( bullet, enemy ) then
+			if CheckCollision( bullet, enemy ) then
 				local _killtext = FloatTextManager:CreateText( "+" .. Game.Config.Scoring.PointsForKill, enemy._x, enemy._y, 255, 0, 0, 30, 5 )
 
 				bullet:Remove()
 				enemy:Kill()
 				Game:AddScore( Game.Config.Scoring.PointsForKill )
-				Util:Log( pfx, "Enemy killed by Player." )
+				Log( pfx, "Enemy killed by Player." )
 			end
 		end
 	end
@@ -116,7 +116,7 @@ function GameManager:CalculateBullets()
 
 			bullet._y = bullet._y + bullet._speed
 
-			if Util:CheckCollision( bullet, Player ) then
+			if CheckCollision( bullet, Player ) then
 				local _killtext = FloatTextManager:CreateText( "Life lost!", Player:GetX(), Player:GetY() - 10, 255, 255, 255, 30, 5 )
 
 				bullet:Remove()

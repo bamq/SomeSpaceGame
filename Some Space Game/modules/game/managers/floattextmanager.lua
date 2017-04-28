@@ -14,7 +14,7 @@ local pfx = LOG_PFX.floattextmanager
 
 function FloatTextManager:Init( first_init )
 	self._texts = {}
-	Util:Log( pfx, "Initialized." )
+	Log( pfx, "Initialized." )
 
 	Hooks:Call( "PostFloatTextManagerInit" )
 end
@@ -38,11 +38,11 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 			if v == self then
 				local block = Hooks:Call( "PreRemoveFloatText", self )
 				-- Let hooks block the removal of the float text.
-				local selfcopy = Util:CopyTable( self )
+				local selfcopy = table.Copy( self )
 				if block == false then return end
 
 				table.remove( FloatTextManager._texts, k )
-				Util:Log( pfx, "Float text removed." )
+				Log( pfx, "Float text removed." )
 
 				Hooks:Call( "PostRemoveFloatText", selfcopy )
 			end
@@ -113,7 +113,7 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 
 	table.insert( self._texts, Text )
 	Text:SetVisible( true )
-	Util:Log( pfx, "Float text created at X: " .. Text._x, "Y: " .. Text._y, "Message: " .. Text._message )
+	Log( pfx, "Float text created at X: " .. Text._x, "Y: " .. Text._y, "Message: " .. Text._message )
 
 	Hooks:Call( "PostCreateFloatText", Text )
 
@@ -122,7 +122,7 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 end
 
 function FloatTextManager:GetTexts()
-	return Util:CopyTable( self._texts )
+	return table.Copy( self._texts )
 end
 
 function FloatTextManager:DecrementCooldowns()

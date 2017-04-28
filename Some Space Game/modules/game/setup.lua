@@ -9,6 +9,9 @@
 
 SomeSpaceGame = {}
 
+SYSTEM_OS = love.system.getOS()
+SYSTEM_CORES = love.system.getProcessorCount()
+
 require "modules.game.core"
 require "modules.utils.utils"
 require "modules.utils.hooks"

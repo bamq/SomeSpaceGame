@@ -18,7 +18,7 @@ function StarsManager:Init( first_init )
 	self._starscolor = Game.Config.Graphics.StarsColor
 	self._cooldown = 0
 
-	Util:Log( pfx, "Initialized." )
+	Log( pfx, "Initialized." )
 
 	Hooks:Call( "PostStarsManagerInit" )
 end
@@ -36,13 +36,13 @@ function StarsManager:GenerateStars()
 		self._stars[ i ] = { "fill", math.random( 1, ScrW() ), math.random( 1, ScrH() ), ( 25 ) / ( 17 * math.sqrt( Game.Config.Graphics.DrawScale ) + 10 ) * 1 }
 	end
 
-	Util:Log( pfx, "Stars generated." )
+	Log( pfx, "Stars generated." )
 
 	Hooks:Call( "PostGenerateStars", self._stars )
 end
 
 function StarsManager:GetStars()
-	return Util:CopyTable( self._stars )
+	return table.Copy( self._stars )
 end
 
 function StarsManager:DecrementCooldowns()
