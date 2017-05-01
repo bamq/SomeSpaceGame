@@ -29,6 +29,7 @@ function Player:initialize()
     self._firedelay = Game.Config.Player.FireDelay
     self._firecooldown = 0
     self._bullets = {}
+    self._inventory = {}
 end
 
 function Player:Draw()
@@ -212,6 +213,52 @@ end
 
 function Player:GetSprite()
 	return self._sprite
+end
+
+function Player:AddInventoryItem( item )
+    if not item._name then return end
+
+    table.insert( self._inventory, item )
+end
+
+function Player:RemoveInventoryItem( item )
+    for k, v in pairs( self._inventory ) do
+        if v == item then
+            table.remove( self._inventory, k )
+        end
+    end
+end
+
+function Player:RemoveInventoryItemByName( name )
+    for k, v in pairs( self._inventory ) do
+        if v._name == name then
+            table.remove( self._inventory, k )
+        end
+    end
+end
+
+function Player:HasInventoryItem( item )
+    for k, v in pairs( self._inventory ) do
+        if v == item then
+            return true
+        end
+    end
+
+    return false
+end
+
+function Player:HasInventoryItemName( name )
+    for k, v in pairs( self._inventory ) do
+        if v._name == name then
+            return true
+        end
+    end
+
+    return false
+end
+
+function Player:GetInventory()
+    return table.Copy( self._inventory )
 end
 
 return Player
