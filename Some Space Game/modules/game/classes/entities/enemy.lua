@@ -17,10 +17,12 @@ function Enemy:initialize( x, y )
     self._sprite = ENEMY_SPRITES[ math.random( 1, #ENEMY_SPRITES ) ]
     self._x = x
     self._y = y
+    self._color = { 255, 255, 255, 255 }
     self._width = Game.Config.Enemy.Width
     self._height = Game.Config.Enemy.Height
     self._bullets = {}
     self._cooldown = 0
+    self._is_visible = true
 end
 
 function Enemy:Kill()
@@ -63,8 +65,10 @@ function Enemy:Fire()
 end
 
 function Enemy:Draw()
-    love.graphics.setColor( 255, 255, 255, 255 )
-    love.graphics.draw( self._sprite, self._x, self._y, 0, self._width / 10, self._height / 10 )
+    if self._is_visible then
+        love.graphics.setColor( self._color )
+        love.graphics.draw( self._sprite, self._x, self._y, 0, self._width / 10, self._height / 10 )
+    end
 end
 
 function Enemy:SetPos( x, y )
@@ -107,6 +111,34 @@ end
 
 function Enemy:GetBullets()
     return table.Copy( self._bullets )
+end
+
+function Enemy:SetVisible( bool )
+    self._is_visible = bool
+end
+
+function Enemy:IsVisible()
+    return self._is_visibile
+end
+
+function Enemy:SetColor( r, g, b, a )
+    if r and g and b then
+        if not a then a = 255 end
+
+        self._color = { r, g, b, a }
+    end
+end
+
+function Enemy:GetColor()
+    return unpack( self._color )
+end
+
+function Enemy:SetAlpha( alpha )
+    self._color[ 4 ] = alpha
+end
+
+function Enemy:GetSprite()
+    return self._sprite
 end
 
 return Enemy

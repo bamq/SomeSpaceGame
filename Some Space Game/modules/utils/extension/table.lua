@@ -39,7 +39,7 @@ function table.GetKeyFromValue( tbl, val )
         end
     end
 
-    return keys
+    return unpack( keys )
 end
 
 function table.RemoveByValue( tbl, val )
