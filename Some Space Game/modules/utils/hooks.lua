@@ -12,7 +12,7 @@ local pfx = LOG_PFX.hooks
 local hookTable = {}
 
 function Hooks:GetRegisteredHooks()
-	return Util:CopyTable( hookTable )
+	return table.Copy( hookTable )
 end
 
 function Hooks:Add( event_name, hook_id, func )
