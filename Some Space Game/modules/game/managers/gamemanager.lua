@@ -97,7 +97,7 @@ function GameManager:CalculateBullets()
 		bullet._y = bullet._y - bullet._speed
 
 		for j, enemy in pairs( EnemyManager._enemies ) do
-			if CheckCollision( bullet, enemy ) then
+			if enemy:IsActive() and CheckCollision( bullet, enemy ) then
 				local _killtext = FloatTextManager:CreateText( "+" .. Game.Config.Scoring.PointsForKill, enemy._x, enemy._y, 255, 0, 0, 30, 5 )
 
 				bullet:Remove()

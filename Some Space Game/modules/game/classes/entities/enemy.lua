@@ -23,6 +23,7 @@ function Enemy:initialize( x, y )
     self._bullets = {}
     self._cooldown = 0
     self._is_visible = true
+    self._is_active = true
 end
 
 function Enemy:Kill()
@@ -30,7 +31,7 @@ function Enemy:Kill()
 end
 
 function Enemy:Fire()
-    if self._cooldown <= 0 then
+    if self._is_active and self._cooldown <= 0 then
         self._cooldown = Game.Config.Enemy.FireDelay
         local Bullet = BulletClass:new( self._x + ( self._width / 2 ), self._y + ( self._height / 2 ) )
 
@@ -139,6 +140,14 @@ end
 
 function Enemy:GetSprite()
     return self._sprite
+end
+
+function Enemy:SetActive( active )
+    self._is_active = active
+end
+
+function Enemy:IsActive()
+    return self._is_active
 end
 
 return Enemy

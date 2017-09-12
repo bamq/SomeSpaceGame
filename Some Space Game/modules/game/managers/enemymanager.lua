@@ -26,7 +26,7 @@ function EnemyManager:Update( dt )
 	self:ProcessEnemyLogic()
 end
 
-function EnemyManager:CreateEnemy( x, y )
+function EnemyManager:CreateEnemy( x, y, start_inactive )
 	-- Create a new enemy object.
 	local Enemy = EnemyClass:new( x, y )
 
@@ -38,10 +38,14 @@ function EnemyManager:CreateEnemy( x, y )
 	local block = Hooks:Call( "PreCreateEnemy", Enemy )
 	if block == false then return end
 
+	if start_inactive then
+		Enemy:SetActive( false )
+	end
+
 	table.insert( self._enemies, Enemy )
 	Log( pfx, "Enemy spawned at X: " .. Enemy._x, "Y: " .. Enemy._y )
 
-	Hooks:Call( "PostCreateEnemy", Enemy )
+	Hooks:Call( "PostCreateEnemy", Enemy, start_inactive )
 
 	return Enemy
 end
@@ -72,6 +76,8 @@ function EnemyManager:ProcessEnemyLogic()
 	self:KillOutOFBounds()
 
 	for _, enemy in pairs( self._enemies ) do
+		if not enemy:IsActive() then return end
+
 		enemy:Fire()
 		enemy._cooldown = enemy._cooldown - 1
 	end

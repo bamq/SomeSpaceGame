@@ -15,7 +15,8 @@ PlayerManager = {}
 local pfx = LOG_PFX.playermanager
 
 function PlayerManager:Init( first_init )
-	Player = PlayerClass:new()
+	self._players = {}
+	Player = self:NewPlayer()
 
 	Log( pfx, "Initialized." )
 
@@ -25,6 +26,25 @@ end
 function PlayerManager:Update( dt )
 	self:ForceInBounds()
 	Player:DecrementCooldowns()
+end
+
+function PlayerManager:NewPlayer()
+	Hooks:Call( "PreCreateNewPlayer" )
+
+	local player = PlayerClass:new()
+	table.insert( self._players, player )
+
+	Hooks:Call( "PostCreateNewPlayer", player )
+
+	return player
+end
+
+function PlayerManager:RemovePlayer( player )
+	for k, v in pairs( self._players ) do
+		if v == player then
+			table.remove( self._players, k )
+		end
+	end
 end
 
 function PlayerManager:ForceInBounds()

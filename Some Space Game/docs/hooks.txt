@@ -308,6 +308,14 @@ Description: Called after inputs that require a key to be held down are processe
 Hook: "PostPlayerManagerInit"
 Description: Called after the PlayerManager has been initialized.
 
+Hook: "PreCreateNewPlayer"
+Description: Called before a new player is created.
+
+Hook: "PostCreateNewPlayer"
+Params: {
+	[table] the player that was created
+}
+Description: Called after a new player has been created.
 
 =========================================================
 == Category: Player Class ===============================
@@ -375,6 +383,7 @@ Description: Called before an enemy is created. Return false to block. Can be us
 Hook: "PostCreateEnemy"
 Params: {
 	[table] enemy that was created
+	[bool] was the enemy's default state set to inactive
 }
 Description: Called after an enemy is created. Can be used to get and modify the enemy's values.
 
