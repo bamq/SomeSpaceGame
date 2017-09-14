@@ -174,9 +174,6 @@ Description: Called every frame after the player has been drawn.
 Hook: "PostDrawEnemies"
 Description: Called every frame after all enemies have been drawn.
 
-Hook: "PostDrawBullets"
-Description: Called every frame after all bullets have been drawn.
-
 Hook: "PostDrawFloatTexts"
 Description: Called every frame after all float texts have been drawn.
 
@@ -295,9 +292,6 @@ Description: Called after addons have been required to the game.
 == Category: InputManager ===============================
 == Description: Hooks associated with the InputManager ==
 =========================================================
-
-Hook: "PostProcessInputs"
-Description: Called after inputs that require a key to be held down are processed.
 
 
 ======================================================

@@ -33,6 +33,32 @@ function Player:initialize()
     self._inventory = InventoryClass:new()
 end
 
+function Player:Update( dt )
+    local down = love.keyboard.isDown
+
+    if down( "w" ) or down( "up" ) then
+        self:Move( "up" )
+    end
+
+    if down( "s" ) or down( "down" ) then
+        self:Move( "down" )
+    end
+
+    if down( "a" ) or down( "left" ) then
+        self:Move( "left" )
+    end
+
+    if down( "d" ) or down( "right" ) then
+        self:Move( "right" )
+    end
+
+    if down( "space" ) then
+        self:Fire()
+    end
+
+    self:CheckInBounds()
+end
+
 function Player:Draw()
     love.graphics.setColor( self._color )
     love.graphics.draw( self._sprite, self._x, self._y, 0, self._width / 10, self._height / 10 )
@@ -40,6 +66,10 @@ function Player:Draw()
     if Game.Config.Graphics.DrawScoreOnPlayer then
         love.graphics.setColor( 255, 255, 255, self._color[ 4 ] or 255 )
         love.graphics.print( self._lives, self._x - self._width / 2, self._y - self._height / 2 )
+    end
+
+    for _, bullet in pairs( self._bullets ) do
+        bullet:Draw()
     end
 end
 
@@ -208,7 +238,7 @@ function Player:IsBoosting()
 	return self._isboost
 end
 
-function Player:DecrementCooldowns()
+function Player:DoCooldown()
 	self._firecooldown = self._firecooldown - 1
 end
 
@@ -218,6 +248,20 @@ end
 
 function Player:Inventory()
     return self._inventory
+end
+
+function Player:CheckInBounds()
+    if self._x < 0 then
+        self._x = 0
+    elseif self._x > ScrW() then
+        self._x = ScrW() - self._width
+    end
+
+    if self._y < ( ( ScrH() * 0.6 ) - 5 ) then
+        self._y = ( ScrH() * 0.6 )
+    elseif ( self._y + self._height ) > ScrH() then
+        self._y = ( ScrH() - self._height )
+    end
 end
 
 return Player

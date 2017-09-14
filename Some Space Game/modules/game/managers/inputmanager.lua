@@ -15,32 +15,6 @@ function InputManager:Update( dt )
 	self:ProcessInputs()
 end
 
-function InputManager:ProcessInputs()
-	local down = love.keyboard.isDown
-
-	if down( "w" ) or down( "up" ) then
-		Player:Move( "up" )
-	end
-
-	if down( "s" ) or down( "down" ) then
-		Player:Move( "down" )
-	end
-
-	if down( "a" ) or down( "left" ) then
-		Player:Move( "left" )
-	end
-
-	if down( "d" ) or down( "right" ) then
-		Player:Move( "right" )
-	end
-
-	if down( "space" ) then
-		Player:Fire()
-	end
-
-	Hooks:Call( "PostProcessInputs" )
-end
-
 function InputManager:KeyPressed( key, scancode, isrepeat )
 	if key == "escape" then
 		if Game:GetState() == STATE_ACTIVE then

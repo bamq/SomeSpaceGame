@@ -27,6 +27,14 @@ function StarsManager:Update( dt )
 	self:DecrementCooldowns()
 end
 
+function StarsManager:Draw()
+	love.graphics.setColor( StarsManager:GetColor() )
+
+	for _, star in pairs( StarsManager:GetStars() ) do
+		love.graphics.circle( unpack( star ) )
+	end
+end
+
 function StarsManager:GenerateStars()
 	-- Let hooks block this if for some reason they want to.
 	local block = Hooks:Call( "PreGenerateStars" )

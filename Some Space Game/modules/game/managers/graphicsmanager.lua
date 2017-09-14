@@ -58,9 +58,8 @@ function GraphicsManager:Draw()
 		-- Draw when the game is running or is paused.
 		self:DrawBackground()
 		self:DrawStars()
-		self:DrawPlayer()
+		self:DrawPlayers()
 		self:DrawEnemies()
-		self:DrawBullets()
 		self:DrawFloatTexts()
 	end
 
@@ -84,17 +83,15 @@ function GraphicsManager:DrawBackground()
 end
 
 function GraphicsManager:DrawStars()
-	love.graphics.setColor( StarsManager:GetColor() )
-
-	for _, star in pairs( StarsManager:GetStars() ) do
-		love.graphics.circle( unpack( star ) )
-	end
+	StarsManager:Draw()
 
 	Hooks:Call( "PostDrawStars" )
 end
 
-function GraphicsManager:DrawPlayer()
-	Player:Draw()
+function GraphicsManager:DrawPlayers()
+	for _, player in pairs( PlayerManager:GetPlayers() ) do
+		player:Draw()
+	end
 
 	Hooks:Call( "PostDrawPlayer" )
 end
@@ -107,24 +104,8 @@ function GraphicsManager:DrawEnemies()
 	Hooks:Call( "PostDrawEnemies" )
 end
 
-function GraphicsManager:DrawBullets()
-	for _, bullet in pairs( Player:GetBullets() ) do
-		bullet:Draw()
-	end
-
-	for _, enemy in pairs( EnemyManager:GetEnemies() ) do
-		for __, bullet in pairs( enemy:GetBullets() ) do
-			bullet:Draw()
-		end
-	end
-
-	Hooks:Call( "PostDrawBullets" )
-end
-
 function GraphicsManager:DrawFloatTexts()
-	for _, text in pairs( FloatTextManager:GetTexts() ) do
-		text:Draw()
-	end
+	FloatTextManager:Draw()
 
 	Hooks:Call( "PostDrawFloatTexts" )
 end

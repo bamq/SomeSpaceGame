@@ -42,7 +42,7 @@ function EnemyManager:CreateEnemy( x, y, start_inactive )
 		Enemy:SetActive( false )
 	end
 
-	table.insert( self._enemies, Enemy )
+	self:RegisterEnemy( Enemy )
 	Log( pfx, "Enemy spawned at X: " .. Enemy._x, "Y: " .. Enemy._y )
 
 	Hooks:Call( "PostCreateEnemy", Enemy, start_inactive )
@@ -52,6 +52,11 @@ end
 
 function EnemyManager:GetEnemies()
 	return table.Copy( self._enemies )
+end
+
+-- TODO: Check if valid enemy
+function EnemyManager:RegisterEnemy( enemy )
+	table.insert( self._enemies, enemy )
 end
 
 function EnemyManager:RemoveEnemy( target )

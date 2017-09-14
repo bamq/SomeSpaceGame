@@ -70,6 +70,10 @@ function Enemy:Draw()
         love.graphics.setColor( self._color )
         love.graphics.draw( self._sprite, self._x, self._y, 0, self._width / 10, self._height / 10 )
     end
+
+    for _, bullet in pairs( self._bullets ) do
+        bullet:Draw()
+    end
 end
 
 function Enemy:SetPos( x, y )

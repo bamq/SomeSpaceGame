@@ -23,6 +23,12 @@ function FloatTextManager:Update( dt )
 	self:DecrementCooldowns()
 end
 
+function FloatTextManager:Draw()
+	for _, text in pairs( self._texts ) do
+		text:Draw()
+	end
+end
+
 function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 	local Text = {}
 	Text._time = time or 0
