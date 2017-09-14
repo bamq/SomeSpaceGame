@@ -12,7 +12,7 @@ InputManager = {}
 local pfx = LOG_PFX.inputmanager
 
 function InputManager:Update( dt )
-	self:ProcessInputs()
+
 end
 
 function InputManager:KeyPressed( key, scancode, isrepeat )
