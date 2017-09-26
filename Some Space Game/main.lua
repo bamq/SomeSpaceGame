@@ -9,13 +9,11 @@
 
 require "modules.game.setup"
 
-local pfx = LOG_PFX.main
-
 function love.load()
 
 	Hooks:Call( "PreLoveLoad" )
 
-	GameManager:Init()
+	SomeSpaceGame:Setup()
 
 	Hooks:Call( "PostLoveLoad" )
 

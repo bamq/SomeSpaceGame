@@ -37,7 +37,7 @@ function RectangleButton:Draw()
 		love.graphics.setColor( unpack( self._buttoncolor ) )
 		love.graphics.rectangle( self._type, self._x, self._y, self._width, self._height )
 		love.graphics.setColor( unpack( self._textcolor ) )
-		love.graphics.print( self._text, self._x, self._y, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
+		love.graphics.print( self._text, self._x, self._y, 0, self._textscale / Game:GetConfig( "graphics_scale" ), self._textscale / Game:GetConfig( "graphics_scale" ) )
 	end
 end
 

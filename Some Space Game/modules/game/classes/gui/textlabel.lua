@@ -41,7 +41,7 @@ end
 function TextLabel:Draw()
 	if self._is_visible then
 		love.graphics.setColor( unpack( self._textcolor ) )
-		love.graphics.print( self._text, self._x, self._y, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
+		love.graphics.print( self._text, self._x, self._y, 0, self._textscale / Game:GetConfig( "graphics_scale" ), self._textscale / Game:GetConfig( "graphics_scale" ) )
 	end
 end
 

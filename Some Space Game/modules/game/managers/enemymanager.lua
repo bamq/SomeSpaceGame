@@ -87,9 +87,9 @@ function EnemyManager:ProcessEnemyLogic()
 		enemy._cooldown = enemy._cooldown - 1
 	end
 
-	if self._spawncooldown <= 0 and #self._enemies < Game.Config.Enemy.MaxEnemies then
-		self._spawncooldown = Game.Config.Enemy.SpawnDelay
-		self:CreateEnemy( math.random( 1, ScrW() - Game.Config.Enemy.Width ), math.random( 10, ScrH() * 0.25 ) )
+	if self._spawncooldown <= 0 and #self._enemies < Game:GetConfig( "enemy_max_enemies" ) then
+		self._spawncooldown = Game:GetConfig( "enemy_spawn_delay" )
+		self:CreateEnemy( math.random( 1, ScrW() - Game:GetConfig( "enemy_default_width" ) ), math.random( 10, ScrH() * 0.25 ) )
 	end
 
 	self._spawncooldown = self._spawncooldown - 1

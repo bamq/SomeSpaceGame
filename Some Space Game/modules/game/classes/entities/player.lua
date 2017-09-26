@@ -19,15 +19,15 @@ function Player:initialize()
     self._color = { 255, 255, 255, 255 }
     self._canmove = true
     self._isboost = false
-    self._boostfactor = Game.Config.Player.BoostFactor
-    self._lives = Game.Config.Player.Lives
-    self._width = Game.Config.Player.Width
-    self._height = Game.Config.Player.Height
+    self._boostfactor = Game:GetConfig( "player_boost_multiplier" )
+    self._lives = Game:GetConfig( "player_starting_lives" )
+    self._width = Game:GetConfig( "player_default_width" )
+    self._height = Game:GetConfig( "player_default_height" )
     self._x = 0
     self._y = ScrH() - self._height
     self._sprite = PLAYER_SPRITE
-    self._speed = Game.Config.Player.DefaultSpeed
-    self._firedelay = Game.Config.Player.FireDelay
+    self._speed = Game:GetConfig( "player_default_speed" )
+    self._firedelay = Game:GetConfig( "player_fire_delay" )
     self._firecooldown = 0
     self._bullets = {}
     self._inventory = InventoryClass:new()
@@ -63,7 +63,7 @@ function Player:Draw()
     love.graphics.setColor( self._color )
     love.graphics.draw( self._sprite, self._x, self._y, 0, self._width / 10, self._height / 10 )
 
-    if Game.Config.Graphics.DrawScoreOnPlayer then
+    if Game:GetConfig( "graphics_draw_score_on_player" ) then
         love.graphics.setColor( 255, 255, 255, self._color[ 4 ] or 255 )
         love.graphics.print( self._lives, self._x - self._width / 2, self._y - self._height / 2 )
     end
@@ -78,11 +78,11 @@ function Player:Fire()
 		self._firecooldown = self._firedelay
 		local Bullet = BulletClass:new()
 
-		Bullet:SetSize( Game.Config.Player.BulletWidth, Game.Config.Player.BulletHeight )
+		Bullet:SetSize( Game:GetConfig( "player_bullet_width" ), Game:GetConfig( "player_bullet_height" ) )
         -- Make the bullet come out of the middle of the player.
 		Bullet:SetPos( self._x + ( self._width / 2 ) - Bullet:GetWidth() / 2, self._y + ( self._height / 2 ) - Bullet:GetHeight() )
-		Bullet:SetColor( unpack( Game.Config.Player.BulletColor ) )
-		Bullet:SetSpeed( Game.Config.Player.BulletSpeed )
+		Bullet:SetColor( unpack( Game:GetConfig( "player_bullet_color" ) ) )
+		Bullet:SetSpeed( Game:GetConfig( "player_bullet_speed" ) )
 
 		function Bullet.Remove()
 			for k, bullet in pairs( self._bullets ) do
@@ -121,7 +121,7 @@ function Player:LoseLife()
 	end
 
     -- Makes the player more transparent the more lives they lose.
-	self:SetAlpha( ( self:GetLives() / Game.Config.Player.Lives ) * 255)
+	self:SetAlpha( ( self:GetLives() / Game:GetConfig( "player_starting_lives" ) ) * 255)
 
 	Hooks:Call( "PlayerLostLife" )
 end

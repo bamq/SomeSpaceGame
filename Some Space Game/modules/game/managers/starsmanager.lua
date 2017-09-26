@@ -15,7 +15,7 @@ local pfx = LOG_PFX.starsmanager
 
 function StarsManager:Init( first_init )
 	self._stars = {}
-	self._starscolor = Game.Config.Graphics.StarsColor
+	self._starscolor = Game:GetConfig( "graphics_stars_color" )
 	self._cooldown = 0
 
 	Log( pfx, "Initialized." )
@@ -40,8 +40,8 @@ function StarsManager:GenerateStars()
 	local block = Hooks:Call( "PreGenerateStars" )
 	if block == false then return end
 
-	for i = 1, Game.Config.Graphics.NumStars do
-		self._stars[ i ] = { "fill", math.random( 1, ScrW() ), math.random( 1, ScrH() ), ( 25 ) / ( 17 * math.sqrt( Game.Config.Graphics.DrawScale ) + 10 ) * 1 }
+	for i = 1, Game:GetConfig( "graphics_number_of_stars" ) do
+		self._stars[ i ] = { "fill", math.random( 1, ScrW() ), math.random( 1, ScrH() ), ( 25 ) / ( 17 * math.sqrt( Game:GetConfig( "graphics_scale" ) ) + 10 ) * 1 }
 	end
 
 	Log( pfx, "Stars generated." )
@@ -56,7 +56,7 @@ end
 function StarsManager:DecrementCooldowns()
 	if self._cooldown <= 0 then
 		self:GenerateStars()
-		self._cooldown = Game.Config.Graphics.StarsInterval
+		self._cooldown = Game:GetConfig( "graphics_stars_refresh_delay" )
 	else
 		self._cooldown = self._cooldown - 1
 	end

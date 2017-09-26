@@ -22,7 +22,7 @@ function Hooks:Add( event_name, hook_id, func )
 
 	hookTable[ event_name ][ hook_id ] = func
 
-	Util:Log( pfx, "New Hook registered. event_name: \"" .. event_name .. "\" hook_id: \"" .. hook_id .. "\"" )
+	Log( pfx, "New Hook registered. event_name: \"" .. event_name .. "\" hook_id: \"" .. hook_id .. "\"" )
 end
 
 function Hooks:Remove( event_name, hook_id )
@@ -33,7 +33,7 @@ function Hooks:Remove( event_name, hook_id )
 	else
 		hookTable[ event_name ][ hook_id ] = nil
 
-		Util:Log( pfx, "Hook removed. hook_id: \"" .. event_name .. "\"" )
+		Log( pfx, "Hook removed. hook_id: \"" .. event_name .. "\"" )
 	end
 end
 

@@ -18,8 +18,8 @@ function Enemy:initialize( x, y )
     self._x = x
     self._y = y
     self._color = { 255, 255, 255, 255 }
-    self._width = Game.Config.Enemy.Width
-    self._height = Game.Config.Enemy.Height
+    self._width = Game:GetConfig( "enemy_default_width" )
+    self._height = Game:GetConfig( "enemy_default_height" )
     self._bullets = {}
     self._cooldown = 0
     self._is_visible = true
@@ -32,12 +32,12 @@ end
 
 function Enemy:Fire()
     if self._is_active and self._cooldown <= 0 then
-        self._cooldown = Game.Config.Enemy.FireDelay
+        self._cooldown = Game:GetConfig( "enemy_fire_delay" )
         local Bullet = BulletClass:new( self._x + ( self._width / 2 ), self._y + ( self._height / 2 ) )
 
-        Bullet:SetColor( unpack( Game.Config.Enemy.BulletColor ) )
-        Bullet:SetSize( Game.Config.Enemy.BulletWidth, Game.Config.Enemy.BulletHeight )
-        Bullet:SetSpeed( Game.Config.Enemy.BulletSpeed )
+        Bullet:SetColor( unpack( Game:GetConfig( "enemy_bullet_color" ) ) )
+        Bullet:SetSize( Game:GetConfig( "enemy_bullet_width" ), Game:GetConfig( "enemy_bullet_height" ) )
+        Bullet:SetSpeed( Game:GetConfig( "enemy_bullet_speed" ) )
 
         function Bullet.Remove()
             for k, bullet in pairs( self._bullets ) do

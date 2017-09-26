@@ -109,6 +109,20 @@ Description: Called when the window is resized.
 
 
 ========================================================
+== Category: Config ====================================
+== Description: Hooks associated with the game config ==
+========================================================
+
+Hook: "PostNewConfigCreated"
+Params: {
+	[string] the name of the config
+	[any] the default value of the config
+	[any] the type of the value of the config
+}
+Description: Called when a new config is created.
+
+
+========================================================
 == Category: GameManager ===============================
 == Description: Hooks associated with the GameManager ==
 ========================================================

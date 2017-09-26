@@ -29,6 +29,13 @@ function GameManager:Init()
 
 	if first_init then
 		-- We really only need to do this stuff on the very first init.
+		local difficulty = Game:GetConfig( "skill" )
+		if difficulty == 1 then -- easy, don't change
+		elseif difficulty == 2 then -- medium, change a bit
+			Game:SetConfig( "enemy_max_enemies", 10 )
+		elseif difficulty == 3 then -- hard, change a lot
+			Game:SetConfig( "enemy_max_enemies", 50 )
+		end
 		GUIManager:Init()
 		AddonsManager:MountAddons()
 		local GAME_SCREENS = {
@@ -98,11 +105,11 @@ function GameManager:CalculateBullets()
 
 		for j, enemy in pairs( EnemyManager._enemies ) do
 			if enemy:IsActive() and CheckCollision( bullet, enemy ) then
-				local _killtext = FloatTextManager:CreateText( "+" .. Game.Config.Scoring.PointsForKill, enemy._x, enemy._y, 255, 0, 0, 30, 5 )
+				local _killtext = FloatTextManager:CreateText( "+" .. Game:GetConfig( "game_points_for_kill" ), enemy._x, enemy._y, 255, 0, 0, 30, 5 )
 
 				bullet:Remove()
 				enemy:Kill()
-				Game:AddScore( Game.Config.Scoring.PointsForKill )
+				Game:AddScore( Game:GetConfig( "game_points_for_kill" ) )
 				Log( pfx, "Enemy killed by Player." )
 			end
 		end

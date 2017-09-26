@@ -39,11 +39,11 @@ end
 
 function GraphicsManager:InitializeSprites()
 	-- Create global values for the sprites.
-	PLAYER_SPRITE = love.graphics.newImage( Game.Config.Graphics.PlayerSprite )
+	PLAYER_SPRITE = love.graphics.newImage( Game:GetConfig( "player_sprite" ) )
 	ENEMY_SPRITES = {}
 
-	for i = 1, #Game.Config.Graphics.EnemySprites do
-		ENEMY_SPRITES[ i ] = love.graphics.newImage( Game.Config.Graphics.EnemySprites[ i ] )
+	for i = 1, #Game:GetConfig( "enemy_sprites" ) do
+		ENEMY_SPRITES[ i ] = love.graphics.newImage( Game:GetConfig( "enemy_sprites" )[ i ] )
 	end
 end
 
@@ -51,7 +51,7 @@ function GraphicsManager:Draw()
 	-- Push the graphics state.
 	love.graphics.push()
 	-- Set the scale.
-	love.graphics.scale( Game.Config.Graphics.DrawScale )
+	love.graphics.scale( Game:GetConfig( "graphics_scale" ) )
 	local state = Game:GetState()
 
 	if state == STATE_ACTIVE or state == STATE_PAUSE then

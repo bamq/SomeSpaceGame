@@ -58,7 +58,7 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 	function Text:Draw()
 		if self._is_visible then
 			love.graphics.setColor( self._color )
-			love.graphics.print( self._message, self._x, self._y, 0, self._scale / Game.Config.Graphics.DrawScale, self._scale / Game.Config.Graphics.DrawScale )
+			love.graphics.print( self._message, self._x, self._y, 0, self._scale / Game:GetConfig( "graphics_scale" ), self._scale / Game:GetConfig( "graphics_scale" ) )
 		end
 	end
 

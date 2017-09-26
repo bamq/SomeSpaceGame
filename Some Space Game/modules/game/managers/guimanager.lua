@@ -66,8 +66,8 @@ end
 
 function GUIManager:CheckMouseInElement( element )
 	local mx, my = love.mouse.getPosition()
-	mx = mx / Game.Config.Graphics.DrawScale
-	my = my / Game.Config.Graphics.DrawScale
+	mx = mx / Game:GetConfig( "graphics_scale" )
+	my = my / Game:GetConfig( "graphics_scale" )
 
 	if ( mx >= element._x ) and ( mx <= element._x + element._width ) and ( my >= element._y ) and ( my <= element._y + element._height ) then
 		return true

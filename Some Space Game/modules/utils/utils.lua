@@ -15,12 +15,12 @@ local pfx = LOG_PFX.utils
 
 -- Quickly retrieve the scaled screen width.
 function ScrW()
-	return love.graphics.getWidth() / Game.Config.Graphics.DrawScale
+	return love.graphics.getWidth() / Game:GetConfig( "graphics_scale" )
 end
 
 -- Quickly retrieve the scaled screen height.
 function ScrH()
-	return love.graphics.getHeight() / Game.Config.Graphics.DrawScale
+	return love.graphics.getHeight() / Game:GetConfig( "graphics_scale" )
 end
 
 -- Log to console.
@@ -30,6 +30,13 @@ function Log( pre, ... )
 
 	print( "LOG " .. os.date( "%H:%M:%S", os.time() ) .. ":", pre .. ... )
 end
+
+function toboolean( t )
+	if t == nil or t == false or t == 0 or t == "0" or t == "false" then return end
+
+	return true
+end
+
 
 function CheckCollision( ent1, ent2 )
 	local first = {

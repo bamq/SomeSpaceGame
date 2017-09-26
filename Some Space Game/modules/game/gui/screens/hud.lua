@@ -20,7 +20,7 @@ function HUD.new()
     end
 
     function self:draw()
-        local scale = 1 / Game.Config.Graphics.DrawScale
+        local scale = 1 / Game:GetConfig( "graphics_scale" )
 
         love.graphics.setColor( 0, 255, 125 )
 
@@ -32,7 +32,7 @@ function HUD.new()
             love.graphics.print( "FPS: " .. love.timer.getFPS(), 0, ScrH() - 5, 0, scale )
         end
 
-        love.graphics.print( Game.Config.Graphics.HelpText, 2, Game.Config.Graphics.ShowScore and 5 or 2, 0, scale )
+        love.graphics.print( Game:GetConfig( "game_help_text" ), 2, Game:GetConfig( "game_show_score" ) and 5 or 2, 0, scale )
 
         Hooks:Call( "PostHUDScreenDraw", self )
     end

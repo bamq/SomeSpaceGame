@@ -43,7 +43,7 @@ end
 function FormattedTextLabel:Draw()
 	if self._is_visible then
 		love.graphics.setColor( unpack( self._textcolor ) )
-		love.graphics.printf( self._text, self._x, self._y, self._wraplimit, self._align, 0, self._textscale / Game.Config.Graphics.DrawScale, self._textscale / Game.Config.Graphics.DrawScale )
+		love.graphics.printf( self._text, self._x, self._y, self._wraplimit, self._align, 0, self._textscale / Game:GetConfig( "graphics_scale" ), self._textscale / Game:GetConfig( "graphics_scale" ) )
 	end
 end
 
