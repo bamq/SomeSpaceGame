@@ -25,7 +25,7 @@ function Game:AddConfig( str, default_value, value_type )
 			if valtype == "number" then
 				return tonumber( val )
 			elseif valtype == "str" then
-				return tostr( val )
+				return tostring( val )
 			elseif valtype == "bool" or valtype == "boolean" then
 				return toboolean( val )
 			elseif valtype == "table" then
