@@ -32,7 +32,7 @@ function Log( pre, ... )
 end
 
 function toboolean( t )
-	if t == nil or t == false or t == 0 or t == "0" or t == "false" then return end
+	if t == nil or t == false or t == 0 or t == "0" or t == "false" then return false end
 
 	return true
 end
