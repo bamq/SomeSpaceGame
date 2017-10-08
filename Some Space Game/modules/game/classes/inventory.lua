@@ -32,7 +32,7 @@ function Inventory:GetItemCount()
     return self._itemcount
 end
 
-function Inventory:Add( item )
+function Inventory:AddItem( item )
     if not item:isInstanceOf( Item ) then return false end
 
     if self:HasItem( item ) and item:IsStackable() then
@@ -49,7 +49,7 @@ function Inventory:Add( item )
     return false
 end
 
-function Inventory:RemoveByName( name, clear_all )
+function Inventory:RemoveItemByName( name, clear_all )
     if not clear_all then clear_all = false end
 
     for k, v in pairs( self._inventory ) do
@@ -68,7 +68,7 @@ function Inventory:RemoveByName( name, clear_all )
     return false
 end
 
-function Inventory:RemoveByID( id, clear_all )
+function Inventory:RemoveItemByID( id, clear_all )
     if not clear_all then clear_all = false end
 
     for k, v in pairs( self._inventory ) do
@@ -87,7 +87,7 @@ function Inventory:RemoveByID( id, clear_all )
     return false
 end
 
-function Inventory:GetByName( name )
+function Inventory:GetItemByName( name )
     for k, v in pairs( self._inventory ) do
         if v:GetName() == name then
             return v
@@ -97,7 +97,7 @@ function Inventory:GetByName( name )
     return false
 end
 
-function Inventory:GetByID( id )
+function Inventory:GetItemByID( id )
     for k, v in pairs( self._inventory ) do
         if v:GetID() == id then
             return v
@@ -115,6 +115,11 @@ function Inventory:HasItem( item )
     end
 
     return false
+end
+
+function Inventory:Clear()
+    self._inventory = {}
+    self._itemcount = 0
 end
 
 function Inventory:GetTable()
