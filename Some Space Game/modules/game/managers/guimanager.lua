@@ -65,7 +65,7 @@ function GUIManager:SetMouseCursor( cursor )
 end
 
 function GUIManager:CheckMouseInElement( element )
-	local mx, my = love.mouse.getPosition()
+	local mx, my = self:GetMousePos()
 	mx = mx / Game:GetConfig( "graphics_scale" )
 	my = my / Game:GetConfig( "graphics_scale" )
 
@@ -74,4 +74,8 @@ function GUIManager:CheckMouseInElement( element )
 	end
 
 	return false
+end
+
+function GUIManager:GetMousePos()
+	return love.mouse.getPosition()
 end

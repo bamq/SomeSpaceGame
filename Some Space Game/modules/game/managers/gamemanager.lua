@@ -21,6 +21,7 @@ function GameManager:Init()
 	Log( pfx, first_init and "Initializing game. . ." or "Starting new game. . ." )
 
 	Game:ResetScore()
+	ItemManager:Init( first_init )
 	GraphicsManager:Init( first_init )
 	PlayerManager:Init( first_init )
 	EnemyManager:Init( first_init )
