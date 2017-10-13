@@ -8,14 +8,14 @@
 *
 //-----------------------------------------------------------------------]]--
 
-local PlayerClass = require "modules.game.classes.entities.player"
+local Player = require "modules.game.classes.entities.player"
 
 PlayerManager = {}
 local pfx = LOG_PFX.playermanager
 
 function PlayerManager:Init( first_init )
 	self._players = {}
-	Player = self:NewPlayer()
+	self:NewPlayer()
 
 	Log( pfx, "Initialized." )
 
@@ -32,7 +32,7 @@ end
 function PlayerManager:NewPlayer()
 	Hooks:Call( "PreCreateNewPlayer" )
 
-	local player = PlayerClass:new()
+	local player = Player:new()
 	self:RegisterPlayer( player )
 
 	Hooks:Call( "PostCreateNewPlayer", player )
@@ -41,7 +41,7 @@ function PlayerManager:NewPlayer()
 end
 
 function PlayerManager:GetPlayers()
-	return table.Copy( self._players )
+	return self._players
 end
 
 -- TODO: Check if valid player

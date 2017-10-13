@@ -25,7 +25,9 @@ function HUD.new()
         love.graphics.setColor( 0, 255, 125 )
 
         if Game:GetShowScore() then
-            love.graphics.print( "Score: " .. Game:GetScore() .. " Lives: " .. Player:GetLives(), 0, 0, 0, scale )
+            for _, player in pairs( PlayerManager:GetPlayers() ) do
+                love.graphics.print( "Score: " .. Game:GetScore() .. " Lives: " .. player:GetLives(), 0, 0, 0, scale )
+            end
         end
 
         if Game:GetShowFPS() then

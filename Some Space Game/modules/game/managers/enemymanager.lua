@@ -7,7 +7,7 @@
 *
 //-----------------------------------------------------------------------]]--
 
-local EnemyClass = require "modules.game.classes.entities.enemy"
+local Enemy = require "modules.game.classes.entities.enemy"
 
 EnemyManager = {}
 EnemyManager._enemies = {}
@@ -28,30 +28,30 @@ end
 
 function EnemyManager:CreateEnemy( x, y, start_inactive )
 	-- Create a new enemy object.
-	local Enemy = EnemyClass:new( x, y )
+	local enemy = Enemy:new( x, y )
 
-	function Enemy.Kill()
-		self:RemoveEnemy( Enemy )
+	function enemy.Kill()
+		self:RemoveEnemy( enemy )
 	end
 
 	-- Let hooks block the creation of the enemy for whatever reason.
-	local block = Hooks:Call( "PreCreateEnemy", Enemy )
+	local block = Hooks:Call( "PreCreateEnemy", enemy )
 	if block == false then return end
 
 	if start_inactive then
-		Enemy:SetActive( false )
+		enemy:SetActive( false )
 	end
 
-	self:RegisterEnemy( Enemy )
-	Log( pfx, "Enemy spawned at X: " .. Enemy._x, "Y: " .. Enemy._y )
+	self:RegisterEnemy( enemy )
+	Log( pfx, "Enemy spawned at X: " .. enemy._x, "Y: " .. enemy._y )
 
-	Hooks:Call( "PostCreateEnemy", Enemy, start_inactive )
+	Hooks:Call( "PostCreateEnemy", enemy, start_inactive )
 
-	return Enemy
+	return enemy
 end
 
 function EnemyManager:GetEnemies()
-	return table.Copy( self._enemies )
+	return self._enemies
 end
 
 -- TODO: Check if valid enemy

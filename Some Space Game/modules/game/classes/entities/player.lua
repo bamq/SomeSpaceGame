@@ -8,8 +8,8 @@
 //-----------------------------------------------------------------------]]--
 
 local Class = require "modules.lib.middleclass"
-local BulletClass = require "modules.game.classes.entities.bullet"
-local InventoryClass = require "modules.game.classes.inventory"
+local Bullet = require "modules.game.classes.entities.bullet"
+local Inventory = require "modules.game.classes.inventory"
 
 local pfx = LOG_PFX.player
 
@@ -30,7 +30,7 @@ function Player:initialize()
     self._firedelay = Game:GetConfig( "player_fire_delay" )
     self._firecooldown = 0
     self._bullets = {}
-    self._inventory = InventoryClass:new()
+    self._inventory = Inventory:new()
 end
 
 function Player:Update( dt )
@@ -60,15 +60,15 @@ function Player:Update( dt )
 end
 
 function Player:Draw()
-    love.graphics.setColor( self._color )
-    love.graphics.draw( self._sprite, self._x, self._y, 0, self._width / 10, self._height / 10 )
+    love.graphics.setColor( self:GetColor() )
+    love.graphics.draw( self:GetSprite(), self:GetX(), self:GetY(), 0, self:GetWidth() / 10, self:GetHeight() / 10 )
 
     if Game:GetConfig( "graphics_draw_score_on_player" ) then
         love.graphics.setColor( 255, 255, 255, self._color[ 4 ] or 255 )
-        love.graphics.print( self._lives, self._x - self._width / 2, self._y - self._height / 2 )
+        love.graphics.print( self:GetLives(), self:GetX() - self:GetWidth() / 2, self:GetY() - self:GetHeight() / 2 )
     end
 
-    for _, bullet in pairs( self._bullets ) do
+    for _, bullet in pairs( self:GetBullets() ) do
         bullet:Draw()
     end
 end
@@ -76,23 +76,23 @@ end
 function Player:Fire()
 	if self._firecooldown <= 0 then
 		self._firecooldown = self._firedelay
-		local Bullet = BulletClass:new()
+		local bullet = Bullet:new()
 
-		Bullet:SetSize( Game:GetConfig( "player_bullet_width" ), Game:GetConfig( "player_bullet_height" ) )
+		bullet:SetSize( Game:GetConfig( "player_bullet_width" ), Game:GetConfig( "player_bullet_height" ) )
         -- Make the bullet come out of the middle of the player.
-		Bullet:SetPos( self._x + ( self._width / 2 ) - Bullet:GetWidth() / 2, self._y + ( self._height / 2 ) - Bullet:GetHeight() )
-		Bullet:SetColor( unpack( Game:GetConfig( "player_bullet_color" ) ) )
-		Bullet:SetSpeed( Game:GetConfig( "player_bullet_speed" ) )
+		bullet:SetPos( self:GetX() + ( self:GetWidth() / 2 ) - bullet:GetWidth() / 2, self:GetY() + ( self:GetHeight() / 2 ) - bullet:GetHeight() )
+		bullet:SetColor( unpack( Game:GetConfig( "player_bullet_color" ) ) )
+		bullet:SetSpeed( Game:GetConfig( "player_bullet_speed" ) )
 
-		function Bullet.Remove()
-			for k, bullet in pairs( self._bullets ) do
-				if bullet == Bullet then
+		function bullet.Remove()
+			for k, b in pairs( self:GetBullets() ) do
+				if b == bullet then
                     -- Let hooks prevent this.
-					local block = Hooks:Call( "PreRemovePlayerBullet", bullet )
-					local bulletcopy = table.Copy( bullet )
+					local block = Hooks:Call( "PreRemovePlayerBullet", b )
+					local bulletcopy = table.Copy( b )
 					if block == false then return end
 
-					table.remove( self._bullets, k )
+					table.remove( self:GetBullets(), k )
 					Log( pfx, "Player bullet removed." )
 
 					Hooks:Call( "PostRemovePlayerBullet", bulletcopy )
@@ -101,23 +101,23 @@ function Player:Fire()
 		end
 
         -- Let hooks prevent this.
-		local block = Hooks:Call( "PrePlayerFire", Bullet )
+		local block = Hooks:Call( "PrePlayerFire", bullet )
 		if block == false then return end
 
-		table.insert( self._bullets, Bullet )
+		table.insert( self:GetBullets(), bullet )
 
-		Hooks:Call( "PostPlayerFire", Bullet )
+		Hooks:Call( "PostPlayerFire", bullet )
 	end
 end
 
 function Player:LoseLife()
-	self._lives = self._lives - 1
+	self:SetLives( self:GetLives() - 1 )
 
-	if self._lives <= 0 then
+	if self:GetLives() <= 0 then
 		Log( pfx, "Player lost all their lives." )
 		GameManager:GameOver()
 	else
-		Log( pfx, "Player lost a life. " .. self._lives .. " left." )
+		Log( pfx, "Player lost a life. " .. self:GetLives() .. " left." )
 	end
 
     -- Makes the player more transparent the more lives they lose.
@@ -141,8 +141,7 @@ function Player:UnFreeze()
 end
 
 function Player:Teleport( x, y )
-	self._x = x
-	self._y = y
+	self:SetPos( x, y )
 
 	Hooks:Call( "PlayerTeleported", x, y )
 end
@@ -156,30 +155,30 @@ local directions = {
 
 function Player:Move( direction, speed )
 	if not directions[ direction ] then return end
-	if not speed then speed = self._speed end
+	if not speed then speed = self:GetSpeed() end
 	if not self._canmove then return end
 
 	if direction == "up" then
-		if self._y >= ( ScrH() * 0.6 ) then
-			self._y = self._y - ( self._isboost and ( speed * self._boostfactor ) or speed )
+		if self:GetY() >= ( ScrH() * 0.6 ) then
+			self:SetY( self:GetY() - ( self:IsBoosting() and ( speed * self:GetBoostMultiplier() ) or speed ) )
 		end
 	end
 
 	if direction == "down" then
-		if self._y < ( ScrH() - self._height ) then
-			self._y = self._y + ( self._isboost and ( speed * self._boostfactor ) or speed )
+		if self:GetY() < ( ScrH() - self:GetHeight() ) then
+			self:SetY( self:GetY() + ( self:IsBoosting() and ( speed * self:GetBoostMultiplier() ) or speed ) )
 		end
 	end
 
 	if direction == "left" then
-		if self._x > 0 then
-			self._x =  self._x - ( self._isboost and ( speed * self._boostfactor ) or speed )
+		if self:GetX() > 0 then
+			self:SetX( self:GetX() - ( self:IsBoosting() and ( speed * self:GetBoostMultiplier() ) or speed ) )
 		end
 	end
 
 	if direction == "right" then
-		if ( self._x + self._width ) < ScrW() then
-			self._x = self._x + ( self._isboost and ( speed * self._boostfactor ) or speed )
+		if ( self:GetX() + self:GetWidth() ) < ScrW() then
+			self:SetX( self:GetX() + ( self:IsBoosting() and ( speed * self:GetBoostMultiplier() ) or speed ) )
 		end
 	end
 
@@ -202,8 +201,21 @@ function Player:SetSpeed( speed )
 	self._speed = speed
 end
 
+function Player:SetPos( x, y )
+    self:SetX( x )
+    self:SetY( y )
+end
+
 function Player:GetPos()
-	return self._x, self._y
+	return self:GetX(), self:GetY()
+end
+
+function Player:SetX( x )
+    self._x = x
+end
+
+function Player:SetY( y )
+    self._y = y
 end
 
 function Player:GetX()
@@ -214,6 +226,15 @@ function Player:GetY()
 	return self._y
 end
 
+function Player:SetSize( w, h )
+    self:SetWidth( w )
+    self:SetHeight( h )
+end
+
+function Player:GetSize()
+    return self:GetWidth(), self:GetHeight()
+end
+
 function Player:GetWidth()
 	return self._width
 end
@@ -222,12 +243,24 @@ function Player:GetHeight()
 	return self._height
 end
 
+function Player:SetLives( lives )
+    self._lives = lives
+end
+
 function Player:GetLives()
 	return self._lives
 end
 
 function Player:GetBullets()
-	return table.Copy( self._bullets )
+	return self._bullets
+end
+
+function Player:SetBoostMultiplier( multiplier )
+    self._boostfactor = multiplier
+end
+
+function Player:GetBoostMultiplier()
+    return self._boostfactor
 end
 
 function Player:SetBoosting( bool )
@@ -251,16 +284,16 @@ function Player:Inventory()
 end
 
 function Player:CheckInBounds()
-    if self._x < 0 then
-        self._x = 0
-    elseif self._x > ScrW() then
-        self._x = ScrW() - self._width
+    if self:GetX() < 0 then
+        self:SetX( 0 )
+    elseif self:GetX() > ScrW() then
+        self:SetX( ScrW() - self:GetWidth() )
     end
 
-    if self._y < ( ( ScrH() * 0.6 ) - 5 ) then
-        self._y = ( ScrH() * 0.6 )
-    elseif ( self._y + self._height ) > ScrH() then
-        self._y = ( ScrH() - self._height )
+    if self:GetY() < ( ( ScrH() * 0.6 ) - 5 ) then
+        self:SetY( ScrH() * 0.6 )
+    elseif ( self:GetY() + self:GetHeight() ) > ScrH() then
+        self:SetY( ScrH() - self:GetHeight() )
     end
 end
 

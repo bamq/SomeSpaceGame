@@ -123,7 +123,7 @@ function Inventory:Clear()
 end
 
 function Inventory:GetTable()
-    return table.Copy( self._inventory )
+    return self._inventory
 end
 
 return Inventory

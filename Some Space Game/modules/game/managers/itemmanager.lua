@@ -8,6 +8,8 @@
 *
 //-----------------------------------------------------------------------]]--
 
+local Item = require "modules.game.classes.items.item"
+
 ItemManager = {}
 ItemManager._itemtable = {}
 
@@ -15,6 +17,8 @@ function ItemManager:Init()
 end
 
 function ItemManager:RegisterItem( item )
+    if not item:isInstanceOf( Item ) then return end
+
     local entry = {}
     entry._name = item:GetName()
     entry._id = item:GetID()
@@ -43,5 +47,5 @@ function ItemManager:IsIDTaken( id )
 end
 
 function ItemManager:GetRegisteredItems()
-    return table.Copy( self._itemtable )
+    return self._itemtable
 end

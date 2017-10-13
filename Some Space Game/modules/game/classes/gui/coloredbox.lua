@@ -23,9 +23,9 @@ function ColoredBox:initialize()
 end
 
 function ColoredBox:Draw()
-	if self._is_visible then
-		love.graphics.setColor( self._color )
-		love.graphics.rectangle( "fill", self._x, self._y, self._width, self._height )
+	if self:IsVisible() then
+		love.graphics.setColor( self:GetColor() )
+		love.graphics.rectangle( "fill", self:GetX(), self:GetY(), self:GetWidth(), self:GetHeight() )
 	end
 end
 
@@ -65,12 +65,20 @@ function ColoredBox:GetColor()
 end
 
 function ColoredBox:SetPos( x, y )
+	self:SetX( x )
+	self:SetY( y )
+end
+
+function ColoredBox:SetX( x )
 	self._x = x
+end
+
+function ColoredBox:SetY( y )
 	self._y = y
 end
 
 function ColoredBox:GetPos()
-	return self._x, self._y
+	return self:GetX(), self:GetY()
 end
 
 function ColoredBox:GetX()
@@ -81,13 +89,13 @@ function ColoredBox:GetY()
 	return self._y
 end
 
-function ColoredBox:SetSize( width, height )
-	self._width = width
-	self._height = height
+function ColoredBox:SetSize( w, h )
+	self:SetWidth( w )
+	self:SetHeight( h )
 end
 
 function ColoredBox:GetSize()
-	return self._width, self._height
+	return self:GetWidth(), self:GetHeight()
 end
 
 function ColoredBox:SetWidth( width )

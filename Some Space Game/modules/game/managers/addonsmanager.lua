@@ -58,5 +58,5 @@ function AddonsManager:MountAddons()
 end
 
 function AddonsManager:GetMountedAddons()
-	return table.Copy( self._addons )
+	return self._addons
 end

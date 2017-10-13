@@ -50,7 +50,7 @@ function StarsManager:GenerateStars()
 end
 
 function StarsManager:GetStars()
-	return table.Copy( self._stars )
+	return self._stars
 end
 
 function StarsManager:DecrementCooldowns()

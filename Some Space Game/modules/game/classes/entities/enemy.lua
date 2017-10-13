@@ -8,7 +8,7 @@
 //-----------------------------------------------------------------------]]--
 
 local Class = require "modules.lib.middleclass"
-local BulletClass = require "modules.game.classes.entities.bullet"
+local Bullet = require "modules.game.classes.entities.bullet"
 local pfx = LOG_PFX.enemy
 
 local Enemy = Class( "Enemy" )
@@ -31,23 +31,23 @@ function Enemy:Kill()
 end
 
 function Enemy:Fire()
-    if self._is_active and self._cooldown <= 0 then
+    if self:IsActive() and self._cooldown <= 0 then
         self._cooldown = Game:GetConfig( "enemy_fire_delay" )
-        local Bullet = BulletClass:new( self._x + ( self._width / 2 ), self._y + ( self._height / 2 ) )
+        local bullet = Bullet:new( self:GetX() + ( self:GetWidth() / 2 ), self:GetY() + ( self:GetHeight() / 2 ) )
 
-        Bullet:SetColor( unpack( Game:GetConfig( "enemy_bullet_color" ) ) )
-        Bullet:SetSize( Game:GetConfig( "enemy_bullet_width" ), Game:GetConfig( "enemy_bullet_height" ) )
-        Bullet:SetSpeed( Game:GetConfig( "enemy_bullet_speed" ) )
+        bullet:SetColor( unpack( Game:GetConfig( "enemy_bullet_color" ) ) )
+        bullet:SetSize( Game:GetConfig( "enemy_bullet_width" ), Game:GetConfig( "enemy_bullet_height" ) )
+        bullet:SetSpeed( Game:GetConfig( "enemy_bullet_speed" ) )
 
-        function Bullet.Remove()
-            for k, bullet in pairs( self._bullets ) do
-                if bullet == Bullet then
+        function bullet.Remove()
+            for k, b in pairs( self:GetBullets() ) do
+                if b == bullet then
                     -- Let hooks prevent this.
-                    local block = Hooks:Call( "PreRemoveEnemyBullet", self, bullet )
-                    local bulletcopy = table.Copy( bullet )
+                    local block = Hooks:Call( "PreRemoveEnemyBullet", self, b )
+                    local bulletcopy = table.Copy( b )
                     if block == false then return end
 
-                    table.remove( self._bullets, k )
+                    table.remove( self:GetBullets(), k )
                     Log( pfx, "Enemy bullet removed" )
 
                     Hooks:Call( "PostRemoveEnemyBullet", self, bulletcopy )
@@ -56,33 +56,33 @@ function Enemy:Fire()
         end
 
         -- Let hooks prevent this.
-        local block = Hooks:Call( "PreEnemyFire", self, Bullet )
+        local block = Hooks:Call( "PreEnemyFire", self, bullet )
         if block == false then return end
 
-        table.insert( self._bullets, Bullet )
+        table.insert( self:GetBullets(), bullet )
 
-        Hooks:Call( "PostEnemyFire", self, Bullet )
+        Hooks:Call( "PostEnemyFire", self, bullet )
     end
 end
 
 function Enemy:Draw()
-    if self._is_visible then
-        love.graphics.setColor( self._color )
-        love.graphics.draw( self._sprite, self._x, self._y, 0, self._width / 10, self._height / 10 )
+    if self:IsVisible() then
+        love.graphics.setColor( self:GetColor() )
+        love.graphics.draw( self:GetSprite(), self:GetX(), self:GetY(), 0, self:GetWidth() / 10, self:GetHeight() / 10 )
     end
 
-    for _, bullet in pairs( self._bullets ) do
+    for _, bullet in pairs( self:GetBullets() ) do
         bullet:Draw()
     end
 end
 
 function Enemy:SetPos( x, y )
-    self._x = x
-    self._y = y
+    self:SetX( x )
+    self:SetY( y )
 end
 
 function Enemy:GetPos()
-    return self._x, self._y
+    return self:GetX(), self:GetY()
 end
 
 function Enemy:GetX()
@@ -94,12 +94,12 @@ function Enemy:GetY()
 end
 
 function Enemy:SetSize( w, h )
-    self._width = w
-    self._height = h
+    self:SetWidth( w )
+    self:SetHeight( h )
 end
 
 function Enemy:GetSize()
-    return self._width, self._height
+    return self:GetWidth(), self:GetHeight()
 end
 
 function Enemy:GetWidth()
@@ -110,12 +110,16 @@ function Enemy:GetHeight()
     return self._height
 end
 
+function Enemy:SetSprite( image )
+    self._sprite = image
+end
+
 function Enemy:GetSprite()
     return self._sprite
 end
 
 function Enemy:GetBullets()
-    return table.Copy( self._bullets )
+    return self._bullets
 end
 
 function Enemy:SetVisible( bool )
@@ -123,7 +127,7 @@ function Enemy:SetVisible( bool )
 end
 
 function Enemy:IsVisible()
-    return self._is_visibile
+    return self._is_visible
 end
 
 function Enemy:SetColor( r, g, b, a )

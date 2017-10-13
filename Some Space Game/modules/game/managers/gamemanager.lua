@@ -97,38 +97,42 @@ end
 
 function GameManager:CalculateBullets()
 	-- Make sure bullets behave how they are supposed to.
-	for k, bullet in pairs( Player._bullets ) do
-		if bullet._y < -10 then
-			bullet:Remove()
-		end
-
-		bullet._y = bullet._y - bullet._speed
-
-		for j, enemy in pairs( EnemyManager._enemies ) do
-			if enemy:IsActive() and CheckCollision( bullet, enemy ) then
-				local _killtext = FloatTextManager:CreateText( "+" .. Game:GetConfig( "game_points_for_kill" ), enemy._x, enemy._y, 255, 0, 0, 30, 5 )
-
+	for _, player in pairs( PlayerManager:GetPlayers() ) do
+		for k, bullet in pairs( player:GetBullets() ) do
+			if bullet:GetY() < -10 then
 				bullet:Remove()
-				enemy:Kill()
-				Game:AddScore( Game:GetConfig( "game_points_for_kill" ) )
-				Log( pfx, "Enemy killed by Player." )
+			end
+
+			bullet:SetY( bullet:GetY() - bullet:GetSpeed() )
+
+			for j, enemy in pairs( EnemyManager:GetEnemies() ) do
+				if enemy:IsActive() and CheckCollision( bullet, enemy ) then
+					local _killtext = FloatTextManager:CreateText( "+" .. Game:GetConfig( "game_points_for_kill" ), enemy:GetX(), enemy:GetY(), 255, 0, 0, 30, 5 )
+
+					bullet:Remove()
+					enemy:Kill()
+					Game:AddScore( Game:GetConfig( "game_points_for_kill" ) )
+					Log( pfx, "Enemy killed by Player." )
+				end
 			end
 		end
 	end
 
-	for k, enemy in pairs( EnemyManager._enemies ) do
-		for j, bullet in pairs( enemy._bullets ) do
-			if bullet._y > ( ScrH() + 10 ) then
+	for k, enemy in pairs( EnemyManager:GetEnemies() ) do
+		for j, bullet in pairs( enemy:GetBullets() ) do
+			if bullet:GetY() > ( ScrH() + 10 ) then
 				bullet:Remove()
 			end
 
-			bullet._y = bullet._y + bullet._speed
+			bullet:SetY( bullet:GetY() + bullet:GetSpeed() )
 
-			if CheckCollision( bullet, Player ) then
-				local _killtext = FloatTextManager:CreateText( "Life lost!", Player:GetX(), Player:GetY() - 10, 255, 255, 255, 30, 5 )
+			for _, player in pairs( PlayerManager:GetPlayers() ) do
+				if CheckCollision( bullet, player ) then
+					local _killtext = FloatTextManager:CreateText( "Life lost!", player:GetX(), player:GetY() - 10, 255, 255, 255, 30, 5 )
 
-				bullet:Remove()
-				Player:LoseLife()
+					bullet:Remove()
+					player:LoseLife()
+				end
 			end
 		end
 	end

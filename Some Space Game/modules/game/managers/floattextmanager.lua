@@ -128,7 +128,7 @@ function FloatTextManager:CreateText( message, x, y, r, g, b, time, scale )
 end
 
 function FloatTextManager:GetTexts()
-	return table.Copy( self._texts )
+	return self._texts
 end
 
 function FloatTextManager:DecrementCooldowns()

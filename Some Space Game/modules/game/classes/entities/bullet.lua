@@ -22,7 +22,7 @@ end
 
 function Bullet:Draw()
     love.graphics.setColor( self._color )
-    love.graphics.rectangle( "fill", self._x, self._y, self._width, self._height )
+    love.graphics.rectangle( "fill", self:GetX(), self:GetY(), self:GetWidth(), self:GetHeight() )
 end
 
 function Bullet:Remove()
@@ -38,12 +38,20 @@ function Bullet:GetSpeed()
 end
 
 function Bullet:SetPos( x, y )
-    self._x = x
-    self._y = y
+    self:SetX( x )
+    self:SetY( y )
 end
 
 function Bullet:GetPos()
-    return self._x, self._y
+    return self:GetX(), self:GetY()
+end
+
+function Bullet:SetX( x )
+    self._x = x
+end
+
+function Bullet:SetY( y )
+    self._y = y
 end
 
 function Bullet:GetX()
@@ -55,12 +63,12 @@ function Bullet:GetY()
 end
 
 function Bullet:SetSize( w, h )
-    self._width = w
-    self._height = h
+    self:SetWidth( w )
+    self:SetHeight( h )
 end
 
 function Bullet:GetSize()
-    return self._width, self._height
+    return self:GetWidth(), self:GetHeight()
 end
 
 function Bullet:SetWidth( w )
